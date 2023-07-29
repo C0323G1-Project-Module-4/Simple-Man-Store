@@ -15,9 +15,77 @@ public class OrderDetail {
     @Column(nullable = false)
     private String size;
     @ManyToOne
-    @JoinColumn(name = "order_id",referencedColumnName = "id",nullable = false,unique = true)
+    @JoinColumn(name = "order_id",referencedColumnName = "id",nullable = false)
     private Order order;
     @ManyToOne
-    @JoinColumn(name = "product_id",referencedColumnName = "id",nullable = false,unique = true)
+    @JoinColumn(name = "product_id",referencedColumnName = "id",nullable = false)
     private Product product;
+
+    public OrderDetail() {
+    }
+
+    public OrderDetail(Integer id, double price, int quantity, String size, Order order, Product product) {
+        this.id = id;
+        this.price = price;
+        this.quantity = quantity;
+        this.size = size;
+        this.order = order;
+        this.product = product;
+    }
+
+    public OrderDetail(double price, int quantity, String size, Order order, Product product) {
+        this.price = price;
+        this.quantity = quantity;
+        this.size = size;
+        this.order = order;
+        this.product = product;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }
