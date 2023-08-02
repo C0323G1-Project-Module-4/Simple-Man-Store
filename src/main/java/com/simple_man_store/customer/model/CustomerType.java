@@ -22,11 +22,6 @@ public class CustomerType {
         this.customerSet = customerSet;
     }
 
-    public CustomerType(String name, Set<Customer> customerSet) {
-        this.name = name;
-        this.customerSet = customerSet;
-    }
-
     public Integer getId() {
         return id;
     }
