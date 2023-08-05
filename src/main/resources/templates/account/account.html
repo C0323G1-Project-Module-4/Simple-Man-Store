@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+    <div th:insert="~{home::libraries}"></div>
+    <style>
+        .slider-container {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+        }
+    </style>
+
+</head>
+<body>
+<div th:replace="~{home::navbar-start}"></div>
+
+
+<div class="container">
+    <div class="row col-md-12 col-lg-12">
+        <h4><i class="fa-solid fa-user"></i> Tài Khoản Của Bạn</h4>
+    </div>
+    <div class="row col-md-12 col-lg-12 mt-4 ">
+        <div class="col-md-3 col-lg-3">
+            <div class="container" style="border: 1px solid gray;">
+                <div class="my-4 mx-3" style="border-bottom: 1px solid black;">
+                    <h5><b>Danny</b></h5>
+                    <h5><b sec:authorize="hasRole('ROLE_ADMIN')">haha</b></h5>
+                </div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " href="#">Thông tin tài khoản</a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Lịch sử mua hàng</a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Địa chỉ giao hàng</a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý đơn hàng</a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý khách hàng</a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý sản phẩm</a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý nhân viên</a></div>
+            </div>
+
+        </div>
+        <div class="col-md-5 col-lg-5">
+            <div class="ml-5" style="border-bottom: 1px solid black;">
+                <h5><b>Thông tin tài khoản</b></h5>
+                <small>Bạn có thể cập nhật thông tin cá nhân của bản thân tại đây</small>
+            </div>
+            <div class="ml-5">
+                <div class="mt-4">
+                    <p>Tên<small style="color: red;">*</small></p>
+                    <input class="ml-5" style="width: 250px;" type="text">
+                    <p class="ml-5"><small style="color: red;"></small></p>
+                </div>
+                <div class="mt-4">
+                    <p>Email<small style="color: red;">*</small></p>
+                    <input class="ml-5" style="width: 250px;" type="text">
+                    <p class="ml-5"><small style="color: red;"></small></p>
+                </div>
+                <div class="mt-4">
+                    <p>Số điện thoại<small style="color: red;">*</small></p>
+                    <input class="ml-5" style="width: 250px;" type="text">
+                    <p class="ml-5"><small style="color: red;"></small></p>
+                </div>
+
+                <div class="mt-4">
+                    <p>Giới tính </p>
+                    <div class="d-flex">
+                        <label class="ml-5">
+                            <input type="radio" name="gender" value="male">
+                            Nam
+                        </label>
+                        <label class="ml-5">
+                            <input type="radio" name="gender" value="female">
+                            Nữ
+                        </label>
+                        <label class="ml-5">
+                            <input type="radio" name="gender" value="lgbt">
+                            LGBT
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <p>Ngày sinh</p>
+                    <input class="ml-5" type="date">
+                </div>
+                <div class="slider-container mt-4">
+                    <input style=" width: 300px" type="range" id="weight-range" min="0" max="100" step="1">
+                    <label for="weight-range">Cân nặng: <span id="weight-value">0</span> kg</label>
+                </div>
+
+                <div class="slider-container">
+                    <input style=" width: 300px" type="range" id="height-range" min="0" max="200" step="1">
+                    <label for="height-range">Chiều cao: <span id="height-value">0</span> cm</label>
+                </div>
+                <button style="width: 280px;height: 50px; padding: 10px;font-size: 14px;"><b>Cập Nhật Thông Tin</b>
+                </button>
+            </div>
+        </div>
+        <div class=" col-md-4 col-lg-4">
+            <div><h5 style="text-align: center;"><b>Sản Phẩm Bán Chạy Nhất</b></h5></div>
+            <div class=" col-lg-4 col-md-4 col-sm-4 mt-5">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img mb-5">
+                        <img style="width: 300px;height: auto" src="/main/img/product-6.jpg" alt="">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script>
+    const weightRange = document.getElementById('weight-range');
+    const weightValue = document.getElementById('weight-value');
+    const heightRange = document.getElementById('height-range');
+    const heightValue = document.getElementById('height-value');
+
+    weightRange.addEventListener('input', function () {
+        weightValue.textContent = weightRange.value;
+    });
+
+    heightRange.addEventListener('input', function () {
+        heightValue.textContent = heightRange.value;
+    });
+</script>
+
+
+<div th:replace="~{home::footer-start}"></div>
+<div th:replace="~{home::back-to-top}"></div>
+<div th:replace="~{home::footer}"></div>
+
+
+</body>
+</html>
