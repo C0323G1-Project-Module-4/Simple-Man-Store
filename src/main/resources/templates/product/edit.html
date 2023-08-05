@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:object="${product}" th:action="@{/product/edit}" method="post">
+    <table>
+        <tr>
+            <td><input type="hidden" th:field="*{id}"></td>
+        </tr>
+        <tr>
+            <th>Loại sản phẩm</th>
+            <td><select th:field="*{category}">
+                <option th:each="category: ${categoryList}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <td><input type="text" th:field="*{name}"></td>
+        </tr>
+        <tr>
+            <th>Mô tả về sản phẩm</th>
+            <td><input type="text" th:field="*{description}"></td>
+        </tr>
+        <tr>
+            <th>Hình ảnh</th>
+            <td><input type="text" th:field="*{image}"></td>
+        </tr>
+        <tr>
+            <th>Giá</th>
+            <td><input type="number" th:field="*{price}"></td>
+        </tr>
+        <tr>
+            <td><a th:href="@{/product/list}"><button type="button">Quay lại</button></a></td>
+            <td><button>Lưu</button></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
