@@ -48,10 +48,10 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/showCreate")
     public ModelAndView showCreate() {
         ModelAndView modelAndView = new ModelAndView("customer/create_customer");
-        modelAndView.addObject("customer", new Customer());
+        modelAndView.addObject("customer", new CustomerDto());
         return modelAndView;
     }
     @PostMapping("/create")
@@ -60,7 +60,7 @@ public class CustomerController {
         redirectAttributes.addFlashAttribute("msg",check);
         return "redirect:/customer/list";
     }
-    @GetMapping("/edit/{id}")
+    @GetMapping("/showUpdate/{id}")
     public ModelAndView showUpdate(@PathVariable Integer id){
         ModelAndView modelAndView = new ModelAndView("customer/update");
         Customer customer = customerService.findById(id);
