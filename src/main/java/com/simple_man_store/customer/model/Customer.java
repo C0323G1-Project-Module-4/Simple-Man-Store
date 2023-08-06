@@ -24,8 +24,8 @@ public class Customer {
     @ManyToOne
     @JoinColumn(name = "customer_type_id", referencedColumnName = "id",nullable = false)
     private CustomerType customerType;
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "account_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "account_id",referencedColumnName = "id", nullable = false)
     private Account account;
  public Customer(){
 
