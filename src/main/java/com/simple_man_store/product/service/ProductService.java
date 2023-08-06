@@ -1,5 +1,6 @@
 package com.simple_man_store.product.service;
 
+import com.simple_man_store.product.model.Category;
 import com.simple_man_store.product.model.Product;
 import com.simple_man_store.product.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductService implements IProductService{
+public class ProductService implements IProductService {
     @Autowired
     private IProductRepository productRepository;
 
@@ -40,13 +41,13 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public Page<Product> findAll(Pageable pageable,String name) {
-        return productRepository.findProductByNameContaining(pageable,name);
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     @Override
-    public Page<Product> findAllPrice(Pageable pageable, double minPrice, double maxPrice) {
-        return productRepository.findProductByPriceBetween(pageable,minPrice,maxPrice);
+    public Page<Product> findProduct(Pageable pageable, String name, Double minPrice, Double maxPrice, String categoryName) {
+        return productRepository.findProductByNameContainingAndPriceBetweenAndCategoryNameContaining(pageable, name, minPrice, maxPrice, categoryName);
     }
 
 }
