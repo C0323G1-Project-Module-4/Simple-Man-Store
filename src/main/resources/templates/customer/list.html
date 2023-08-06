@@ -10,6 +10,8 @@
             crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
 
 </head>
 <body>
@@ -17,43 +19,62 @@
 </header>
 <div class="row ">
     <div class="col-3">
-
+        <!-- As a link -->
+        <nav class="navbar sticky-bottom" style="margin-top: 10%">
+            <div class="container-fluid">
+                <button class="navbar-toggler border border-light" id="hide" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    <span>Danh mục quản lý</span>
+                </button>
+            </div>
+            <div class="container-fluid">
+                <div class="collapse" id="navbarToggleExternalContent">
+                    <div class="p-4">
+                        <h5 class="text-white h4">Collapsed content</h5>
+                        <a class="text-muted" th:href="@{/employee/list}" style="text-decoration: none;">QUẢN LÝ NHÂN VIÊN</a>
+                    </div>
+                    <div class="p-4">
+                        <h5 class="text-white h4">Collapsed content</h5>
+                        <a class="text-muted" th:href="@{/customer/list}" id="customer" style="text-decoration: none;">QUẢN LÝ KHÁCH HÀNG</a>
+                    </div>
+                    <div class="p-4">
+                        <h5 class="text-white h4">Collapsed content</h5>
+                        <a class="text-muted" th:href="@{/product/list}" id="product" style="text-decoration: none;">QUẢN LÝ SẢN PHẨM</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+<script  th:src="@{/jquery-3.7.0.min.js}">
+    $(document).ready(function () {
+        $(`#hide`).click(function () {
+            $(`#customer`).hidden;
+        });
+    });
+</script>
     </div>
     <div class="col-9">
-        <div class="mx-auto shadow-lg p-3 mb-5 bg-body rounded" style="width: 70%; margin: 7%">
-            <header class=" d-flex justify-content-center bg bg-warning" style=" color: black">
-                <h1>DANH SÁCH KHÁCH HÀNG</h1></header>
-            <!--            <div class="container-fluid" style="width: 40%">-->
-            <!--                <form th:action="@{/customer/list}" class="input-group mb-3" th:type="get">-->
-            <!--                    <button type="submit" class="btn btn-outline-secondary" >Tìm kiếm</button>-->
-            <!--                    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">-->
-            <!--                        <span class="visually-hidden"></span>-->
-            <!--                    </button>-->
-            <!--                    <ul class="dropdown-menu">-->
-            <!--                        <li><a class="dropdown-item" href="#">Action</a></li>-->
-            <!--                        <li><a class="dropdown-item" href="#">Another action</a></li>-->
-            <!--                        <li><a class="dropdown-item" href="#">Something else here</a></li>-->
-            <!--                        <li><hr class="dropdown-divider"></li>-->
-            <!--                        <li><a class="dropdown-item" href="#">Separated link</a></li>-->
-            <!--                    </ul>-->
-            <!--                    <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" name="searchName">-->
+        <div class="mx-auto shadow-lg mb-5 bg-body rounded" style="width: 90%; margin: 7%">
+            <header class=" d-flex justify-content-center bg bg-warning " style=" color: black">
 
-            <!--                </form>-->
-            <!--            </div>-->
-            <!--            search-->
-            <div class="d-flex justify-content-center">
+                   <h1 style="font-family: 'Dancing Script', cursive;margin-top: 0.5rem" >DANH SÁCH KHÁCH HÀNG</h1>
+               </header>
+            <div class="d-flex justify-content-center p-3">
                 <nav class="navbar bg-light ">
                     <div class="container-fluid">
-                        <form class="d-flex " role="search" th:action="@{/customer/list}">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                        <form class="d-flex " role="search" th:action="@{/customer/list}" method="get">
+                            <input class="form-control " type="search" placeholder="Search" aria-label="Search"
                                    name="searchName">
+                            <select class="form-select " id="inputGroupSelect01" name="customerTypeId" style="width: 20%">
+                                <option th:each="type: ${customer_type}" th:value="${type.name}" th:text="${type.name}"></option>
+                                <option th:value="0">Tất cả</option>
+                            </select>
                             <button class="btn btn-outline-warning" type="submit">
                                 <i class="fas fa-search" style="color: #121212;"></i></button>
                         </form>
                     </div>
                 </nav>
             </div>
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center p-3">
                 <table class="table table-light table-striped ">
                     <thead>
                     <tr style="text-align: center">
@@ -159,6 +180,7 @@
                 bsAlert.show();
             }
         };
+
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </div>
@@ -193,7 +215,7 @@
 <!--Modal-Detail-->
 <div class="modal fade" id="modalDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <form id="content">
             </form>
@@ -222,27 +244,27 @@
                 <input type="hidden" id="idDelete" value="${data.id}">
                 <input type="hidden" id="nameDelete" value="${data.name}">
                    <div>
-                   <span>Ngày sinh: </span>
+                   <h5>Ngày sinh: </h5>
                     <span>${data.dob}</span>
 </div>
                     <div>
-                      <span>Email: </span>
+                      <h5>Email: </h5>
                       <span>${data.email}</span>
 </div>
                   <div>
-                  <span>Địa chỉ: </span>
+                  <h5>Địa chỉ: </h5>
                     <span>${data.address}</span>
 </div>
                     <div>
-                     <span>Điện thoại: </span>
+                     <h5>Điện thoại: </h5>
                     <span>${data.phone_number}</span>
 </div>
                    <div>
-                   <span>Loại khách hàng: </span>
+                   <h5>Loại khách hàng: </h5>
                     <span>${data.customerType.name}</span>
 </div>
 <div>
-            <span>Tài khoản: </span>
+            <h5>Tài khoản: </h5>
             <span>${data.account.email} </span>
 </div>
                 </div>
@@ -272,6 +294,7 @@
         document.getElementById("deleteId").value = id;
         document.getElementById("deleteName").innerText = name;
     }
+// ---Footer----
 
 </script>
 </body>

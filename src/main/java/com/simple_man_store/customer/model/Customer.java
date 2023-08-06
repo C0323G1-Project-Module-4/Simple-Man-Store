@@ -5,6 +5,7 @@ import com.simple_man_store.account.model.Account;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

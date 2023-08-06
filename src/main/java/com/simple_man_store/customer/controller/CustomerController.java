@@ -2,6 +2,7 @@ package com.simple_man_store.customer.controller;
 
 import com.simple_man_store.customer.dto.CustomerDto;
 import com.simple_man_store.customer.model.Customer;
+import com.simple_man_store.customer.model.CustomerType;
 import com.simple_man_store.customer.service.customer.ICustomerService;
 import com.simple_man_store.customer.service.customer_type.ICustomerTypeService;
 import org.springframework.beans.BeanUtils;
@@ -27,11 +28,14 @@ public class CustomerController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView showList(@RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "") String searchName) {
+                                 @RequestParam(defaultValue = "") String searchName,
+                                 @RequestParam Integer customerTypeId
+                                ) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by("name").ascending().and(Sort.by("gender").descending()));
-        Page<Customer> customerPage = customerService.findAllPage(pageable, searchName);
+        Page<Customer> customerPage= customerService.findAllPage(pageable, searchName);
         ModelAndView modelAndView = new ModelAndView("customer/list");
         modelAndView.addObject("customerPage", customerPage);
+        modelAndView.addObject("customer_type",customerTypeService.findAll());
         return modelAndView;
     }
 

@@ -32,4 +32,5 @@ public class CustomerTypeService implements ICustomerTypeService {
     public List<CustomerType> findAll() {
         return customerTypeRepository.findAll();
     }
+
 }
