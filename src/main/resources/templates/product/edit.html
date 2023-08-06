@@ -5,25 +5,38 @@
     <title>Title</title>
 </head>
 <body>
-<form th:object="${product}" th:action="@{/product/edit}" method="post">
+<form th:object="${productDto}" th:action="@{/product/edit}" method="post">
     <table>
         <tr>
             <td><input type="hidden" th:field="*{id}"></td>
-        </tr>
-        <tr>
-            <th>Loại sản phẩm</th>
-            <td><select th:field="*{category}">
-                <option th:each="category: ${categoryList}" th:value="${category.id}" th:text="${category.name}"></option>
-            </select>
-            </td>
         </tr>
         <tr>
             <th>Tên sản phẩm</th>
             <td><input type="text" th:field="*{name}"></td>
         </tr>
         <tr>
+            <th>Loại sản phẩm</th>
+            <td><select th:field="*{categoryId}">
+                <option th:each="category: ${categoryList}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+            </td>
+        </tr>
+        <tr>
             <th>Mô tả về sản phẩm</th>
             <td><input type="text" th:field="*{description}"></td>
+        </tr>
+        <tr>
+            <td>Size</td>
+            <td>
+                <select th:field="*{sizeId}">
+                    <option th:each="size: ${sizeList}" th:value="${size.id}" th:text="${size.name}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Số lượng</td>
+            <td><input type="number" th:field="*{quantity}"></td>
         </tr>
         <tr>
             <th>Hình ảnh</th>

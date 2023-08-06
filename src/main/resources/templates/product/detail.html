@@ -5,38 +5,38 @@
     <title>Title</title>
 </head>
 <body>
-<table th:object="${product}">
+<table th:object="${warehouse}">
     <tr>
         <th>Loại sản phẩm</th>
-        <td th:text="${product.category.name}"></td>
+        <td th:text="${warehouse.product.category.name}"></td>
     </tr>
     <tr>
         <th>Tên sản phẩm</th>
-        <td th:text="${product.name}"></td>
+        <td th:text="${warehouse.product.name}"></td>
     </tr>
     <tr>
         <th>Mô tả về sản phẩm</th>
-        <td th:text="${product.description}"></td>
+        <td th:text="${warehouse.product.description}"></td>
     </tr>
     <tr>
         <th>Hình ảnh</th>
-        <td><img th:src="${product.image}"></td>
+        <td><img th:src="${warehouse.product.image}"></td>
     </tr>
     <tr>
         <th>Giá</th>
-        <td th:text="${product.price}"></td>
+        <td th:text="${warehouse.product.price}"></td>
     </tr>
     <tr>
         <th>Size</th>
-        <td></td>
+        <td th:text="${warehouse.size.name}"></td>
     </tr>
     <tr>
         <th>Số lượng</th>
-        <td></td>
+        <td th:text="${warehouse.quantity}"></td>
     </tr>
     <tr>
         <td><a th:href="@{/product/list}"><button>Quay lại</button></a></td>
-        <td>Chỉnh sửa</td>
+        <td></td>
     </tr>
 </table>
 </body>
