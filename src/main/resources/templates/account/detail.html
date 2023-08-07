@@ -24,22 +24,22 @@
 
 <div class="container">
     <div class="row col-md-12 col-lg-12">
-        <h4><i class="fa-solid fa-user"></i> Tài Khoản Của Bạn</h4>
+        <h4><i class="fa-solid fa-user"></i>Tài Khoản Của Bạn</h4>
     </div>
     <div class="row col-md-12 col-lg-12 mt-4 ">
         <div class="col-md-3 col-lg-3">
             <div class="container" style="border: 1px solid gray;">
                 <div class="my-4 mx-3" style="border-bottom: 1px solid black;">
                     <h5><b>Danny</b></h5>
-                    <h5><b sec:authorize="hasRole('ROLE_ADMIN')">haha</b></h5>
                 </div>
                 <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " href="#">Thông tin tài khoản</a></div>
                 <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Lịch sử mua hàng</a></div>
                 <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Địa chỉ giao hàng</a></div>
-                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý đơn hàng</a></div>
-                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý khách hàng</a></div>
-                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý sản phẩm</a></div>
-                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý nhân viên</a></div>
+                <div sec:authorize ="hasRole('admin')" class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý đơn hàng</a></div>
+                <div sec:authorize ="hasRole('admin')" class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý khách hàng</a></div>
+                <div sec:authorize ="hasRole('admin')" class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý sản phẩm</a></div>
+                <div sec:authorize ="hasRole('admin')" class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  href="#">Quản lý nhân viên</a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark "  th:href="@{/logout}">Đăng xuất <i class="fa-solid fa-right-from-bracket"></i></a></div>
             </div>
 
         </div>
