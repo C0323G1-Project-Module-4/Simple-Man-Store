@@ -3,8 +3,8 @@ package com.simple_man_store.account.service;
 
 import com.simple_man_store.account.model.Account;
 import com.simple_man_store.account.model.AccountRole;
-import com.simple_man_store.account.repository.AccountRepository;
-import com.simple_man_store.account.repository.AccountRoleRepository;
+import com.simple_man_store.account.repository.IAccountRepository;
+import com.simple_man_store.account.repository.IAccountRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class AccountDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    private AccountRepository accountRepository;
+    private IAccountRepository IAccountRepository;
 
     @Autowired
-    private AccountRoleRepository accountRoleRepository;
+    private IAccountRoleRepository IAccountRoleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = this.accountRepository.findByEmail(email);
+        Account account = this.IAccountRepository.findByEmail(email);
 
         if (account == null) {
             System.out.println("User not found! " + email);
@@ -35,7 +35,7 @@ public class AccountDetailsServiceImpl implements UserDetailsService {
         System.out.println("Found User: " + account);
 
         // [ROLE_USER, ROLE_ADMIN,..]
-        List<AccountRole> accountRoles = this.accountRoleRepository.findByAccount(account);
+        List<AccountRole> accountRoles = this.IAccountRoleRepository.findByAccount(account);
 
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
         if (accountRoles != null) {
