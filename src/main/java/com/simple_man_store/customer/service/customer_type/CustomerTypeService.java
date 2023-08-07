@@ -24,6 +24,11 @@ public class CustomerTypeService implements ICustomerTypeService {
     }
 
     @Override
+    public CustomerType findByName(Integer id) {
+        return customerTypeRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public void delete(Integer id) {
         customerTypeRepository.deleteById(id);
     }
@@ -32,4 +37,5 @@ public class CustomerTypeService implements ICustomerTypeService {
     public List<CustomerType> findAll() {
         return customerTypeRepository.findAll();
     }
+
 }

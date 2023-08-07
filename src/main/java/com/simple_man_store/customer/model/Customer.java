@@ -5,6 +5,7 @@ import com.simple_man_store.account.model.Account;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +20,8 @@ public class Customer {
     private String phone_number;
     private boolean gender;
     private String address;
-    @Column(columnDefinition = "bit(1) default true")
-    private boolean flag;
+    @Column(columnDefinition = "bit(1)")
+    private boolean flag = true;
     @ManyToOne
     @JoinColumn(name = "customer_type_id", referencedColumnName = "id",nullable = false)
     private CustomerType customerType;
