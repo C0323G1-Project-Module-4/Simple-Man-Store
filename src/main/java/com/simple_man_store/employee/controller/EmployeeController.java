@@ -1,5 +1,13 @@
 package com.simple_man_store.employee.controller;
 
+import com.simple_man_store.account.dto.AccountDto;
+import com.simple_man_store.account.model.Account;
+import com.simple_man_store.account.model.AccountRole;
+import com.simple_man_store.account.model.Role;
+//import com.simple_man_store.account.service.IAccountRoleService;
+import com.simple_man_store.account.service.IAccountService;
+//import com.simple_man_store.account.service.IRoleService;
+import com.simple_man_store.account.util.EncrytedPasswordUtils;
 import com.simple_man_store.employee.dto.EmployeeDto;
 import com.simple_man_store.employee.model.Employee;
 import com.simple_man_store.employee.service.IEmployeeService;
@@ -22,6 +30,14 @@ import javax.validation.Valid;
 public class EmployeeController {
     @Autowired
     private IEmployeeService employeeService;
+    @Autowired
+    private IAccountService accountService;
+
+//    @Autowired
+//    private IAccountRoleService accountRoleService;
+//    @Autowired
+//    private IRoleService roleService;
+
 
     @GetMapping("/list")
     public String showList(@RequestParam(defaultValue = "0") int page,
@@ -84,16 +100,31 @@ public class EmployeeController {
                                  RedirectAttributes redirectAttributes,
                                  Model model) {
 
-        Employee employee = new Employee();
         new EmployeeDto().validate(employeeDto, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("employeeDto", employeeDto);
             return "employee/create";
         }
+
+
+        AccountDto accountDto = new AccountDto();
+        accountDto.setName(employeeDto.getName());
+        accountDto.setEmail(employeeDto.getEmail());
+        accountDto.setPassword("123");
+        accountDto.setPhone(employeeDto.getPhoneNumber());
+        accountService.save(accountDto);
+
+        Account account = accountService.findByEmail(accountDto.getEmail());
+        Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDto, employee);
+        employee.setAccount(account);
+
         employeeService.editEmployee(employee);
         redirectAttributes.addFlashAttribute("message", "Thêm mới nhân viên thành công");
         return "redirect:/employee/list";
+
+
+
     }
 
 
