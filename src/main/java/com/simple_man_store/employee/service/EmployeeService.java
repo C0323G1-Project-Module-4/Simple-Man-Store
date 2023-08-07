@@ -23,7 +23,7 @@ public class EmployeeService implements IEmployeeService{
 
     @Override
     public void editEmployee(Employee employee) {
-
+        employee.setFlag(true);
         employeeRepository.save(employee);
     }
 
