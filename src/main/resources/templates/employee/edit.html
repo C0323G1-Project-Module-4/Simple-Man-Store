@@ -22,7 +22,7 @@
 
 <form th:action="@{/employee/edit}" th:object="${employeeDto}" method="post">
     <input type="hidden" th:field="*{id}"/>
-    <input type="hidden" th:field="*{account.id}">
+    <input type="hidden" name="emailAccount" th:value="${emailAccount}">
     <input type="hidden" th:field="*{flag}">
     <div class="container">
         <table class="table table-striped">

@@ -83,6 +83,7 @@
                 <td>
                     <div style="height: 20px">
                         <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red"></small>
+                        <small th:if="${errorMessage}" th:text="${errorMessage}" style="color: red"></small>
                     </div>
                 </td>
             </tr>
