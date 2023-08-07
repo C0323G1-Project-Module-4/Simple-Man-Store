@@ -28,8 +28,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView showList(@RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "") String searchName,
-                                 @RequestParam Integer customerTypeId
+                                 @RequestParam(defaultValue = "") String searchName
                                 ) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by("name").ascending().and(Sort.by("gender").descending()));
         Page<Customer> customerPage= customerService.findAllPage(pageable, searchName);

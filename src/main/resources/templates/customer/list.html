@@ -10,79 +10,87 @@
             crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-
 
 </head>
 <body>
 <header>
+    <div th:insert="~{home::libraries}"></div>
+    <div th:replace="~{home::navbar-start}"></div>
 </header>
 <div class="row ">
     <div class="col-3">
-        <!-- As a link -->
-        <nav class="navbar sticky-bottom" style="margin-top: 10%">
-            <div class="container-fluid">
-                <button class="navbar-toggler border border-light" id="hide" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    <span>Danh mục quản lý</span>
-                </button>
-            </div>
-            <div class="container-fluid">
-                <div class="collapse" id="navbarToggleExternalContent">
-                    <div class="p-4">
-                        <h5 class="text-white h4">Collapsed content</h5>
-                        <a class="text-muted" th:href="@{/employee/list}" style="text-decoration: none;">QUẢN LÝ NHÂN VIÊN</a>
-                    </div>
-                    <div class="p-4">
-                        <h5 class="text-white h4">Collapsed content</h5>
-                        <a class="text-muted" th:href="@{/customer/list}" id="customer" style="text-decoration: none;">QUẢN LÝ KHÁCH HÀNG</a>
-                    </div>
-                    <div class="p-4">
-                        <h5 class="text-white h4">Collapsed content</h5>
-                        <a class="text-muted" th:href="@{/product/list}" id="product" style="text-decoration: none;">QUẢN LÝ SẢN PHẨM</a>
-                    </div>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                    <button  style="background-color: #F5F5F5" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                       DANH MỤC QUẢN LÝ
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body" style="background-color: #F5F5F5"><a th:href="@{/employee/list}" style="color: black">QUẢN LÝ NHÂN VIÊN</a></div>
+                    <div class="accordion-body" style="background-color: #F5F5F5"><a th:href="@{/product/list}" style="color: black">QUẢN LÝ SẢN PHẨM</a></div>
+                    <div class="accordion-body" style="background-color: #F5F5F5"><a th:href="@{/customer/list}" style="color: black">QUẢN LÝ KHÁCH HÀNG</a></div>
+
                 </div>
             </div>
-        </nav>
-<script  th:src="@{/jquery-3.7.0.min.js}">
-    $(document).ready(function () {
-        $(`#hide`).click(function () {
-            $(`#customer`).hidden;
-        });
-    });
-</script>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                    <button style="background-color: #F5F5F5" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        Accordion Item #2
+                    </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-9">
-        <div class="mx-auto shadow-lg mb-5 bg-body rounded" style="width: 90%; margin: 7%">
-            <header class=" d-flex justify-content-center bg bg-warning " style=" color: black">
-
-                   <h1 style="font-family: 'Dancing Script', cursive;margin-top: 0.5rem" >DANH SÁCH KHÁCH HÀNG</h1>
-               </header>
+        <div class="mx-auto shadow-lg mb-5 bg-body rounded" style="width: 70%; margin: 2%">
+            <header class=" d-flex justify-content-center bg bg-dark px-xl-5 ">
+                <div class="d-none d-lg-block">
+                    <span class="h2 text-uppercase text-primary bg-dark px-2"
+                          style="margin-top: 0.5rem">DANH SÁCH</span>
+                    <span class="h2 text-uppercase text-dark bg-primary px-2 ml-n1" style="margin-top: 0.5rem">KHÁCH HÀNG</span>
+                </div>
+            </header>
             <div class="d-flex justify-content-center p-3">
                 <nav class="navbar bg-light ">
                     <div class="container-fluid">
                         <form class="d-flex " role="search" th:action="@{/customer/list}" method="get">
                             <input class="form-control " type="search" placeholder="Search" aria-label="Search"
                                    name="searchName">
-                            <select class="form-select " id="inputGroupSelect01" name="customerTypeId" style="width: 20%">
-                                <option th:each="type: ${customer_type}" th:value="${type.name}" th:text="${type.name}"></option>
-                                <option th:value="0">Tất cả</option>
-                            </select>
-                            <button class="btn btn-outline-warning" type="submit">
+                            <button class="btn btn-outline-warning border-dark" type="submit">
                                 <i class="fas fa-search" style="color: #121212;"></i></button>
                         </form>
+                        <div class="d-flex">
+                            <button class="btn btn-outline-warning border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fa-solid fa-list" style="color: #141415;"></i>
+                            </button>
+                        </div>
                     </div>
                 </nav>
+            </div>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <div class="row mx-auto d-flex justify-content-center " style="width: 80%">
+                        <div class="col-lg-2 col-md-4 col-sm-6 pb-1">1</div>
+                        <div class="col-lg-2 col-md-4 col-sm-6 pb-1">2</div>
+                        <div class="col-lg-2 col-md-4 col-sm-6 pb-1">3</div>
+
+                    </div>
+
+                </div>
             </div>
             <div class="d-flex justify-content-center p-3">
                 <table class="table table-light table-striped ">
                     <thead>
                     <tr style="text-align: center">
-                        <th>STT</th>
-                        <th>Tên KH</th>
-                        <th>GT</th>
-                        <th>Bậc</th>
-                        <th colspan="3">Chức năng</th>
+                        <th class="h-50 text-uppercase">STT</th>
+                        <th class="h-50 text-uppercase">Tên KH</th>
+                        <th class="h-50 text-uppercase">GT</th>
+                        <th class="h-50 text-uppercase">Bậc</th>
+                        <th colspan="3" class="h-50 text-uppercase">Chức năng</th>
                     </tr>
                     </thead>
                     <tbody class="table-group-divider" style="text-align: center">
@@ -94,23 +102,23 @@
                         <td th:text="${customer.customerType.name}"></td>
                         <td>
                             <a th:href="@{/customer/showUpdate/{id}(id=${customer.getId()})}">
-                                <button class="btn btn-light border-warning">
-                                    <i class="far fa-edit" style="color: #e0ee11;"></i>
+                                <button class="btn btn-outline-primary border-dark">
+                                    <i class="far fa-edit" style="color: #02060d;"></i>
                                 </button>
                             </a>
                         </td>
                         <td>
                             <button th:attr="onclick=|showDetail(${customer.getId()})|"
                                     type="button"
-                                    class="btn btn-light border border-warning" data-bs-toggle="modal"
+                                    class="btn btn-outline-primary border border-dark" data-bs-toggle="modal"
                                     data-bs-target="#modalDetail">
-                                <i class="fas fa-info "></i>
+                                <i class="fas fa-info" style="color: #02060d;"></i>
                             </button>
                         </td>
                         <td>
                             <button th:attr="onclick=|showDelete(${customer.getId()},'${customer.getName()}')|"
                                     type="button"
-                                    class="btn btn-light border border-warning" data-bs-toggle="modal"
+                                    class="btn btn-outline-primary border border-dark" data-bs-toggle="modal"
                                     data-bs-target="#staticBackdrop">
                                 <i class="fas fa-trash-alt " style="color: #02060d;"></i>
 
@@ -148,15 +156,18 @@
     </div>
 
 </div>
-<a th:href="@{/customer/showCreate}">
-    <button>aa</button>
-</a>
-
+<!--    footer-->
+<footer>
+    <div th:replace="~{home::footer-start}"></div>
+    <div th:replace="~{home::back-to-top}"></div>
+    <div th:replace="~{home::footer}"></div>
+</footer>
+<!--    ----->
 
 <!--Message ajax-->
 <div th:if="${msg}">
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
             <div class="toast-header bg-warning">
                 <img src="https://antimatter.vn/wp-content/uploads/2022/04/meme-gau-truc-hoi-cham.jpg"
                      style="width: 7%;height: 7%" alt="...">
@@ -182,7 +193,6 @@
         };
 
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </div>
 
 
@@ -250,6 +260,17 @@
                     <div>
                       <h5>Email: </h5>
                       <span>${data.email}</span>
+</div>
+<div>
+<h5>Giới tính</h5>
+`;
+                if (data.gender) {
+                    content += `<span>Nam</span>`;
+                } else {
+                    content += `<span>Nữ</span>`;
+                }
+
+                content += `
 </div>
                   <div>
                   <h5>Địa chỉ: </h5>
