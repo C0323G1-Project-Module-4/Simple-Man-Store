@@ -1,17 +1,32 @@
 package com.simple_man_store.account.controller;
 
 
+import com.simple_man_store.account.dto.AccountDto;
+import com.simple_man_store.account.model.Account;
+import com.simple_man_store.account.service.IAccountService;
+import com.simple_man_store.account.util.EncrytedPasswordUtils;
 import com.simple_man_store.account.util.WebUtils;
+import com.simple_man_store.customer.model.Customer;
+import com.simple_man_store.customer.service.customer.ICustomerService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
 public class AccountController {
+    @Autowired
+    private IAccountService accountService;
+    @Autowired
+    private ICustomerService customerService;
     @RequestMapping(value = {""}, method = RequestMethod.GET)
     public String landingPage(Model model) {
         return "home";
@@ -21,14 +36,32 @@ public class AccountController {
         return "/account/detail";
     }
     @GetMapping("/register")
-    public String signUp() {
+    public String signUp(Model model) {
+        AccountDto accountDto = new AccountDto();
+        model.addAttribute("accountDto",accountDto);
         return "sign-up";
     }
+    @PostMapping("/register-submit")
+    public String addNewAccount(@Valid @ModelAttribute AccountDto accountDto,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes,
+                                Model model){
+        new AccountDto().validate(accountDto,bindingResult);
+        if(accountService.findByEmail(accountDto.getEmail()) != null){
+            bindingResult.rejectValue("email",null,"Địa chỉ email đã tồn tại!");
+            model.addAttribute("accountDto",accountDto);
+            return "sign-up";
+        }
+        if(bindingResult.hasErrors()){
+            model.addAttribute("accountDto",accountDto);
+            return "sign-up";
+        }
+        accountService.save(accountDto);
+        return "redirect:/login";
+    }
+
     @GetMapping("/login")
     public String signIn(Model model) {
-//        if(error){
-//            model.addAttribute("error","Tài khoản không hợp lệ!");
-//        }
         return "sign-in";
     }
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
