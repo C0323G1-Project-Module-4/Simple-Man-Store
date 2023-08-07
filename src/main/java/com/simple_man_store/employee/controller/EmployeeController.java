@@ -1,5 +1,11 @@
 package com.simple_man_store.employee.controller;
 
+import com.simple_man_store.account.model.Account;
+import com.simple_man_store.account.model.AccountRole;
+import com.simple_man_store.account.model.Role;
+import com.simple_man_store.account.service.IAccountRoleService;
+import com.simple_man_store.account.service.IAccountService;
+import com.simple_man_store.account.service.IRoleService;
 import com.simple_man_store.employee.dto.EmployeeDto;
 import com.simple_man_store.employee.model.Employee;
 import com.simple_man_store.employee.service.IEmployeeService;
@@ -22,6 +28,14 @@ import javax.validation.Valid;
 public class EmployeeController {
     @Autowired
     private IEmployeeService employeeService;
+    @Autowired
+    private IAccountService accountService;
+
+    @Autowired
+    private IAccountRoleService accountRoleService;
+    @Autowired
+    private IRoleService roleService;
+
 
     @GetMapping("/list")
     public String showList(@RequestParam(defaultValue = "0") int page,
@@ -85,11 +99,26 @@ public class EmployeeController {
                                  Model model) {
 
         Employee employee = new Employee();
+
+
+        String name = employeeDto.getName();
+        String email = employeeDto.getEmail();
+        String phone = employeeDto.getPhoneNumber();
+        Account account = new Account(name,email,phone,"123",true);
+        accountService.create(account);
+
+        Role role = roleService.findById(2);
+
+        AccountRole accountRole = new AccountRole(account,role);
+        accountRoleService.create(accountRole);
+        employeeDto.setAccount(account);
+
         new EmployeeDto().validate(employeeDto, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("employeeDto", employeeDto);
             return "employee/create";
         }
+
         BeanUtils.copyProperties(employeeDto, employee);
         employeeService.editEmployee(employee);
         redirectAttributes.addFlashAttribute("message", "Thêm mới nhân viên thành công");

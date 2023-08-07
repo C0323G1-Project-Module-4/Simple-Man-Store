@@ -15,9 +15,8 @@ public class Employee {
     private String email;
     private boolean gender;
     private String address;
-    @Column(columnDefinition = "bit(1) default true")
-    private boolean flag;
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    private boolean flag=true;
+    @OneToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
