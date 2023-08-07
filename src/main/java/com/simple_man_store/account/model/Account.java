@@ -1,46 +1,60 @@
 package com.simple_man_store.account.model;
 
-import com.simple_man_store.customer.model.Customer;
-import com.simple_man_store.employee.model.Employee;
-
 import javax.persistence.*;
 
 @Entity
+@Table(name = "account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(unique = true,nullable = false)
+    @Column(name = "name", nullable = false)
+    private String name;
+    @Column(name = "email", nullable = false)
     private String email;
-    @Column(nullable = false)
-    private String password;
-    @ManyToOne
-    @JoinColumn(name = "role_id",referencedColumnName = "id",nullable = false,columnDefinition = "int default 1")
-    private Role role;
+    @Column(name = "phone", nullable = false)
+    private String phone;
+    @Column(name = "encryted_password", nullable = false)
+    private String encrytedPassword;
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, optional = false)
-    private Customer customer;
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY,optional = false)
-    private Employee employee;
+    @Column(name = "flag",columnDefinition = "bit(1)")
+    private boolean flag = true;
 
     public Account() {
     }
 
-    public Account(Integer id, String email, String password, Role role, Customer customer, Employee employee) {
+    public Account(Integer id, String name, String email, String phone, String encrytedPassword, boolean flag) {
         this.id = id;
+        this.name = name;
         this.email = email;
-        this.password = password;
-        this.role = role;
-        this.customer = customer;
-        this.employee = employee;
+        this.phone = phone;
+        this.encrytedPassword = encrytedPassword;
+        this.flag = flag;
     }
 
-    public Account(String email, String password, Role role, Customer customer, Employee employee) {
+    public Account(String name, String email, String phone, String encrytedPassword, boolean flag) {
+        this.name = name;
         this.email = email;
-        this.password = password;
-        this.role = role;
-        this.customer = customer;
-        this.employee = employee;
+        this.phone = phone;
+        this.encrytedPassword = encrytedPassword;
+        this.flag = flag;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Integer getId() {
@@ -59,35 +73,19 @@ public class Account {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEncrytedPassword() {
+        return encrytedPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEncrytedPassword(String encrytedPassword) {
+        this.encrytedPassword = encrytedPassword;
     }
 
-    public Role getRole() {
-        return role;
+    public boolean isFlag() {
+        return flag;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 }

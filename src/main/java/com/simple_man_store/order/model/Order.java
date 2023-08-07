@@ -4,6 +4,7 @@ import com.simple_man_store.account.model.Account;
 import com.simple_man_store.order_detail.model.OrderDetail;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -17,15 +18,16 @@ public class Order {
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
-    private String phone_number;
+    private String phoneNumber;
     @Column(nullable = false)
     private String address;
     @Column(columnDefinition = "date")
-    private String order_date;
+    private String order_date = String.valueOf(LocalDate.now());
     @Column(columnDefinition = "date")
     private String payment_date;
-    @Column(columnDefinition = "bit(1) default true")
-    private boolean flag;
+    @Column(columnDefinition = "bit(1)")
+    private boolean flag = true;
+
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false, referencedColumnName = "id")
     private Account account;
@@ -35,29 +37,12 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer id, String name, String email, String phone_number, String address, String order_date, String payment_date, boolean flag, Account account, Set<OrderDetail> orderDetailSet) {
-        this.id = id;
+    public Order(String name, String email, String phone_number, String address, Account account) {
         this.name = name;
         this.email = email;
-        this.phone_number = phone_number;
+        this.phoneNumber = phone_number;
         this.address = address;
-        this.order_date = order_date;
-        this.payment_date = payment_date;
-        this.flag = flag;
         this.account = account;
-        this.orderDetailSet = orderDetailSet;
-    }
-
-    public Order(String name, String email, String phone_number, String address, String order_date, String payment_date, boolean flag, Account account, Set<OrderDetail> orderDetailSet) {
-        this.name = name;
-        this.email = email;
-        this.phone_number = phone_number;
-        this.address = address;
-        this.order_date = order_date;
-        this.payment_date = payment_date;
-        this.flag = flag;
-        this.account = account;
-        this.orderDetailSet = orderDetailSet;
     }
 
     public Integer getId() {
@@ -84,12 +69,12 @@ public class Order {
         this.email = email;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phone_number) {
+        this.phoneNumber = phone_number;
     }
 
     public String getAddress() {
