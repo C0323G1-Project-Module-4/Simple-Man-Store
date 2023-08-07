@@ -1,5 +1,7 @@
 package com.simple_man_store.customer.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,6 +12,7 @@ public class CustomerType {
     private Integer id;
     @Column(nullable = false)
     private String name;
+    @JsonBackReference
     @OneToMany(mappedBy = "customerType")
     private Set<Customer> customerSet;
 
