@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -60,10 +61,10 @@ public class ProductController {
     public String showCreate(Model model) {
         ProductDto productDto = new ProductDto();
         List<Category> categoryList = categoryService.showListCategory();
-        List<Warehouse> warehouseList = warehouseService.showListWarehouse();
+        List<Size> sizeList =sizeService.showListSize();
         model.addAttribute("productDto", productDto);
         model.addAttribute("categoryList", categoryList);
-        model.addAttribute("warehouseList", warehouseList);
+        model.addAttribute("sizeList", sizeList);
         return "/product/create";
     }
 
@@ -74,8 +75,12 @@ public class ProductController {
                          RedirectAttributes redirectAttributes) {
 //        validate
         new ProductDto().validate(productDto,bindingResult);
+        List<Category> categoryList = categoryService.showListCategory();
+        List<Size> sizeList = sizeService.showListSize();
         if (bindingResult.hasErrors()){
             model.addAttribute("productDto",productDto);
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("sizeList", sizeList);
             return "/product/create";
         }
 
@@ -99,16 +104,24 @@ public class ProductController {
         return "redirect:/product/list";
     }
 
-
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id, RedirectAttributes redirectAttributes) {
-        Warehouse warehouse = warehouseService.selectWarehouseByProductId(id);
-        Product product = productService.selectProductById(id);
+    @PostMapping("/delete")
+    public String delete(@RequestParam int deleteId, RedirectAttributes redirectAttributes) {
+        Warehouse warehouse = warehouseService.selectWarehouseByProductId(deleteId);
+        Product product = productService.selectProductById(deleteId);
         warehouseService.deleteWareHouse(warehouse);
         productService.deleteProduct(product);
         redirectAttributes.addFlashAttribute("msg", "Xóa sản phẩm thành công");
         return "redirect:/product/list";
     }
+//    @GetMapping("/delete/{id}")
+//    public String delete(@PathVariable int id, RedirectAttributes redirectAttributes) {
+//        Warehouse warehouse = warehouseService.selectWarehouseByProductId(id);
+//        Product product = productService.selectProductById(id);
+//        warehouseService.deleteWareHouse(warehouse);
+//        productService.deleteProduct(product);
+//        redirectAttributes.addFlashAttribute("msg", "Xóa sản phẩm thành công");
+//        return "redirect:/product/list";
+//    }
 
 
     @GetMapping("/edit/{id}")
@@ -132,8 +145,23 @@ public class ProductController {
         return "product/edit";
     }
 
+
+
     @PostMapping("/edit")
-    public String edit(@ModelAttribute ProductDto productDto, RedirectAttributes redirectAttributes) {
+    public String edit(@Valid @ModelAttribute ProductDto productDto,
+                       BindingResult bindingResult,
+                       Model model,
+                       RedirectAttributes redirectAttributes) {
+//        Validation
+        new ProductDto().validate(productDto,bindingResult);
+        List<Category> categoryList = categoryService.showListCategory();
+        List<Size> sizeList = sizeService.showListSize();
+        if (bindingResult.hasErrors()){
+            model.addAttribute("productDto",productDto);
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("sizeList",sizeList);
+            return "/product/edit";
+        }
 //        Product
         Product product = new Product();
         product.setId(productDto.getId());
