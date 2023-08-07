@@ -1,30 +1,28 @@
 package com.simple_man_store.account.model;
 
-import javax.persistence.*;
-import java.util.Set;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 @Entity
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
-    @OneToMany(mappedBy = "role")
-    private Set<Account> accountSet;
 
     public Role() {
     }
 
-    public Role(Integer id, String name, Set<Account> accountSet) {
+    public Role(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.accountSet = accountSet;
     }
 
-    public Role(String name, Set<Account> accountSet) {
+    public Role(String name) {
         this.name = name;
-        this.accountSet = accountSet;
     }
 
     public Integer getId() {
@@ -41,13 +39,5 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Account> getAccountSet() {
-        return accountSet;
-    }
-
-    public void setAccountSet(Set<Account> accountSet) {
-        this.accountSet = accountSet;
     }
 }

@@ -21,24 +21,16 @@ public class OrderDetail {
     @JoinColumn(name = "product_id",referencedColumnName = "id",nullable = false)
     private Product product;
 
-    public OrderDetail() {
-    }
-
-    public OrderDetail(Integer id, double price, int quantity, String size, Order order, Product product) {
-        this.id = id;
-        this.price = price;
-        this.quantity = quantity;
-        this.size = size;
-        this.order = order;
-        this.product = product;
-    }
-
     public OrderDetail(double price, int quantity, String size, Order order, Product product) {
         this.price = price;
         this.quantity = quantity;
         this.size = size;
         this.order = order;
         this.product = product;
+    }
+
+
+    public OrderDetail() {
     }
 
     public Integer getId() {

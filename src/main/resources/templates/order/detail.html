@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:insert="~{home::libraries}"></div>
+</head>
+<body>
+<div th:replace="~{home::navbar-start}"></div>
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" th:href="@{/order/list}">Danh sách order</a>
+                <span class="breadcrumb-item active">Chi tiết</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<div class="container">
+    <table class="table table-light table-borderless table-hover text-center mb-0">
+        <thead class="thead-dark">
+        <tr>
+            <th>STT</th>
+            <th>Tên sản phẩm</th>
+            <th>Size</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Tổng</th>
+        </tr>
+        </thead>
+        <tbody class="align-middle">
+        <input type="hidden" id="size" th:value="${orderDetails.size()}">
+        <tr th:each="orderDetail,status:${orderDetails}">
+            <td th:text="${status.count}"></td>
+            <td th:text="${orderDetail.product.name}"></td>
+            <td th:text="${orderDetail.size}"></td>
+            <td th:text="${orderDetail.quantity}"></td>
+            <td th:text="${#numbers.formatInteger(orderDetail.price,3,'POINT')}"></td>
+            <td th:id="${status.count}" th:text="${#numbers.formatInteger(orderDetail.price*orderDetail.quantity,3,'POINT')}"></td>
+        </tr>
+        <tr>
+            <td colspan="4"></td>
+            <td>Tổng Tiền: </td>
+            <td th:text="${#numbers.formatInteger(total,3,'POINT')+'đ'}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="~{home::footer-start}"></div>
+<div th:replace="~{home::back-to-top}"></div>
+<div th:replace="~{home::footer}"></div>
+
+</body>
+</html>

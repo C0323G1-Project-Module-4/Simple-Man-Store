@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        img {
+            max-width: 200px;
+            max-height: 300px;
+        }
+
+        table {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Thêm sản phẩm mới-->
+<a th:href="@{/product/create}">
+    <button>Thêm mới sản phẩm</button>
+</a>
+
+
+<!-- chọn yêu cầu tìm kiếm sản phẩm-->
+<form th:action="@{/product/list}" method="get">
+
+    <!-- search loại sản phâm-->
+    <select name="category">
+        <option th:each="c: ${categoryList}"
+                th:value="${c.name}"
+                th:text="${c.name}"
+                th:selected="${c.name == category}">
+        </option>
+    </select>
+
+
+    <!--    search giá-->
+    <label for="priceRange">Price Range:</label>
+    <select name="priceRange" id="priceRange" th:value="${priceRange}">
+        <option th:selected="${priceRange=='0-100000'}" value="0-100000">0.0VND-100.000VNĐ</option>
+        <option th:selected="${priceRange=='100000-200000'}" value="100000-200000">100.000VND-200.000VNĐ</option>
+        <option th:selected="${priceRange=='200000-300000'}" value="200000-300000">200.000VND-300.000VNĐ</option>
+        <option th:selected="${priceRange=='300000-500000'}" value="300000-500000">300.000VND-500.000VNĐ</option>
+        <option th:selected="${priceRange=='500000-50000000'}" value="500000-50000000">Lớn hơn 500.000VND</option>
+    </select>
+
+    <!--    search tên-->
+    <label for="nameProduct">Nhập tên sản phẩm:</label>
+    <input type="text" name="searchName" id="nameProduct" th:value="${searchName}">
+
+    <!--    nút-->
+    <input type="submit" value="Search">
+
+</form>
+
+<!-- Hiển thị danh sách product-->
+<h1 th:if="${msg}" th:text="${msg}"></h1>
+<table cellpadding="5px" border="1px" align="center">
+    <tr>
+        <th>STT</th>
+        <th>Loại sản phẩm</th>
+        <th>Tên sản phẩm</th>
+        <th>Hình ảnh</th>
+        <th>Giá sản phẩm</th>
+        <th>Chi tiết</th>
+        <th>Xóa</th>
+        <th>Cập nhật</th>
+    </tr>
+    <tr th:each="product,loop: ${productPage}">
+        <td th:text="${loop.count}"></td>
+        <td th:text="${product.category.name}"></td>
+        <td th:text="${product.name}"></td>
+        <td><img th:src="${product.image}"></td>
+        <td th:text="${product.price}"></td>
+        <td><a th:href="@{/product/detail/{id}(id=${product.getId()})}">
+            <button>Chi tiết</button>
+        </a></td>
+        <td><a th:href="@{/product/delete/{id}(id=${product.getId()})}">
+            <button>Xóa</button>
+        </a></td>
+        <td><a th:href="@{/product/edit/{id}(id=${product.getId()})}">
+            <button>Cập nhật</button>
+        </a></td>
+    </tr>
+</table>
+
+<!-- phân trang-->
+<a th:if="${productPage.hasPrevious()}"
+   th:href="@{/product/list(page=${productPage.number-1},category=${category},priceRange=${priceRange},searchName=${searchName})}">Prev</a>
+<span th:text="${productPage.number+1}"></span>/<span th:text="${productPage.totalPages}"></span>
+<a th:if="${productPage.hasNext()}"
+   th:href="@{/product/list(page=${productPage.number+1},category=${category},priceRange=${priceRange},searchName=${searchName})}">Next</a>
+
+</body>
+</html>
