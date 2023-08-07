@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <div th:insert="~{home::libraries}"></div>
 </head>
 <body>
+<div th:replace="~{home::navbar-start}"></div>
 <form th:object="${productDto}" th:action="@{/product/edit}" method="post">
     <table>
         <tr>
@@ -13,6 +15,7 @@
         <tr>
             <th>Tên sản phẩm</th>
             <td><input type="text" th:field="*{name}"></td>
+            <td><small style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small></td>
         </tr>
         <tr>
             <th>Loại sản phẩm</th>
@@ -24,6 +27,7 @@
         <tr>
             <th>Mô tả về sản phẩm</th>
             <td><input type="text" th:field="*{description}"></td>
+            <td><small style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></small></td>
         </tr>
         <tr>
             <td>Size</td>
@@ -37,14 +41,25 @@
         <tr>
             <td>Số lượng</td>
             <td><input type="number" th:field="*{quantity}"></td>
+            <td><small style="color: red" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></small></td>
         </tr>
         <tr>
             <th>Hình ảnh</th>
-            <td><input type="text" th:field="*{image}"></td>
+            <td>
+                <!--            Up hình-->
+                <div class="form-group">
+                    <b>Chọn ảnh:</b>
+                    <input type="hidden" id="thumbnailURL" th:field="*{image}"/>
+                    <input id="btnThumbnailURL" type="file" class="form-control"/>
+                    <progress id="uploader" value="0" max="100">0%</progress>
+                </div>
+                <!--            Up hình-->
+            </td>
         </tr>
         <tr>
             <th>Giá</th>
             <td><input type="number" th:field="*{price}"></td>
+            <td><small style="color: red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></small></td>
         </tr>
         <tr>
             <td><a th:href="@{/product/list}"><button type="button">Quay lại</button></a></td>
@@ -52,5 +67,56 @@
         </tr>
     </table>
 </form>
+<!--//////up hình lên//////-->
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+<script>
+    //paste here your copied configuration code
+    const firebaseConfig = {
+        apiKey: "AIzaSyAzFisiEuPoL-tzq3kdo3faLimcBYOyKf4",
+        authDomain: "coffee-team2-project.firebaseapp.com",
+        projectId: "coffee-team2-project",
+        storageBucket: "coffee-team2-project.appspot.com",
+        messagingSenderId: "18924172599",
+        appId: "1:18924172599:web:d27940351fb0cafc0516b2"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    // const analytics = getAnalytics(app);
+    let uploader = document.getElementById('uploader');
+    let fileButton = document.getElementById('btnThumbnailURL');
+    fileButton.addEventListener('change', function (e) {
+        let file = e.target.files[0];
+        let storageRef = firebase.storage().ref('img/' + file.name);
+        let task = storageRef.put(file);
+        task.on('state_changed', function progress(snapshot) {
+            let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            uploader.value = percentage;
+//  lúc chưa load xong thì thì ko cho submit
+            if (percentage === 100) {
+                document.getElementById('createButton').removeAttribute('disabled');
+            } else {
+                document.getElementById('createButton').setAttribute('disabled', 'disabled');
+            }
+        });
+//   getDownloadURL() để lấy URL của file đã được lưu trữ trên Firebase Storage.
+//   Sau khi URL được lấy thành công, nó được sử dụng để đặt giá trị cho thuộc tính value của phần tử HTML có id là thumbnailURL.
+//   Điều này có nghĩa là URL được gán cho giá trị của trường input có tên là thumbnailURL.
+//   Sau đó, URL này có thể được sử dụng để hiển thị hình ảnh hoặc thực hiện các thao tác khác liên quan đến hình ảnh trong code JavaScript và HTML.
+        task.then(snapshot => snapshot.ref.getDownloadURL())
+            .then(url => {
+                document.getElementById('thumbnailURL').setAttribute("value", url);
+// tải hình ảnh
+                previewImage.style.display = 'none';
+                newImage.src = url;
+                newImage.style.display = 'block';
+            });
+    });
+</script>
+<!--footer-->
+<div th:replace="~{home::footer-start}"></div>
+<div th:replace="~{home::back-to-top}"></div>
+<div th:replace="~{home::footer}"></div>
 </body>
 </html>
