@@ -11,24 +11,23 @@ public class Employee {
     private Integer id;
     private String name;
     private String dob;
-    private String phone_number;
+    private String phoneNumber;
     private String email;
     private boolean gender;
     private String address;
-    @Column(columnDefinition = "bit(1) default true")
-    private boolean flag;
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "account_id", nullable = false)
+    private boolean flag=true;
+    @OneToOne
+    @JoinColumn(name = "account_id")
     private Account account;
 
     public Employee() {
     }
 
-    public Employee(Integer id, String name, String dob, String phone_number, String email, boolean gender, String address, boolean flag, Account account) {
+    public Employee(Integer id, String name, String dob, String phoneNumber, String email, boolean gender, String address, boolean flag, Account account) {
         this.id = id;
         this.name = name;
         this.dob = dob;
-        this.phone_number = phone_number;
+        this.phoneNumber = phoneNumber;
         this.email = email;
         this.gender = gender;
         this.address = address;
@@ -36,10 +35,10 @@ public class Employee {
         this.account = account;
     }
 
-    public Employee(String name, String dob, String phone_number, String email, boolean gender, String address, boolean flag, Account account) {
+    public Employee(String name, String dob, String phoneNumber, String email, boolean gender, String address, boolean flag, Account account) {
         this.name = name;
         this.dob = dob;
-        this.phone_number = phone_number;
+        this.phoneNumber = phoneNumber;
         this.email = email;
         this.gender = gender;
         this.address = address;
@@ -71,12 +70,12 @@ public class Employee {
         this.dob = dob;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phone_number) {
+        this.phoneNumber = phone_number;
     }
 
     public String getEmail() {

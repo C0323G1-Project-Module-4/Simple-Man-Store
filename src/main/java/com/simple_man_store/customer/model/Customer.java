@@ -3,8 +3,10 @@ package com.simple_man_store.customer.model;
 import com.simple_man_store.account.model.Account;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
+@Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,32 +21,20 @@ public class Customer {
     private String phone_number;
     private boolean gender;
     private String address;
-    @Column(columnDefinition = "bit(1) default true")
-    private boolean flag;
+    @Column(columnDefinition = "bit(1)")
+    private boolean flag = true;
     @ManyToOne
-    @JoinColumn(name = "customer_type_id", referencedColumnName = "id",columnDefinition = "int default 1")
+    @JoinColumn(name = "customer_type_id", referencedColumnName = "id",nullable = false)
     private CustomerType customerType;
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "account_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "account_id",referencedColumnName = "id", nullable = false)
     private Account account;
+ public Customer(){
 
-    public Customer() {
-    }
+ }
 
     public Customer(Integer id, String name, String dob, String email, String phone_number, boolean gender, String address, boolean flag, CustomerType customerType, Account account) {
         this.id = id;
-        this.name = name;
-        this.dob = dob;
-        this.email = email;
-        this.phone_number = phone_number;
-        this.gender = gender;
-        this.address = address;
-        this.flag = flag;
-        this.customerType = customerType;
-        this.account = account;
-    }
-
-    public Customer(String name, String dob, String email, String phone_number, boolean gender, String address, boolean flag, CustomerType customerType, Account account) {
         this.name = name;
         this.dob = dob;
         this.email = email;
@@ -135,4 +125,22 @@ public class Customer {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", dob='" + dob + '\'' +
+                ", email='" + email + '\'' +
+                ", phone_number='" + phone_number + '\'' +
+                ", gender=" + gender +
+                ", address='" + address + '\'' +
+                ", flag=" + flag +
+                ", customerType=" + customerType +
+                ", account=" + account +
+                '}';
+    }
+
+
 }
