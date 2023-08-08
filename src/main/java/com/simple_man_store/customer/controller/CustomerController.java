@@ -24,6 +24,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/customer")
+@SessionAttributes("cart")
 public class CustomerController {
     @ModelAttribute("cart")
     public Cart setupCart() {

@@ -3,7 +3,6 @@ package com.simple_man_store.customer.model;
 import com.simple_man_store.account.model.Account;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "customer")
