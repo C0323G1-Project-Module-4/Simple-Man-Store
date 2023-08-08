@@ -123,7 +123,6 @@ public class EmployeeController {
         redirectAttributes.addFlashAttribute("message", "Thêm mới nhân viên thành công");
         return "redirect:/employee/list";
 
-
     }
 
 
