@@ -23,7 +23,11 @@ public class EmployeeService implements IEmployeeService{
 
     @Override
     public void editEmployee(Employee employee) {
+<<<<<<< HEAD
 
+=======
+        employee.setFlag(true);
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
         employeeRepository.save(employee);
     }
 

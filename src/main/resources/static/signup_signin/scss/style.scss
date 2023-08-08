@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //Common
 @import 'common/extend.scss';
 @import 'common/fonts.scss';
@@ -9,4 +10,17 @@
 @import 'layouts/main.scss';
 
 // Responsive
+=======
+//Common
+@import 'common/extend.scss';
+@import 'common/fonts.scss';
+@import 'common/minxi.scss';
+@import 'common/variables.scss';
+@import 'common/global.scss';
+
+//layout
+@import 'layouts/main.scss';
+
+// Responsive
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 @import 'layouts/responsive.scss';

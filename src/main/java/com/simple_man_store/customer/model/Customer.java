@@ -3,6 +3,7 @@ package com.simple_man_store.customer.model;
 import com.simple_man_store.account.model.Account;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customer")
@@ -140,4 +141,9 @@ public class Customer {
                 ", account=" + account +
                 '}';
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 }

@@ -6,6 +6,10 @@ import com.simple_man_store.account.model.Account;
 import com.simple_man_store.account.service.IAccountService;
 import com.simple_man_store.account.util.EncrytedPasswordUtils;
 import com.simple_man_store.account.util.WebUtils;
+<<<<<<< HEAD
+=======
+import com.simple_man_store.customer.dto.CustomerDto;
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 import com.simple_man_store.customer.model.Customer;
 import com.simple_man_store.customer.service.customer.ICustomerService;
 import org.springframework.beans.BeanUtils;
@@ -32,7 +36,15 @@ public class AccountController {
         return "home";
     }
     @GetMapping("/account")
+<<<<<<< HEAD
     public String accountDetail() {
+=======
+    public String accountDetail(Model model,Principal principal) {
+        Customer customer = customerService.findByEmail(principal.getName());
+        CustomerDto customerDto = new CustomerDto();
+        BeanUtils.copyProperties(customer,customerDto);
+        model.addAttribute("customerDto",customerDto);
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
         return "/account/detail";
     }
     @GetMapping("/register")

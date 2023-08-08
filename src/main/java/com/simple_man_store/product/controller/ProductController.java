@@ -17,6 +17,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+<<<<<<< HEAD
+=======
+import org.springframework.validation.annotation.Validated;
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -60,10 +64,17 @@ public class ProductController {
     public String showCreate(Model model) {
         ProductDto productDto = new ProductDto();
         List<Category> categoryList = categoryService.showListCategory();
+<<<<<<< HEAD
         List<Warehouse> warehouseList = warehouseService.showListWarehouse();
         model.addAttribute("productDto", productDto);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("warehouseList", warehouseList);
+=======
+        List<Size> sizeList =sizeService.showListSize();
+        model.addAttribute("productDto", productDto);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("sizeList", sizeList);
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
         return "/product/create";
     }
 
@@ -74,8 +85,17 @@ public class ProductController {
                          RedirectAttributes redirectAttributes) {
 //        validate
         new ProductDto().validate(productDto,bindingResult);
+<<<<<<< HEAD
         if (bindingResult.hasErrors()){
             model.addAttribute("productDto",productDto);
+=======
+        List<Category> categoryList = categoryService.showListCategory();
+        List<Size> sizeList = sizeService.showListSize();
+        if (bindingResult.hasErrors()){
+            model.addAttribute("productDto",productDto);
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("sizeList", sizeList);
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
             return "/product/create";
         }
 
@@ -99,16 +119,35 @@ public class ProductController {
         return "redirect:/product/list";
     }
 
+<<<<<<< HEAD
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable int id, RedirectAttributes redirectAttributes) {
         Warehouse warehouse = warehouseService.selectWarehouseByProductId(id);
         Product product = productService.selectProductById(id);
+=======
+    @PostMapping("/delete")
+    public String delete(@RequestParam int deleteId, RedirectAttributes redirectAttributes) {
+        Warehouse warehouse = warehouseService.selectWarehouseByProductId(deleteId);
+        Product product = productService.selectProductById(deleteId);
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
         warehouseService.deleteWareHouse(warehouse);
         productService.deleteProduct(product);
         redirectAttributes.addFlashAttribute("msg", "Xóa sản phẩm thành công");
         return "redirect:/product/list";
     }
+<<<<<<< HEAD
+=======
+//    @GetMapping("/delete/{id}")
+//    public String delete(@PathVariable int id, RedirectAttributes redirectAttributes) {
+//        Warehouse warehouse = warehouseService.selectWarehouseByProductId(id);
+//        Product product = productService.selectProductById(id);
+//        warehouseService.deleteWareHouse(warehouse);
+//        productService.deleteProduct(product);
+//        redirectAttributes.addFlashAttribute("msg", "Xóa sản phẩm thành công");
+//        return "redirect:/product/list";
+//    }
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 
 
     @GetMapping("/edit/{id}")
@@ -132,8 +171,28 @@ public class ProductController {
         return "product/edit";
     }
 
+<<<<<<< HEAD
     @PostMapping("/edit")
     public String edit(@ModelAttribute ProductDto productDto, RedirectAttributes redirectAttributes) {
+=======
+
+
+    @PostMapping("/edit")
+    public String edit(@Valid @ModelAttribute ProductDto productDto,
+                       BindingResult bindingResult,
+                       Model model,
+                       RedirectAttributes redirectAttributes) {
+//        Validation
+        new ProductDto().validate(productDto,bindingResult);
+        List<Category> categoryList = categoryService.showListCategory();
+        List<Size> sizeList = sizeService.showListSize();
+        if (bindingResult.hasErrors()){
+            model.addAttribute("productDto",productDto);
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("sizeList",sizeList);
+            return "/product/edit";
+        }
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 //        Product
         Product product = new Product();
         product.setId(productDto.getId());

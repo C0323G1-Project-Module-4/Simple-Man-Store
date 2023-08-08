@@ -3,6 +3,10 @@ package com.simple_man_store.product.dto;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+<<<<<<< HEAD
+=======
+import java.util.Objects;
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 import java.util.Set;
 
 public class ProductDto implements Validator {
@@ -39,6 +43,22 @@ public class ProductDto implements Validator {
         this.quantity = quantity;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductDto that = (ProductDto) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
     public Integer getId() {
         return id;
     }
@@ -103,6 +123,10 @@ public class ProductDto implements Validator {
         this.quantity = quantity;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
     @Override
     public boolean supports(Class<?> clazz) {
         return false;
@@ -111,6 +135,7 @@ public class ProductDto implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         ProductDto productDto = (ProductDto) target;
+<<<<<<< HEAD
         if (productDto.getName().equals("")){
             errors.rejectValue("name",null,"Không để trống tên sản phẩm");
         } else if (productDto.getName().length()>50) {
@@ -122,5 +147,31 @@ public class ProductDto implements Validator {
             errors.rejectValue("description",null,"Không để trống mô tả sản phẩm");
         }
 
+=======
+        if (productDto.getName().equals("")) {
+            errors.rejectValue("name", null, "Không để trống tên sản phẩm");
+        } else if (productDto.getName().length() > 100) {
+            errors.rejectValue("name", null, "Tên không được dài quá 100 kí tự");
+        } else if (productDto.getName().matches("/^[a-zA-Z0-9!@#\\$%\\^\\&*\\)\\(+=._-]+$/g")) {
+            errors.rejectValue("name",null,"Không chứa các kí tự đặc biệt");
+        }
+        if (productDto.getDescription().equals("")) {
+            errors.rejectValue("description", null, "Không để trống mô tả sản phẩm");
+        } else if (productDto.getDescription().length() > 250) {
+            errors.rejectValue("description", null, "Mô tả sản phẩm không được dài quá 250 kí tự");
+        } else if (productDto.getDescription().matches("/^[a-zA-Z0-9!@#\\$%\\^\\&*\\)\\(+=._-]+$/g")) {
+            errors.rejectValue("name",null,"Mô tả sản phẩm không chứa các kí tự đặc biệt");
+        }
+        if (productDto.getQuantity() > 10000) {
+            errors.rejectValue("quantity", null, "Số lượng sản phẩm không được > 10000");
+        } else if (productDto.getQuantity() < 1) {
+            errors.rejectValue("quantity", null, "Số lượng sản phẩm không thể < 1");
+        }
+        if (productDto.getPrice() > 500000000) {
+            errors.rejectValue("price", null, "Giá của sản phẩm không > 50,000,000 VNĐ");
+        } else if (productDto.getPrice() < 1) {
+            errors.rejectValue("price", null, "Giá của sản phẩm không thể < 1 VNĐ");
+        }
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
     }
 }

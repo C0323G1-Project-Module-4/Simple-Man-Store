@@ -12,11 +12,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+<<<<<<< HEAD
+=======
+import org.springframework.ui.Model;
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+<<<<<<< HEAD
+=======
+import javax.validation.Valid;
+
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 
 @Controller
 @RequestMapping("/customer")
@@ -84,4 +93,21 @@ public class CustomerController {
         redirectAttributes.addFlashAttribute("msg"," Cập nhật thành công khách hàng "+customer.getName());
         return "redirect:/customer/list";
     }
+<<<<<<< HEAD
+=======
+
+    @PostMapping("/save")
+    public String save(@Valid @ModelAttribute CustomerDto customerDto, BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes){
+        Customer customer = new Customer();
+        new CustomerDto().validate(customerDto,bindingResult);
+        if(bindingResult.hasErrors()){
+            return "redirect:/account";
+        }
+        BeanUtils.copyProperties(customerDto,customer);
+        customerService.save(customer);
+        redirectAttributes.addFlashAttribute("msg","Cập nhật thành công!");
+        return "redirect:/account";
+    }
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 }

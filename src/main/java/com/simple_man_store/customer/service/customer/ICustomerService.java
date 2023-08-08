@@ -10,4 +10,11 @@ public interface ICustomerService {
     boolean edit(Customer customer);
     Page<Customer> findAllPage(Pageable pageable,String name);
     Customer findById(Integer id);
+<<<<<<< HEAD
+=======
+
+    Customer findByEmail(String email);
+
+    void save(Customer customer);
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 }

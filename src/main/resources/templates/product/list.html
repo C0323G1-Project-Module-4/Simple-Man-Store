@@ -2,7 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title>Title</title>
+=======
+    <title>Product List</title>
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
     <style>
         img {
             max-width: 200px;
@@ -13,6 +17,7 @@
             width: 80%;
             margin: 0 auto;
         }
+<<<<<<< HEAD
     </style>
 </head>
 <body>
@@ -28,6 +33,26 @@
 
     <!-- search loại sản phâm-->
     <select name="category">
+=======
+
+    </style>
+    <div th:insert="~{home::libraries}"></div>
+</head>
+<body>
+<div th:replace="~{home::navbar-start}"></div>
+
+
+<!-- chọn yêu cầu tìm kiếm sản phẩm-->
+<div class="container d-flex align-items-center justify-content-center">
+<form th:action="@{/product/list}" method="get">
+    <!-- Thêm sản phẩm mới-->
+    <a th:href="@{/product/create}">
+        <input type="button" value="Thêm mới sản phẩm">
+    </a>
+    <!-- search loại sản phâm-->
+    <label for="category">Loại sản phẩm: </label>
+    <select name="category" id="category">
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
         <option th:each="c: ${categoryList}"
                 th:value="${c.name}"
                 th:text="${c.name}"
@@ -35,9 +60,14 @@
         </option>
     </select>
 
+<<<<<<< HEAD
 
     <!--    search giá-->
     <label for="priceRange">Price Range:</label>
+=======
+    <!--    search giá-->
+    <label for="priceRange">Price Range: </label>
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
     <select name="priceRange" id="priceRange" th:value="${priceRange}">
         <option th:selected="${priceRange=='0-100000'}" value="0-100000">0.0VND-100.000VNĐ</option>
         <option th:selected="${priceRange=='100000-200000'}" value="100000-200000">100.000VND-200.000VNĐ</option>
@@ -47,13 +77,18 @@
     </select>
 
     <!--    search tên-->
+<<<<<<< HEAD
     <label for="nameProduct">Nhập tên sản phẩm:</label>
+=======
+    <label for="nameProduct">Nhập tên sản phẩm: </label>
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
     <input type="text" name="searchName" id="nameProduct" th:value="${searchName}">
 
     <!--    nút-->
     <input type="submit" value="Search">
 
 </form>
+<<<<<<< HEAD
 
 <!-- Hiển thị danh sách product-->
 <h1 th:if="${msg}" th:text="${msg}"></h1>
@@ -86,6 +121,86 @@
     </tr>
 </table>
 
+=======
+</div>
+
+<!-- Hiển thị danh sách product-->
+<h1 th:if="${msg}" th:text="${msg}"></h1>
+
+<div class="py-3"></div>
+<!--list product-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product,loop: ${productPage}">
+            <div class="product-item bg-light mb-4">
+                <div class="product-img position-relative overflow-hidden">
+                    <img class="img-fluid w-100" th:src="${product.image}">
+                    <div class="product-action">
+                        <!--                        detail-->
+                        <a th:href="@{/product/detail/{id}(id=${product.getId()})}"
+                           class="btn btn-outline-primary btn-square">
+                            <i class="fas fa-info" style="color: #02060d;"></i>
+                        </a>
+                        <!--edit-->
+                        <a th:href="@{/product/edit/{id}(id=${product.getId()})}"
+                           class="btn btn-outline-primary btn-square">
+                            <i class="far fa-edit" style="color: #02060d;"></i>
+                        </a>
+                        <!--                        xóa-->
+                        <a th:attr="onclick=|showDelete(${product.getId()},'${product.getName()}')|"
+                           class="btn btn-outline-primary btn-square" data-bs-toggle="modal"
+                           data-bs-target="#staticBackdrop1">
+                            <i class="fas fa-trash-alt " style="color: #02060d;"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="text-center py-4">
+                    <h3 th:text="${product.name}"></h3>
+                    <div class="d-flex align-items-center justify-content-center mt-2">
+                        <h4 th:text="${#numbers.formatInteger(product.price, 2, 'COMMA')} + ' VNĐ'"></h4>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center mb-1">
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal-delete-->
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog">
+        <div class="modal-content">
+            <form th:action="@{/product/delete}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-5" id="staticBackdropLabel">Bạn chắc chắn muốn xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body">
+                    <input id="deleteProductId" name="deleteId" type="hidden">
+                    <span>Sản phẩm tên </span>
+                    <span id="ProductName" name="deleteName"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Suy nghĩ lại</button>
+                    <button type="submit" class="btn btn-primary">Xóa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function showDelete(id, name) {
+        document.getElementById('deleteProductId').value = id;
+        document.getElementById('ProductName').innerText = name;
+    }
+</script>
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 <!-- phân trang-->
 <a th:if="${productPage.hasPrevious()}"
    th:href="@{/product/list(page=${productPage.number-1},category=${category},priceRange=${priceRange},searchName=${searchName})}">Prev</a>
@@ -93,5 +208,17 @@
 <a th:if="${productPage.hasNext()}"
    th:href="@{/product/list(page=${productPage.number+1},category=${category},priceRange=${priceRange},searchName=${searchName})}">Next</a>
 
+<<<<<<< HEAD
+=======
+<!--boostrap 5.2-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous">
+</script>
+<!--footer-->
+<div th:replace="~{home::footer-start}"></div>
+<div th:replace="~{home::back-to-top}"></div>
+<div th:replace="~{home::footer}"></div>
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 </body>
 </html>

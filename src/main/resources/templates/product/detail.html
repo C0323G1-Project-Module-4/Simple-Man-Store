@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title>Title</title>
 </head>
 <body>
@@ -39,5 +40,78 @@
         <td></td>
     </tr>
 </table>
+=======
+    <title>Detail Product</title>
+    <style>
+        body {
+            background: #ffc107;
+            font-family: Arial, Helvetica, sans-serif
+        }
+
+        li {
+            font-family: "Arial", sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            line-height: 50px;
+            list-style-type: none;
+        }
+
+
+        .col-md-2 a {
+            text-decoration: none;
+            color: #000
+        }
+
+
+
+        @media screen and (max-width: 620px) {
+            .container {
+                width: 98%;
+                display: flex;
+                flex-flow: column;
+                text-align: center
+            }
+            .klo {
+                display: flex;
+                text-align: center;
+                margin: 0 auto;
+                margin-right: 40px
+            }
+        }
+    </style>
+    <div th:insert="~{home::libraries}"></div>
+</head>
+<body>
+<div th:replace="~{home::navbar-start}"></div>
+
+<div class="shadow-lg p-3 mb-5 bg-body rounded mx-auto" style="width: 80%" >
+    <div class="container py-4 my-4 mx-auto d-flex flex-column" th:object="${warehouse}">
+        <div class="container-body mt-4">
+            <div class="row r3">
+                <div class="col-md-5 p-0 klo">
+                    <ul>
+                        <li><h1 th:text="${warehouse.product.name}"></h1></li>
+                        <li th:text="'Loại sản phẩm: '+ ${warehouse.product.category.name}"></li>
+                        <li th:text="'Mô tả: '+ ${warehouse.product.description}"></li>
+                        <li th:text="'Giá: ' + ${#numbers.formatInteger(warehouse.product.price, 2, 'COMMA')} +' VNĐ'" ></li>
+                        <li th:text="'Size: '+ ${warehouse.size.name}"></li>
+                        <li th:text="'Số lượng: '+ ${warehouse.quantity}"></li>
+                        <li>Thương hiệu: SimpleMan</li>
+                        <li><a th:href="@{/product/list}"><i class="fa-solid fa-arrow-left" style="font-size: 48px"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-7"><img
+                        th:src="${warehouse.product.image}"
+                        width="90%" height="95%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-->
+<div th:replace="~{home::footer-start}"></div>
+<div th:replace="~{home::back-to-top}"></div>
+<div th:replace="~{home::footer}"></div>
+>>>>>>> c5d0c05caefecdecf7727a6ca9e4e367fc501c92
 </body>
 </html>
