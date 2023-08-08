@@ -15,6 +15,15 @@
         label {
             display: block;
         }
+        .customer-rank{
+            margin-left: 15px;
+            border: black;
+            border-radius: 28px;
+            background-color: black;
+            padding: 6px 12px;
+            color: white;
+
+        }
     </style>
 
 </head>
@@ -23,7 +32,7 @@
 
 
 <div class="container">
-    <div><p th:if="${msg!= null}" th:text="${msg}"></p></div>
+    <div><p th:if="${msg!= null}" th:text="${msg}" style="color: green"></p></div>
     <div class="row col-md-12 col-lg-12">
         <h4><i style="margin-right: 5px" class="fa-solid fa-user"></i>Tài Khoản Của Bạn</h4>
     </div>
@@ -31,9 +40,10 @@
         <div class="col-md-3 col-lg-3">
             <div class="container" style="border: 1px solid gray;">
                 <div class="my-4 mx-3" style="border-bottom: 1px solid black;">
-                    <h5><b>Danny</b></h5>
+                    <h5><b>Danny</b></h5><span class="customer-rank"><b>Diamond</b></span>
                 </div>
-                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " href="#"><b>Thông tin tài khoản</b></a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " href="#"><b>Thông tin tài khoản</b></a>
+                </div>
                 <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " href="#">Lịch sử mua hàng</a></div>
                 <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " href="#">Đổi mật khẩu</a></div>
                 <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" class="mb-3 mx-3"><a
@@ -56,59 +66,62 @@
                 <small>Bạn có thể cập nhật thông tin cá nhân của bản thân tại đây</small>
             </div>
             <div class="ml-5">
-                <div class="mt-4">
-                    <p>Tên<small style="color: red;"> *</small></p>
-                    <input class="ml-5" style="width: 250px;" type="text">
-                    <p class="ml-5"><small style="color: red;"></small></p>
-                </div>
-                <div class="mt-4">
-                    <p>Email<small style="color: red;"> *</small></p>
-                    <input class="ml-5" style="width: 250px;" type="text">
-                    <p class="ml-5"><small style="color: red;"></small></p>
-                </div>
-                <div class="mt-4">
-                    <p>Số điện thoại<small style="color: red;"> *</small></p>
-                    <input class="ml-5" style="width: 250px;" type="text">
-                    <p class="ml-5"><small style="color: red;"></small></p>
-                </div>
-                <div class="mt-4">
-                    <p>Địa chỉ</p>
-                    <textarea class="ml-5" style="width: 400px;height: 80px" type="text"></textarea>
-                    <p class="ml-5"><small style="color: red;"></small></p>
-                </div>
-                <div class="mt-4">
-                    <p>Giới tính </p>
-                    <div class="d-flex">
-                        <label class="ml-5">
-                            <input type="radio" name="gender" value="male">
-                            Nam
-                        </label>
-                        <label class="ml-5">
-                            <input type="radio" name="gender" value="female">
-                            Nữ
-                        </label>
-                        <label class="ml-5">
-                            <input type="radio" name="gender" value="lgbt">
-                            LGBT
-                        </label>
+                <form th:action="@{/customer/save}" th:object="${customerDto}" method="post">
+                    <div class="mt-4">
+                        <p>Tên<small style="color: red;"> *</small></p>
+                        <input th:field="*{name}" class="ml-5" style="width: 250px;" type="text">
+                        <p class="ml-5"><small style="color: red;"></small></p>
                     </div>
-                </div>
-                <div class="mt-4">
-                    <p>Ngày sinh</p>
-                    <input class="ml-5" type="date">
-                </div>
-                <div class="slider-container mt-4">
-                    <input style=" width: 300px" type="range" id="weight-range" min="0" max="100" step="1">
-                    <label for="weight-range">Cân nặng: <span id="weight-value">0</span> kg</label>
-                </div>
+                    <div class="mt-4">
+                        <p>Email<small style="color: red;"> *</small></p>
+                        <input th:field="*{email}" class="ml-5" style="width: 250px;" type="text" readonly>
+                        <p class="ml-5"><small style="color: red;"></small></p>
+                    </div>
+                    <div class="mt-4">
+                        <p>Số điện thoại<small style="color: red;"> *</small></p>
+                        <input th:field="*{phone_number}" class="ml-5" style="width: 250px;" type="text">
+                        <p class="ml-5"><small style="color: red;"></small></p>
+                    </div>
+                    <div class="mt-4">
+                        <p>Địa chỉ</p>
+                        <textarea th:field="*{address}" class="ml-5" style="width: 400px;height: 80px"
+                                  type="text"></textarea>
+                        <p class="ml-5"><small style="color: red;"></small></p>
+                    </div>
+                    <div class="mt-4">
+                        <p>Giới tính </p>
+                        <div class="d-flex">
+                            <label class="ml-5">
+                                <input th:field="*{gender}" th:value="true" type="radio" name="gender" value="male">
+                                Nam
+                            </label>
+                            <label class="ml-5">
+                                <input th:field="*{gender}" th:value="false" type="radio" name="gender" value="female">
+                                Nữ
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p>Ngày sinh</p>
+                        <input th:field="*{dob}" class="ml-5" type="date">
+                    </div>
+                    <input th:field="*{id}" type="hidden">
+                    <input th:field="*{account}" type="hidden">
+                    <input th:field="*{customerType}" type="hidden">
+                    <div class="slider-container mt-4">
+                        <input style=" width: 300px" type="range" id="weight-range" min="0" max="100" step="1">
+                        <label for="weight-range">Cân nặng: <span id="weight-value">0</span> kg</label>
+                    </div>
 
-                <div class="slider-container">
-                    <input style=" width: 300px" type="range" id="height-range" min="0" max="200" step="1">
-                    <label for="height-range">Chiều cao: <span id="height-value">0</span> cm</label>
-                </div>
-                <button style="width: 280px;height: 50px; padding: 10px;font-size: 14px; border: 1px solid  black"><b>Cập
-                    Nhật Thông Tin</b>
-                </button>
+                    <div class="slider-container">
+                        <input style=" width: 300px" type="range" id="height-range" min="0" max="200" step="1">
+                        <label for="height-range">Chiều cao: <span id="height-value">0</span> cm</label>
+                    </div>
+                    <button type="submit"
+                            style="margin-left:50px;width: 280px;height: 50px; padding: 10px;font-size: 14px; border: 1px solid  black">
+                        <b>Cập Nhật Thông Tin</b>
+                    </button>
+                </form>
             </div>
         </div>
         <div class=" col-md-3 col-lg-3">
