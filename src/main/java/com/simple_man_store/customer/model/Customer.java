@@ -19,9 +19,10 @@ public class Customer {
     private String email;
     @Column(nullable = false)
     private String phone_number;
-    private boolean gender;
+    @Column(columnDefinition = "bit(1) default true")
+    private boolean gender = true;
     private String address;
-    @Column(columnDefinition = "bit(1)")
+    @Column(columnDefinition = "bit(1) default true")
     private boolean flag = true;
     @ManyToOne
     @JoinColumn(name = "customer_type_id", referencedColumnName = "id",nullable = false)
