@@ -1,5 +1,6 @@
 package com.simple_man_store.product.controller;
 
+import com.simple_man_store.order.model.Cart;
 import com.simple_man_store.product.dto.ProductDto;
 import com.simple_man_store.product.model.Category;
 import com.simple_man_store.product.model.Product;
@@ -27,6 +28,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
+    @ModelAttribute("cart")
+    public Cart setupCart() {
+        return new Cart();
+    }
+
     @Autowired
     private IProductService productService;
     @Autowired

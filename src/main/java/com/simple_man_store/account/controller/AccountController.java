@@ -9,6 +9,7 @@ import com.simple_man_store.account.util.WebUtils;
 import com.simple_man_store.customer.dto.CustomerDto;
 import com.simple_man_store.customer.model.Customer;
 import com.simple_man_store.customer.service.customer.ICustomerService;
+import com.simple_man_store.order.model.Cart;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,6 +25,11 @@ import java.security.Principal;
 
 @Controller
 public class AccountController {
+    @ModelAttribute("cart")
+    public Cart setupCart() {
+        return new Cart();
+    }
+
     @Autowired
     private IAccountService accountService;
     @Autowired
@@ -63,6 +69,15 @@ public class AccountController {
         }
         accountService.save(accountDto);
         return "redirect:/login";
+    }
+    @GetMapping("/shop")
+    public String home(){
+        return "shop";
+    }
+
+    @GetMapping("shop/detail")
+    public String detail(){
+        return "detail";
     }
 
     @GetMapping("/login")
