@@ -24,6 +24,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
+@SessionAttributes("cart")
 public class AccountController {
     @ModelAttribute("cart")
     public Cart setupCart() {
