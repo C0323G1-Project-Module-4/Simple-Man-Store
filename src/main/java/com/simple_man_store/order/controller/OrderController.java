@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -136,7 +137,8 @@ public class OrderController {
     public String checkout(@ModelAttribute Cart cart,
                            @Valid@ModelAttribute OrderDto orderDto,
                            BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes
+                           RedirectAttributes redirectAttributes,
+                           Principal principal
     ) {
         new OrderDto().validate(orderDto,bindingResult);
         if (bindingResult.hasErrors()){
@@ -144,7 +146,7 @@ public class OrderController {
         }
         Order order = new Order();
         BeanUtils.copyProperties(orderDto,order);
-        Account account = accountService.findByEmail("lequangphuoc2305@gmail.com");
+        Account account = accountService.findByEmail(principal.getName());
         order.setAccount(account);
         orderService.add(order);
         Set<OrderDetail> orderDetail = new HashSet<>();
@@ -179,9 +181,9 @@ public class OrderController {
     }
 
     @RequestMapping("/history")
-    public String history(@RequestParam(defaultValue = "0") int page,Model model){
+    public String history(@RequestParam(defaultValue = "0") int page, Model model, Principal principal){
         Pageable pageable = PageRequest.of(page, 8, Sort.by("id").descending());
-        Account account = accountService.findByEmail("lequangphuoc2305@gmail.com");
+        Account account = accountService.findByEmail(principal.getName());
         Page<Order> orderPage = orderService.getByAcount(pageable,account);
         model.addAttribute("orderPage",orderPage);
         return "history";
