@@ -1,13 +1,20 @@
 package com.simple_man_store.employee.dto;
 
 import com.simple_man_store.account.model.Account;
+import com.simple_man_store.account.service.IAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import java.time.LocalDate;
 import java.time.Period;
 
-
+@Component
 public class EmployeeDto implements Validator {
+    @Autowired
+    private IAccountService accountService;
+
+    private Integer id;
     private String name;
     private String dob;
     private String phoneNumber;
@@ -30,6 +37,7 @@ public class EmployeeDto implements Validator {
     public void validate(Object target, Errors errors) {
         EmployeeDto employeeDto = (EmployeeDto) target;
 
+
         if (employeeDto.getName().equals("")) {
             errors.rejectValue("name",null,"Vui lòng điền họ và tên");
         } else if (employeeDto.getName().length()>255) {
@@ -49,6 +57,8 @@ public class EmployeeDto implements Validator {
         } else if(!employeeDto.getEmail().matches(regexEmail)) {
             errors.rejectValue("email",null,"Sai định dạng email. Mẫu định dạng email đúng: tranvanhoang123@gmail.com");
         }
+
+
 
 
 
@@ -95,6 +105,17 @@ public class EmployeeDto implements Validator {
     }
 
     public EmployeeDto(String name, String dob, String phoneNumber, String email, boolean gender, String address, boolean flag) {
+        this.name = name;
+        this.dob = dob;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.gender = gender;
+        this.address = address;
+        this.flag = flag;
+    }
+
+    public EmployeeDto(Integer id, String name, String dob, String phoneNumber, String email, boolean gender, String address, boolean flag) {
+        this.id = id;
         this.name = name;
         this.dob = dob;
         this.phoneNumber = phoneNumber;
@@ -160,4 +181,11 @@ public class EmployeeDto implements Validator {
         this.flag = flag;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
