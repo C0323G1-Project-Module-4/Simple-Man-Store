@@ -2,7 +2,7 @@ package com.simple_man_store.customer.controller;
 
 import com.simple_man_store.customer.dto.CustomerDto;
 import com.simple_man_store.customer.model.Customer;
-import com.simple_man_store.customer.model.CustomerType;
+import com.simple_man_store.customer.repository.ICustomerRepository;
 import com.simple_man_store.customer.service.customer.ICustomerService;
 import com.simple_man_store.customer.service.customer_type.ICustomerTypeService;
 import org.springframework.beans.BeanUtils;
@@ -25,16 +25,30 @@ public class CustomerController {
     private ICustomerService customerService;
     @Autowired
     private ICustomerTypeService customerTypeService;
+    @Autowired
+    private ICustomerRepository customerRepository;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView showList(@RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "") String searchName
-                                ) {
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("name").ascending().and(Sort.by("gender").descending()));
-        Page<Customer> customerPage= customerService.findAllPage(pageable, searchName);
+                                 @RequestParam(defaultValue = "") String searchName,
+                                 @RequestParam(defaultValue = "") String[] customerType,
+                                 @RequestParam(defaultValue = "") Integer[] gender
+    ) {
+        Pageable pageable = PageRequest.of(page, 2, Sort.by("name").ascending().and(Sort.by("gender").descending()));
+        if (customerType.length > 0) {
+            Page<Customer> customerPage = customerService.findAllPageCustomerTypeId(pageable, searchName, customerType);
+            ModelAndView modelAndView = new ModelAndView("customer/list");
+            modelAndView.addObject("customerPage", customerPage);
+            modelAndView.addObject("customer_type", customerTypeService.findAll());
+            return modelAndView;
+        }
+
+
+
+        Page<Customer> customerPage = customerService.findAllPage(pageable, searchName);
         ModelAndView modelAndView = new ModelAndView("customer/list");
         modelAndView.addObject("customerPage", customerPage);
-        modelAndView.addObject("customer_type",customerTypeService.findAll());
+        modelAndView.addObject("customer_type", customerTypeService.findAll());
         return modelAndView;
     }
 
