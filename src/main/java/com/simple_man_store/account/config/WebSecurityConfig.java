@@ -47,19 +47,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         // Các trang không yêu cầu login có thể vào
-        http.authorizeRequests().antMatchers("/", "/login", "/logout", "/static").permitAll();
+        http.authorizeRequests().antMatchers("/", "/login", "/logout","/shop").permitAll();
 
         // Trang /userInfo yêu cầu phải login với vai trò ROLE_USER hoặc ROLE_ADMIN.
         // Nếu chưa login, nó sẽ redirect tới trang /login.
-        http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/account").access("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE','ROLE_USER')");
 
         // Trang chỉ dành cho ADMIN
         http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");
 
+
+        // Trang chỉ dành cho EMPLOYEE
+        http.authorizeRequests().antMatchers("/product/list","/employee/list","/customer/list").access("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')");
+
         // Khi người dùng đã login, với vai trò XX.
         // Nhưng truy cập vào trang yêu cầu vai trò YY,
         // Ngoại lệ AccessDeniedException sẽ ném ra.
-        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403Page");
+        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 
         // Cấu hình cho Login Form.
         http.authorizeRequests().and().formLogin()//
@@ -71,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")//
                 .passwordParameter("password")
                 // Cấu hình cho Logout Page.
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
 
         // Cấu hình Remember Me.
         http.authorizeRequests().and() //

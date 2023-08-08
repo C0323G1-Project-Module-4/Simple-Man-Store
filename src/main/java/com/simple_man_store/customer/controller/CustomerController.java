@@ -12,10 +12,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -97,5 +100,19 @@ public class CustomerController {
         customerService.edit(customer);
         redirectAttributes.addFlashAttribute("msg"," Cập nhật thành công khách hàng "+customer.getName());
         return "redirect:/customer/list";
+    }
+
+    @PostMapping("/save")
+    public String save(@Valid @ModelAttribute CustomerDto customerDto, BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes){
+        Customer customer = new Customer();
+        new CustomerDto().validate(customerDto,bindingResult);
+        if(bindingResult.hasErrors()){
+            return "redirect:/account";
+        }
+        BeanUtils.copyProperties(customerDto,customer);
+        customerService.save(customer);
+        redirectAttributes.addFlashAttribute("msg","Cập nhật thành công!");
+        return "redirect:/account";
     }
 }

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "account")
 public class Account {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "name", nullable = false)
@@ -18,8 +18,8 @@ public class Account {
     @Column(name = "encryted_password", nullable = false)
     private String encrytedPassword;
 
-    @Column(name = "flag", nullable = false,columnDefinition = "bit(1) default true")
-    private boolean flag;
+    @Column(name = "flag",columnDefinition = "bit(1)")
+    private boolean flag = true;
 
     public Account() {
     }

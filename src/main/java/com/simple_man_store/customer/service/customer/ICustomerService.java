@@ -14,4 +14,8 @@ public interface ICustomerService {
     Page<Customer> findAllPageCustomerTypeId(Pageable pageable, String name, String[] customerTypeId);
     Page<Customer> findAllPageCustomerTypeIdGender(Pageable pageable, String name, String[] customerTypeId,Boolean gender);
     Customer findById(Integer id);
+
+    Customer findByEmail(String email);
+
+    void save(Customer customer);
 }

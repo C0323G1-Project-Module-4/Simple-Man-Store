@@ -85,4 +85,12 @@ public class CustomerService implements ICustomerService {
         }
         return customerRepository.findCustomerByNameContainingCAndCustomerType_IdAndGender(pageable,name,customerTypeIds,gender);
     }
+    public Customer findByEmail(String email) {
+        return customerRepository.findByEmail(email);
+    }
+
+    @Override
+    public void save(Customer customer) {
+        customerRepository.save(customer);
+    }
 }

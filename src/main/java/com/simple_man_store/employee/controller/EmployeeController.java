@@ -1,5 +1,8 @@
 package com.simple_man_store.employee.controller;
 
+import com.simple_man_store.account.dto.AccountDto;
+import com.simple_man_store.account.model.Account;
+import com.simple_man_store.account.service.IAccountService;
 import com.simple_man_store.employee.dto.EmployeeDto;
 import com.simple_man_store.employee.model.Employee;
 import com.simple_man_store.employee.service.IEmployeeService;
@@ -22,6 +25,8 @@ import javax.validation.Valid;
 public class EmployeeController {
     @Autowired
     private IEmployeeService employeeService;
+    @Autowired
+    private IAccountService accountService;
 
     @GetMapping("/list")
     public String showList(@RequestParam(defaultValue = "0") int page,
@@ -33,12 +38,12 @@ public class EmployeeController {
     }
 
     @PostMapping("/delete")
-    public String deleteEmployee(@RequestParam int deleteId,RedirectAttributes redirectAttributes) {
+    public String deleteEmployee(@RequestParam int deleteId, RedirectAttributes redirectAttributes) {
         boolean removeStatus = employeeService.remove(deleteId);
-        if(removeStatus) {
-            redirectAttributes.addFlashAttribute("message","Đã xóa Nhân viên thành công");
+        if (removeStatus) {
+            redirectAttributes.addFlashAttribute("message", "Đã xóa Nhân viên thành công");
         } else {
-            redirectAttributes.addAttribute("message","Nhân viên không tồn tại trên hệ thống");
+            redirectAttributes.addAttribute("message", "Nhân viên không tồn tại trên hệ thống");
         }
         return "redirect:/employee/list";
     }
@@ -49,13 +54,15 @@ public class EmployeeController {
         EmployeeDto employeeDto = new EmployeeDto();
         BeanUtils.copyProperties(employee, employeeDto);
         System.out.println(employeeDto);
+        String email = employee.getAccount().getEmail();
         model.addAttribute("employeeDto", employeeDto);
+        model.addAttribute("emailAccount", email);
         return "employee/edit";
 
     }
 
     @PostMapping("/edit")
-    public String editEmployee(@Valid @ModelAttribute EmployeeDto employeeDto,
+    public String editEmployee(@Valid @ModelAttribute EmployeeDto employeeDto, @RequestParam String emailAccount,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes,
                                Model model) {
@@ -66,6 +73,9 @@ public class EmployeeController {
             return "employee/edit";
         }
         BeanUtils.copyProperties(employeeDto, employee);
+        Account account = accountService.findByEmail(emailAccount);
+        employee.setAccount(account);
+        System.out.println(account);
         employeeService.editEmployee(employee);
         redirectAttributes.addFlashAttribute("message", "Cập nhật thông tin nhân viên thành công");
         return "redirect:/employee/list";
@@ -74,7 +84,7 @@ public class EmployeeController {
     @GetMapping("/create")
     public String showFormCreateEmployee(Model model) {
         EmployeeDto employeeDto = new EmployeeDto();
-        model.addAttribute("employeeDto",employeeDto);
+        model.addAttribute("employeeDto", employeeDto);
         return "/employee/create";
     }
 
@@ -84,19 +94,37 @@ public class EmployeeController {
                                  RedirectAttributes redirectAttributes,
                                  Model model) {
 
-        Employee employee = new Employee();
+
         new EmployeeDto().validate(employeeDto, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("employeeDto", employeeDto);
             return "employee/create";
         }
+        Account checkAccount = accountService.findByEmail(employeeDto.getEmail());
+        if (checkAccount != null) {
+            bindingResult.rejectValue("email", null, "Địa chỉ email đã tồn tại trên hệ thống");
+            model.addAttribute("employeeDto", employeeDto);
+            return "employee/create";
+        }
+
+        AccountDto accountDto = new AccountDto();
+        accountDto.setName(employeeDto.getName());
+        accountDto.setEmail(employeeDto.getEmail());
+        accountDto.setPassword("123");
+        accountDto.setPhone(employeeDto.getPhoneNumber());
+        accountService.save(accountDto);
+
+        Account account = accountService.findByEmail(accountDto.getEmail());
+        Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDto, employee);
+        employee.setAccount(account);
+
         employeeService.editEmployee(employee);
         redirectAttributes.addFlashAttribute("message", "Thêm mới nhân viên thành công");
         return "redirect:/employee/list";
+
+
     }
-
-
 
 
 }
