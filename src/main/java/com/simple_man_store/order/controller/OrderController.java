@@ -132,14 +132,21 @@ public class OrderController {
         model.addAttribute("orderDto",orderDto);
         return "checkout";
     }
+    @RequestMapping("/asd")
+    public String ss(){
+        return "order/success";
+    }
 
     @PostMapping("/checkout")
     public String checkout(@ModelAttribute Cart cart,
                            @Valid@ModelAttribute OrderDto orderDto,
+                           @RequestParam String payment,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes,
                            Principal principal
     ) {
+
+        System.out.println(payment+"123123123123123123123333333333333333333333333");
         new OrderDto().validate(orderDto,bindingResult);
         if (bindingResult.hasErrors()){
             return "checkout";
@@ -154,6 +161,10 @@ public class OrderController {
             orderDetail.add(new OrderDetail(key.getPrice(), cart.getProducts().get(key), "xl", order, key));
         }
         iodService.addAll(orderDetail);
+        if(payment.equals("vnpay")){
+            int i= (int) (cart.countTotalPayment()*1);
+            return "redirect:/payment/create_payment?tempAmount="+ i;
+        }
         cart.clear();
         redirectAttributes.addFlashAttribute("msg", "Đặt hàng thành công");
         return "redirect:/order/home";
@@ -191,6 +202,7 @@ public class OrderController {
 
     @PostMapping("/is-checkout")
     public String isCheckout(@RequestParam int id,RedirectAttributes redirectAttributes){
+
         Order order = orderService.getById(id);
         order.setPayment_date(String.valueOf(LocalDate.now()));
         orderService.add(order);

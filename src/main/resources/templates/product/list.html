@@ -33,19 +33,20 @@
     <select name="category" id="category">
         <option th:each="c: ${categoryList}"
                 th:value="${c.name}"
-                th:text="${c.name}"
+                th:text="${c.name != '' ? c.name : 'Tất cả'}"
                 th:selected="${c.name == category}">
         </option>
     </select>
 
     <!--    search giá-->
-    <label for="priceRange">Price Range: </label>
+    <label for="priceRange">Giá sản phẩm: </label>
     <select name="priceRange" id="priceRange" th:value="${priceRange}">
-        <option th:selected="${priceRange=='0-100000'}" value="0-100000">0.0VND-100.000VNĐ</option>
-        <option th:selected="${priceRange=='100000-200000'}" value="100000-200000">100.000VND-200.000VNĐ</option>
-        <option th:selected="${priceRange=='200000-300000'}" value="200000-300000">200.000VND-300.000VNĐ</option>
+        <option th:selected="${priceRange=='0-300000'}" value="0-300000">0.0VND-300.000VNĐ</option>
         <option th:selected="${priceRange=='300000-500000'}" value="300000-500000">300.000VND-500.000VNĐ</option>
-        <option th:selected="${priceRange=='500000-50000000'}" value="500000-50000000">Lớn hơn 500.000VND</option>
+        <option th:selected="${priceRange=='500000-800000'}" value="500000-800000">500.000VND-800.000VNĐ</option>
+        <option th:selected="${priceRange=='800000-1000000'}" value="800000-1000000">800.000VND-1000.000VNĐ</option>
+        <option th:selected="${priceRange=='1000000-50000000'}" value="1000000-50000000">Lớn hơn 1000.000VND</option>
+        <option th:selected="${priceRange=='0-50000000'}" value="0-50000000">Tất cả</option>
     </select>
 
     <!--    search tên-->
@@ -53,7 +54,7 @@
     <input type="text" name="searchName" id="nameProduct" th:value="${searchName}">
 
     <!--    nút-->
-    <input type="submit" value="Search">
+    <input type="submit" value="Tìm kiếm">
 
 </form>
 </div>
@@ -64,11 +65,11 @@
 <div class="py-3"></div>
 <!--list product-->
 <div class="container-fluid">
-    <div class="row">
+    <div class="row mx-auto" style="width: 95%">
         <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product,loop: ${productPage}">
             <div class="product-item bg-light mb-4">
                 <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" th:src="${product.image}">
+                    <img class="img-fluid w-100" th:src="${product.image}" >
                     <div class="product-action">
                         <!--                        detail-->
                         <a th:href="@{/product/detail/{id}(id=${product.getId()})}"
@@ -89,9 +90,9 @@
                     </div>
                 </div>
                 <div class="text-center py-4">
-                    <h3 th:text="${product.name}"></h3>
+                    <h5 th:text="${product.name}"></h5>
                     <div class="d-flex align-items-center justify-content-center mt-2">
-                        <h4 th:text="${#numbers.formatInteger(product.price, 2, 'COMMA')} + ' VNĐ'"></h4>
+                        <h5 th:text="${#numbers.formatInteger(product.price, 2, 'COMMA')} + ' VNĐ'"></h5>
                     </div>
                     <div class="d-flex align-items-center justify-content-center mb-1">
                         <small class="fa fa-star text-primary mr-1"></small>
@@ -105,6 +106,7 @@
         </div>
     </div>
 </div>
+
 <!--modal-delete-->
 <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
