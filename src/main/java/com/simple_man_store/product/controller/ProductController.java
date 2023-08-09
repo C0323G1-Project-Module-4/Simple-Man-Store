@@ -212,17 +212,18 @@ public class ProductController {
                                   @RequestParam(defaultValue = "0-10000000") String priceRange,
                                   @RequestParam(defaultValue = "") String searchName,
                                   Model model) {
-        Pageable pageable = PageRequest.of(page, 9, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, 35, Sort.by("id").descending());
         String[] parts = priceRange.split("-");
         Double minPrice = Double.valueOf(parts[0]);
         Double maxPrice = Double.valueOf(parts[1]);
         List<Category> categoryList = categoryService.showListCategory();
         Page<Product> productPage = productService.findProduct(pageable, searchName, minPrice, maxPrice, category);
         model.addAttribute("category", category);
-        model.addAttribute("priceRange", priceRange);
         model.addAttribute("searchName", searchName);
         model.addAttribute("productPage", productPage);
         model.addAttribute("categoryList", categoryList);
+        List<Size> sizeList = sizeService.showListSize();
+        model.addAttribute("sizeList",sizeList);
         return "shop";
     }
 }
