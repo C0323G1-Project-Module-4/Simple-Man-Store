@@ -23,6 +23,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/employee")
+@SessionAttributes("cart")
 public class EmployeeController {
     @ModelAttribute("cart")
     public Cart setupCart() {
