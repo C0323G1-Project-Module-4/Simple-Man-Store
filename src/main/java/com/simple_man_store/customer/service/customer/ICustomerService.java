@@ -18,4 +18,5 @@ public interface ICustomerService {
     Customer findByEmail(String email);
 
     void save(Customer customer);
+    Customer searchById(Integer id);
 }
