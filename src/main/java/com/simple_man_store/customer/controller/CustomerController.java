@@ -12,10 +12,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,6 +43,7 @@ public class CustomerController {
     private ICustomerTypeService customerTypeService;
     @Autowired
     private ICustomerRepository customerRepository;
+
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView showList(@RequestParam(defaultValue = "0") int page,
@@ -83,16 +90,17 @@ public class CustomerController {
     }
     @PostMapping("/create")
     public String create(@ModelAttribute Customer customer,RedirectAttributes redirectAttributes){
-      Boolean check =  customerService.add(customer);
+        Boolean check =  customerService.add(customer);
         redirectAttributes.addFlashAttribute("msg",check);
         return "redirect:/customer/list";
     }
     @GetMapping("/showUpdate/{id}")
     public ModelAndView showUpdate(@PathVariable Integer id){
         ModelAndView modelAndView = new ModelAndView("customer/update");
-        Customer customer = customerService.findById(id);
+        Customer customer = customerService.searchById(id);
         CustomerDto customerDto = new CustomerDto();
         BeanUtils.copyProperties(customer,customerDto);
+        System.out.println(customerDto.getDob());
         modelAndView.addObject("customerDto",customerDto);
         return modelAndView;
     }
@@ -108,7 +116,6 @@ public class CustomerController {
         redirectAttributes.addFlashAttribute("msg"," Cập nhật thành công khách hàng "+customer.getName());
         return "redirect:/customer/list";
     }
-
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute CustomerDto customerDto, BindingResult bindingResult,
                        RedirectAttributes redirectAttributes){
@@ -122,4 +129,21 @@ public class CustomerController {
         redirectAttributes.addFlashAttribute("msg","Cập nhật thành công!");
         return "redirect:/account";
     }
+    @PostMapping("/even")
+    public String receiveMessage(@RequestBody String message,RedirectAttributes redirectAttributes) {
+        System.out.println("Received message: " + message);
+        redirectAttributes.addFlashAttribute("msg",message);
+        return "redirect:/customer/list";
+    }
+//    @Scheduled(fixedDelay = 5000)
+//    public void myScheduledMethod() {
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        Integer money = customerRepository.findCustomerByEmail("user");
+//        System.out.println(money);
+//        String requestBody = "{\"message\": \"Nhật Béo!\"}";
+//        HttpEntity<String> httpEntity = new HttpEntity<>(requestBody, headers);
+//        ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8080/customer/even", httpEntity, String.class);
+//    }
 }

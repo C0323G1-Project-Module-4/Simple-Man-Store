@@ -26,29 +26,35 @@
             <div class="input-group mb-3">
                 <span class="input-group-text mx-auto" id="basic-addon1" style="width: 200px">Tên khách hàng</span>
                 <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" th:field="*{name}">
-                <small style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
-
             </div>
+            <div style="height: 1.5rem">
+                <small style="color: red;margin-left: 10%" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" ></small>
+            </div>
+
 
             <div class="input-group mb-3">
                 <span class="input-group-text mx-auto" id="basic-addon2" style="width: 200px">Ngày sinh</span>
                 <input type="date" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" th:field="*{dob}">
+            </div>
+            <div style="height: 1.5rem">
                 <small style="color: red" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></small>
             </div>
-
             <div class="input-group mb-3">
                 <span class="input-group-text mx-auto" style="width: 200px">Địa chỉ khách hàng</span>
                 <textarea class="form-control" aria-label="With textarea" th:field="*{address}"></textarea>
-                <small style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></small>
 
             </div>
-
+            <div style="height: 1.5rem">
+                <small style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></small>
+            </div>
             <div class="input-group mb-3 mx-auto">
                 <span class="input-group-text" style="width: 200px">Số điện thoại</span>
                 <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" th:field="*{phone_number}">
-                <small style="color: red" th:if="${#fields.hasErrors('phone_number')}" th:errors="*{phone_number}"></small>
 
-            </div>
+            </div> <div style="height: 1.5rem">
+
+            <small style="color: red" th:if="${#fields.hasErrors('phone_number')}" th:errors="*{phone_number}"></small>
+        </div>
             <div class="input-group mb-3 ">
                 <label class="input-group-text mx-auto" for="inputGroupSelect01" style="width: 200px">Giới tính</label>
                 <select class="form-select" id="inputGroupSelect01" th:field="*{gender}">
@@ -59,8 +65,10 @@
             <div class="input-group mb-3">
                 <span class="input-group-text mx-auto" id="basic-addon3" style="width: 200px">Địa chỉ email</span>
                 <input type="email" class="form-control" id="basic-url" aria-describedby="basic-addon3" th:field="*{email}">
-                <small style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
-            </div>
+
+            </div> <div style="height: 1.5rem">
+            <small style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+        </div>
             <div class="input-group">
                 <button class="btn btn-primary" type="submit">Submit form</button>
             </div>
