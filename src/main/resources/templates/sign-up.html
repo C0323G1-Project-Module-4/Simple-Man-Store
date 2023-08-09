@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Đăng Ký</title>
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
     <!-- Font Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Main css -->
@@ -16,40 +20,54 @@
     <!-- Sign up form -->
     <section class="signup" style="margin-bottom: 0">
         <div class="container">
-            <div class="signup-content" style="padding-bottom: 50px" >
+            <div class="signup-content" style="padding-bottom: 50px">
                 <div class="signup-form">
-                    <h2 class="form-title">Sign Up</h2>
-                    <form method="POST" class="register-form" th:action="@{/register-submit}" id="register-form" th:object="${accountDto}">
+                    <h2 class="form-title">Đăng Ký</h2>
+                    <form method="POST" class="register-form" th:action="@{/register-submit}" id="register-form"
+                          th:object="${accountDto}">
                         <div class="form-group">
                             <label style="top: 16px" for="name"><i class="fa-solid fa-user" style="color: #000000;"></i></label>
                             <input type="text" name="name" id="name" th:field="*{name}" placeholder="Tên"/>
-                                                        <div><span style="position: relative;top: 5px;color: red" th:if="${#fields.hasErrors('name')}"
-                                                                   th:errors="*{name}"></span></div>
+                            <div><span style="position: relative;top: 5px;color: red"
+                                       th:if="${#fields.hasErrors('name')}"
+                                       th:errors="*{name}"></span></div>
                         </div>
                         <div class="form-group">
-                            <label style="top: 16px" for="email"><i class="fa-solid fa-envelope" style="color: #000000;"></i></label>
+                            <label style="top: 16px" for="email"><i class="fa-solid fa-envelope"
+                                                                    style="color: #000000;"></i></label>
                             <input type="email" name="email" id="email" th:field="*{email}" placeholder="Email"/>
-                                                        <div><span style="position: relative;top: 5px;color: red" th:if="${#fields.hasErrors('email')}"
-                                                                   th:errors="*{email}"></span></div>
+                            <div><span style="position: relative;top: 5px;color: red"
+                                       th:if="${#fields.hasErrors('email')}"
+                                       th:errors="*{email}"></span></div>
                         </div>
                         <div class="form-group">
-                            <label style="top: 16px" for="email"><i class="fa-solid fa-phone" style="color: #000000;"></i></label>
-                            <input name="phoneNumber" id="phone_number" th:field="*{phone}" placeholder="Số điện thoại"/>
-                                                        <div><span style="position: relative;top: 5px;color: red" th:if="${#fields.hasErrors('phone')}"
-                                                                   th:errors="*{phone}"></span></div>
+                            <label style="top: 16px" for="email"><i class="fa-solid fa-phone"
+                                                                    style="color: #000000;"></i></label>
+                            <input name="phoneNumber" id="phone_number" th:field="*{phone}"
+                                   placeholder="Số điện thoại"/>
+                            <div><span style="position: relative;top: 5px;color: red"
+                                       th:if="${#fields.hasErrors('phone')}"
+                                       th:errors="*{phone}"></span></div>
                         </div>
                         <div class="form-group">
                             <label style="top: 16px" for="pass"><i class="fa-solid fa-lock" style="color: #000000;"></i></label>
                             <input type="password" name="pass" id="pass" th:field="*{password}" placeholder="Mật Khẩu"/>
+                            <div><span style="position: relative;top: 5px;color: red"
+                                       th:if="${#fields.hasErrors('password')}"
+                                       th:errors="*{password}"></span></div>
                         </div>
                         <div class="form-group">
-                            <label style="top: 16px" for="re-pass"><i class="fa-solid fa-lock" style="color: #000000;"></i></label>
+                            <label style="top: 16px" for="re-pass"><i class="fa-solid fa-lock"
+                                                                      style="color: #000000;"></i></label>
                             <input type="password" name="re_pass" id="re_pass" placeholder="Xác nhận mật khẩu"/>
-                            <i class="fa-solid fa-square-check" id="right" style="display: none;color: #1c8231;position: absolute;right: 5px;top: 13px"></i>
-                            <i class="fa-solid fa-square-xmark" id="wrong" style="display:none;color: #b62525;position: absolute;right: 5px;top: 13px"></i>
+                            <i class="fa-solid fa-square-check" id="right"
+                               style="display: none;color: #1c8231;position: absolute;right: 5px;top: 13px"></i>
+                            <i class="fa-solid fa-square-xmark" id="wrong"
+                               style="display:none;color: #b62525;position: absolute;right: 5px;top: 13px"></i>
                         </div>
                         <div class="form-group form-button">
-                            <input style="margin-left: 78px" type="submit" name="signup" id="signup" onclick="submit()" class="form-submit" value="Đăng Ký"/>
+                            <input style="margin-left: 78px" type="submit" name="signup" id="signup" onclick="submit()"
+                                   class="form-submit" value="Đăng Ký"/>
                         </div>
                     </form>
                 </div>
@@ -65,15 +83,16 @@
     let pass = document.getElementById("pass");
     let repass = document.getElementById("re_pass");
     // pass.addEventListener("input",submit);
-    repass.addEventListener("input",submit);
-    function submit(){
-        if(pass.value === repass.value){
-        document.getElementById("right").style.display="inline";
-        document.getElementById("wrong").style.display="none";
+    repass.addEventListener("input", submit);
+
+    function submit() {
+        if (pass.value === repass.value) {
+            document.getElementById("right").style.display = "inline";
+            document.getElementById("wrong").style.display = "none";
 
         } else {
-            document.getElementById("wrong").style.display="inline";
-            document.getElementById("right").style.display="none";
+            document.getElementById("wrong").style.display = "inline";
+            document.getElementById("right").style.display = "none";
 
         }
     }
