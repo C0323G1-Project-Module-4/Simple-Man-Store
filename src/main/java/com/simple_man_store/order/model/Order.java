@@ -24,8 +24,8 @@ public class Order {
     private String order_date;
     @Column(columnDefinition = "date")
     private String payment_date;
-    @Column(columnDefinition = "bit(1) default true")
-    private boolean flag;
+    @Column(columnDefinition = "bit(1)")
+    private boolean flag = true;
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false, referencedColumnName = "id")
     private Account account;
