@@ -13,181 +13,114 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 
 </head>
-<body>
+<body >
 <header>
     <div th:insert="~{home::libraries}"></div>
     <div th:replace="~{home::navbar-start}"></div>
 </header>
-<div class="row ">
-    <div class="col-3">
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingOne">
-                    <button  style="background-color: #F5F5F5" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                       DANH MỤC QUẢN LÝ
-                    </button>
-                </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body" style="background-color: #F5F5F5"><a th:href="@{/employee/list}" style="color: black">QUẢN LÝ NHÂN VIÊN</a></div>
-                    <div class="accordion-body" style="background-color: #F5F5F5"><a th:href="@{/product/list}" style="color: black">QUẢN LÝ SẢN PHẨM</a></div>
-                    <div class="accordion-body" style="background-color: #F5F5F5"><a th:href="@{/customer/list}" style="color: black">QUẢN LÝ KHÁCH HÀNG</a></div>
+<div class="col-12 mx-auto" style="width: 100%">
+    <div class="mx-auto " style="width: 100%; margin: 2%">
+        <header class=" d-flex justify-content-center px-xl-5 ">
+        <h1 STYLE="margin-top: 0.5rem">DANH SÁCH KHÁCH HÀNG</h1>
+        </header>
 
+        <form class="mx-auto" style="width: 90%;margin-top: 2%" th:action="@{/customer/list}" method="get" >
+            <div class="d-flex container-fluid justify-content-end" style="width: 100%">
+                <div class="d-flex ">
+                    <input   type="search" placeholder="Tìm kiếm khách hàng" aria-label="Search"
+                             name="searchName">
+                    <button class="btn btn-outline-warning border-dark" type="submit">
+                        <i class="fa-solid fa-magnifying-glass " style="color: #0a0a0a;"></i></button>
+                </div>
+                <div class="d-flex">
+                    <button class="btn btn-outline-warning border-dark" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseExample" aria-expanded="false"
+                            aria-controls="collapseExample">
+                        <i class="fa-solid fa-bars fa-beat-fade" style="color: #050505;"></i></button>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingTwo">
-                    <button style="background-color: #F5F5F5" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        Accordion Item #2
-                    </button>
-                </h2>
-                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+            <div class="collapse bg-light" id="collapseExample" >
+                <div class=" card-body border-light bg-light">
+                    <div class="row mx-auto d-flex justify-content-center " style="width: 80%">
+                        <div class="h-50 text-uppercase">LOẠI KHÁCH HÀNG</div>
+                        <div class="col-lg-2 col-md-4 col-sm-6 pb-1 d-flex" th:each="c: ${customer_type}"
+                             style="margin-right: 2%">
+                            <input class="mx-md-3" id="checkbox" name="customerType" type="checkbox"
+                                   th:value="${c.id}">
+                            <label for="checkbox" th:text="${c.name}"></label>
+                        </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-9">
-        <div class="mx-auto shadow-lg mb-5 bg-body rounded" style="width: 70%; margin: 2%">
-            <header class=" d-flex justify-content-center bg bg-dark px-xl-5 ">
-                <div class="d-none d-lg-block">
-                    <span class="h2 text-uppercase text-primary bg-dark px-2"
-                          style="margin-top: 0.5rem">DANH SÁCH</span>
-                    <span class="h2 text-uppercase text-dark bg-primary px-2 ml-n1" style="margin-top: 0.5rem">KHÁCH HÀNG</span>
-                </div>
-            </header>
-            <form class="d-flex justify-content-center p-3" role="search"
-                  th:action="@{/customer/list}" method="get">
-                <nav class="navbar bg-light ">
-                    <div class="container-fluid">
-                        <div class="d-flex ">
-                            <input class="form-control " type="search" placeholder="Search" aria-label="Search"
-                                   name="searchName">
-                            <button class="btn btn-outline-warning border-dark" type="submit">
-                                <i class="fa-solid fa-magnifying-glass fa-bounce" style="color: #0a0a0a;"></i></button>
-                        </div>
-                        <div class="d-flex">
-                            <button class="btn btn-outline-warning border-dark" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseExample" aria-expanded="false"
-                                    aria-controls="collapseExample">
-                                <i class="fa-solid fa-bars fa-beat-fade" style="color: #050505;"></i></button>
-                        </div>
                     </div>
-                    <div class="collapse" id="collapseExample">
-                        <div class="card card-body border-light">
-                            <div class="row mx-auto d-flex justify-content-center " style="width: 80%">
-                                <div class="h-50 text-uppercase">LOẠI KHÁCH HÀNG</div>
-                                <div class="col-lg-2 col-md-4 col-sm-6 pb-1 d-flex" th:each="c: ${customer_type}"
-                                     style="margin-right: 2%">
-                                    <input class="mx-md-3" id="checkbox" name="customerType" type="checkbox"
-                                           th:value="${c.id}">
-                                    <label for="checkbox" th:text="${c.name}"></label>
-                                </div>
-<!--                                <div class="h-50 text-uppercase">GIỚI TÍNH</div>-->
-<!--                                <div class="col-lg-6 col-md-4 col-sm-6 pb-1 d-flex"-->
-<!--                                     style="margin-right: 2%">-->
-<!--                                    <input class="mx-md-3" id="checkbox-2" name="gender" style="border-radius: 50%"-->
-<!--                                           type="checkbox"-->
-<!--                                           th:value="1">-->
-<!--
 
-
-   <label for="checkbox-2" th:text="Nam"></label>-->
-<!--                                    <input class="mx-md-3" id="checkbox-3" name="gender" type="checkbox"-->
-<!--                                           th:value="0" style="border-radius: 50%">-->
-<!--                                    <label for="checkbox-3" th:text="Nữ"></label>-->
-<!--                                </div>-->
-
-                            </div>
-
-                        </div>
-                    </div>
-                </nav>
-
-            </form>
-            <div class="d-flex justify-content-center p-3">
-                <table class="table table-light table-striped ">
-                    <thead>
-                    <tr style="text-align: center">
-                        <th class="h-50 text-uppercase">STT</th>
-                        <th class="h-50 text-uppercase">Tên KH</th>
-                        <th class="h-50 text-uppercase">GT</th>
-                        <th class="h-50 text-uppercase">Bậc</th>
-                        <th colspan="3" class="h-50 text-uppercase">Chức năng</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-group-divider" style="text-align: center">
-                    <tr class="table-active" th:each="customer,status: ${customerPage}">
-                        <td th:text="${customerPage.number*5+status.count}"></td>
-                        <td th:text="${customer.name}"></td>
-                        <td th:if="${customer.gender}" th:text="Nam"></td>
-                        <td th:if="${!(customer.gender)}" th:text="Nữ"></td>
-                        <td th:text="${customer.customerType.name}"></td>
-                        <td>
-                            <a th:href="@{/customer/showUpdate/{id}(id=${customer.getId()})}">
-                                <button class="btn btn-outline-primary border-dark">
-                                    <i class="far fa-edit" style="color: #02060d;"></i>
-                                </button>
-                            </a>
-                        </td>
-                        <td>
-                            <button th:attr="onclick=|showDetail(${customer.getId()})|"
-                                    type="button"
-                                    class="btn btn-outline-primary border border-dark" data-bs-toggle="modal"
-                                    data-bs-target="#modalDetail">
-                                <i class="fas fa-info" style="color: #02060d;"></i>
-                            </button>
-                        </td>
-                        <td>
-                            <button th:attr="onclick=|showDelete(${customer.getId()},'${customer.getName()}')|"
-                                    type="button"
-                                    class="btn btn-outline-primary border border-dark" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">
-                                <i class="fas fa-trash-alt " style="color: #02060d;"></i>
-
-                            </button>
-                        </td>
-                    </tr>
-
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colspan="2">
-                            <p>Trang hiện tại <span th:text="${customerPage.number +1}"></span> / <span th:text="${customerPage.totalPages}"></span></p>
-                        </td>
-                        <td colspan="3"></td>
-                        <td colspan="3"><!--        Page table-->
-                            <nav aria-label="Page navigation example" style="float: right">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link border-light btn-outline-warning" th:if="${customerPage.hasPrevious()}"
-                                           style="color: black"
-                                           th:href="@{/customer/list(page=${customerPage.number - 1},searchName=${searchName})}"
-                                           aria-label="Previous">
-                                            <span aria-hidden="true" class="h50 text-uppercase">Trang trước</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="page-item ">
-                                        <a th:if="${customerPage.hasNext()}"
-                                           th:href="@{/customer/list(page=${customerPage.number + 1},searchName=${searchName})}"
-                                           class="page-link border-light btn-outline-warning" aria-label="Next" style="color: black">
-                                            <span aria-hidden="true" class="h-50 text-uppercase">Trang sau</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav></td>
-                    </tr>
-                    </tfoot>
-                </table>
-
-
+                </div>
             </div>
+
+        </form>
+        <div class="d-flex  p-3" style="min-height: 26rem">
+            <table class="table table-light table-striped  ">
+                <thead>
+                <tr>
+                    <th class="h-50 text-uppercase " >STT</th>
+                    <th class="h-50 text-uppercase ">Tên KH</th>
+                    <th class="h-50 text-uppercase " >Ngày sinh</th>
+                    <th class="h-50 text-uppercase">GT</th>
+                    <th class="h-50 text-uppercase" >Bậc</th>
+                    <th colspan="4" class="h-50 text-uppercase" align="center">Chức năng</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr class="table-active" th:each="customer,status: ${customerPage}">
+                    <td th:text="${customerPage.number*5+status.count}" ></td>
+                    <td th:text="${customer.name}"></td>
+                    <td th:text="${customer.dob}" ></td>
+                    <td th:if="${customer.gender}" th:text="Nam"></td>
+                    <td th:if="${!(customer.gender)}" th:text="Nữ" ></td>
+                    <td th:text="${customer.customerType.name}"></td>
+                    <td align="center">
+                        <button th:attr="onclick=|showDetail(${customer.getId()})|"
+                                type="button"
+                                class="btn btn-outline-primary border border-dark" data-bs-toggle="modal"
+                                data-bs-target="#modalDetail">
+
+                            <i class="fas fa-info" style="color: #02060d;"></i>
+                        </button>
+                    </td>
+                    <td align="center">
+                        <a th:href="@{/customer/showUpdate/{id}(id=${customer.getId()})}">
+                            <button class="btn btn-outline-primary border-dark">
+                                <i class="far fa-edit" style="color: #02060d;"></i>
+                            </button>
+                        </a>
+                    </td>
+
+                </tr>
+
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <p>Trang hiện tại <span th:text="${customerPage.number +1}"></span> / <span th:text="${customerPage.totalPages}"></span></p>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+
 
         </div>
 
     </div>
 
 </div>
+
+<div>
+    <div style="text-align: center">
+        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasPrevious()}" th:href="@{/customer/list(page=${customerPage.number -1})}">Trước</a>
+        <span class="btn-outline-success" th:text="${customerPage.number + 1}"></span>/<span class="btn-outline-success" th:text="${customerPage.totalPages}"></span>
+        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasNext()}" th:href="@{/customer/list(page=${customerPage.number+1})}">Sau</a>
+    </div>
+</div>
+
+
 <!--    footer-->
 <footer>
     <div th:replace="~{home::footer-start}"></div>
@@ -229,17 +162,19 @@
         <div class="modal-content">
             <form th:action="@{/customer/delete}" method="post">
 
-                <div class="modal-header bg bg-warning">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Bạn chắc chắn muốn xóa </h1>
-                    <button type="button" class="btn btn-warning border border-dark" data-bs-dismiss="modal"
-                            aria-label="Close">
-                        <i class="fab fa-xbox" style="color: #121212;"></i>
+                <div class="modal-header " style="background-color: #FFD333">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Bạn muốn xóa </h1>
+                    <button type="button" class="btn  border border-dark" data-bs-dismiss="modal"
+                            aria-label="Close" style="margin-left: 0.5rem;background-color: #FFD333">X
                     </button>
                 </div>
                 <div class="modal-body">
                     <input id="deleteId" name="deleteId" type="hidden">
-                    <span>Khách hàng tên </span>
-                    <span id="deleteName" name="deleteName"></span>
+                    <span>Khách hàng tên: </span>
+                    <span id="deleteName" name="deleteName" ></span>
+                    <div>
+                        <small style="color:red;">Lưu ý thao tác sẽ không được hoàn tác</small>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-warning border-dark" data-bs-dismiss="modal"><i
@@ -285,7 +220,7 @@
  <div class="modal-header bg bg-warning">
                     <h1 class="modal-title fs-5" id="modalDetailLabel" style="color: #02060d">${data.name}</h1>
                      <button type="button" class="btn btn-warning border border-dark"data-bs-dismiss="modal">
-<i class="fab fa-xbox" style="color: #121212;"></i></button>
+X</button>
                 </div>
                 <div class="modal-body">
                 <input type="hidden" id="idDelete" value="${data.id}">
@@ -348,7 +283,7 @@
         document.getElementById("deleteId").value = id;
         document.getElementById("deleteName").innerText = name;
     }
-// ---Footer----
+    // ---Footer----
 
 </script>
 </body>

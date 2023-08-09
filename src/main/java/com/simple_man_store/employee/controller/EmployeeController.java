@@ -37,10 +37,14 @@ public class EmployeeController {
 
     @GetMapping("/list")
     public String showList(@RequestParam(defaultValue = "0") int page,
-                           @RequestParam(defaultValue = "") String searchName, Model model) {
-        Pageable pageable = PageRequest.of(page, 2, Sort.by("name").ascending());
-        Page<Employee> employeePage = employeeService.findAll(pageable, searchName);
+                           @RequestParam(defaultValue = "") String searchName,
+                           @RequestParam(defaultValue = "") String phoneNumber,
+                           Model model) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("name").ascending());
+        Page<Employee> employeePage = employeeService.findAll(pageable, searchName,phoneNumber);
         model.addAttribute("employeePage", employeePage);
+        model.addAttribute("searchName",searchName);
+        model.addAttribute("phoneNumber",phoneNumber);
         return "employee/list";
     }
 
@@ -48,9 +52,9 @@ public class EmployeeController {
     public String deleteEmployee(@RequestParam int deleteId, RedirectAttributes redirectAttributes) {
         boolean removeStatus = employeeService.remove(deleteId);
         if (removeStatus) {
-            redirectAttributes.addFlashAttribute("message", "Đã xóa Nhân viên thành công");
+            redirectAttributes.addFlashAttribute("message", "Đã xóa Nhân viên thành công.");
         } else {
-            redirectAttributes.addAttribute("message", "Nhân viên không tồn tại trên hệ thống");
+            redirectAttributes.addAttribute("message", "Nhân viên không tồn tại trên hệ thống.");
         }
         return "redirect:/employee/list";
     }
@@ -84,7 +88,7 @@ public class EmployeeController {
         employee.setAccount(account);
         System.out.println(account);
         employeeService.editEmployee(employee);
-        redirectAttributes.addFlashAttribute("message", "Cập nhật thông tin nhân viên thành công");
+        redirectAttributes.addFlashAttribute("message", "Cập nhật thông tin nhân viên thành công.");
         return "redirect:/employee/list";
     }
 
@@ -109,7 +113,7 @@ public class EmployeeController {
         }
         Account checkAccount = accountService.findByEmail(employeeDto.getEmail());
         if (checkAccount != null) {
-            bindingResult.rejectValue("email", null, "Địa chỉ email đã tồn tại trên hệ thống");
+            bindingResult.rejectValue("email", null, "Địa chỉ email đã tồn tại trên hệ thống.");
             model.addAttribute("employeeDto", employeeDto);
             return "employee/create";
         }
@@ -127,7 +131,7 @@ public class EmployeeController {
         employee.setAccount(account);
 
         employeeService.editEmployee(employee);
-        redirectAttributes.addFlashAttribute("message", "Thêm mới nhân viên thành công");
+        redirectAttributes.addFlashAttribute("message", "Thêm mới nhân viên thành công.");
         return "redirect:/employee/list";
 
     }
