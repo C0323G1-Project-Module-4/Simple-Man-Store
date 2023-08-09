@@ -39,23 +39,23 @@ public class EmployeeDto implements Validator {
 
 
         if (employeeDto.getName().equals("")) {
-            errors.rejectValue("name",null,"Vui lòng điền họ và tên");
+            errors.rejectValue("name",null,"Vui lòng điền họ và tên.");
         } else if (employeeDto.getName().length()>255) {
-            errors.rejectValue("name",null,"Họ và tên không vượt quá 255 kí tự");
+            errors.rejectValue("name",null,"Họ và tên không vượt quá 255 kí tự.");
         } else if(!employeeDto.getName().matches(regexName)){
-            errors.rejectValue("name",null,"Sai định dạng tên. Định dạng họ và tên mẫu: Trần Văn Hoàng");
+            errors.rejectValue("name",null,"Sai định dạng tên. Định dạng họ và tên mẫu: Trần Văn Hoàng.");
         }
 
         if (employeeDto.getPhoneNumber().equals("")) {
-            errors.rejectValue("phoneNumber",null,"Vui lòng điền số điện thoại");
+            errors.rejectValue("phoneNumber",null,"Vui lòng điền số điện thoại.");
         } else if(!employeeDto.getPhoneNumber().matches(regexPhoneNumber)) {
-            errors.rejectValue("phoneNumber",null,"Sai định dạng số điện thoại. Mẫu định dạng số điện thoại đúng: 0987123456 hoặc 84987123456");
+            errors.rejectValue("phoneNumber",null,"Sai định dạng số điện thoại. Mẫu định dạng số điện thoại đúng: 0987123456 hoặc 84987123456.");
         }
 
         if (employeeDto.getEmail().equals("")) {
-            errors.rejectValue("email",null,"Vui lòng điền địa chỉ email");
+            errors.rejectValue("email",null,"Vui lòng điền địa chỉ email.");
         } else if(!employeeDto.getEmail().matches(regexEmail)) {
-            errors.rejectValue("email",null,"Sai định dạng email. Mẫu định dạng email đúng: tranvanhoang123@gmail.com");
+            errors.rejectValue("email",null,"Sai định dạng email. Mẫu định dạng email đúng: tranvanhoang123@gmail.com.");
         }
 
 
@@ -63,20 +63,20 @@ public class EmployeeDto implements Validator {
 
 
         if (employeeDto.getAddress().equals("")) {
-            errors.rejectValue("address",null,"Vui lòng điền địa chỉ");
+            errors.rejectValue("address",null,"Vui lòng điền địa chỉ.");
         } else if(employeeDto.getAddress().length() >255) {
-            errors.rejectValue("address",null,"Địa chỉ không được quá 255 kí tự");
+            errors.rejectValue("address",null,"Địa chỉ không được quá 255 kí tự.");
         }
 
         if(employeeDto.dob.equals("")) {
-            errors.rejectValue("dob",null,"Vui lòng nhập ngày sinh");
+            errors.rejectValue("dob",null,"Vui lòng nhập ngày sinh.");
         } else {
             LocalDate presentDate = LocalDate.now();
             LocalDate birthday = LocalDate.parse(employeeDto.dob);
             Period agePeriod = Period.between(birthday,presentDate);
             int age = agePeriod.getYears();
-            if(age < 18|age>70) {
-                errors.rejectValue("dob",null,"Yêu cầu Nhân viên phải đủ 18 tuổi và dưới 70 tuổi");
+            if(age < 15|age>70) {
+                errors.rejectValue("dob",null,"Yêu cầu Nhân viên phải đủ 15 tuổi và dưới 70 tuổi.");
             }
         }
 
