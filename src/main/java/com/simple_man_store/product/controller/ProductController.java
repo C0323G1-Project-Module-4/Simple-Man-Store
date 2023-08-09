@@ -40,7 +40,7 @@ public class ProductController {
     @GetMapping("/list")
     public String showListProduct(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "") String category,
-                                  @RequestParam(defaultValue = "0-10000000") String priceRange,
+                                  @RequestParam(defaultValue = "0-100000000") String priceRange,
                                   @RequestParam(defaultValue = "") String searchName,
                                   Model model) {
         Pageable pageable = PageRequest.of(page, 8, Sort.by("id").descending());
@@ -55,6 +55,11 @@ public class ProductController {
         model.addAttribute("productPage", productPage);
         model.addAttribute("categoryList", categoryList);
         return "product/list";
+    }
+    @GetMapping
+    public String searchProduct(Model model){
+
+        return "product/search";
     }
 
     @GetMapping("/create")
@@ -106,6 +111,7 @@ public class ProductController {
 
     @PostMapping("/delete")
     public String delete(@RequestParam int deleteId, RedirectAttributes redirectAttributes) {
+        System.out.println(deleteId);
         Warehouse warehouse = warehouseService.selectWarehouseByProductId(deleteId);
         Product product = productService.selectProductById(deleteId);
         warehouseService.deleteWareHouse(warehouse);

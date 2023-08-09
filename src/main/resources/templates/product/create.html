@@ -14,73 +14,86 @@
 <div th:replace="~{home::navbar-start}"></div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-4 mx-auto">
+            <img id="imagePreview" style="width: 100%; height: 550px">
+        </div>
+        <div class="col-md-8">
             <form class="was-validated" th:object="${productDto}" th:action="@{/product/create}" method="post">
 
                 <div class="d-flex justify-content-center">
                     <h1>Tạo mới sản phẩm</h1>
                 </div>
 
-                <div class="input-group mb-3">
+                <div class="input-group mb-2">
                     <span class="input-group-text mx-auto" id="basic-addon1" style="width: 200px">Tên sản phẩm</span>
                     <input type="text" class="form-control" placeholder="Tên sản phẩm" aria-label="Tên sản phẩm"
                            aria-describedby="basic-addon1" th:field="*{name}">
-                    <small style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+                </div>
+                <div>
+                    <small style="color: red; margin-left: 200px"  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
                 </div>
 
-                <div class="input-group mb-3">
+                <div class="input-group mb-2">
                     <label class="input-group-text mx-auto" for="inputGroupSelect01" style="width: 200px">Loại sản
                         phẩm</label>
                     <select class="form-select" id="inputGroupSelect01" th:field="*{categoryId}">
-                        <option th:each="category: ${categoryList}" th:value="${category.id}" th:text="${category.name}">
+                        <option th:each="category: ${categoryList}" th:if="${category.name !=''}"
+                                th:value="${category.id}" th:text="${category.name}">
                         </option>
                     </select>
                 </div>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text mx-auto" style="width: 200px">Mô tả về sản phẩm</span>
-                    <textarea class="form-control" aria-label="With textarea" th:field="*{description}"></textarea>
-                    <small style="color: red" th:if="${#fields.hasErrors('description')}"
-                           th:errors="*{description}"></small>
-                </div>
-
-                <div class="input-group mb-3">
-                    <label class="input-group-text mx-auto" for="inputGroupSelect02" style="width: 200px">Size</label>
+                <div class="input-group mb-2">
+                    <label class="input-group-text mx-auto" for="inputGroupSelect02" style="width: 200px">Kích
+                        cở</label>
                     <select class="form-select" id="inputGroupSelect02" th:field="*{sizeId}">
                         <option th:each="size: ${sizeList}" th:value="${size.id}" th:text="${size.name}">
                         </option>
                     </select>
                 </div>
 
-                <div class="input-group mb-3">
+                <div class="input-group mb-2">
                     <span class="input-group-text mx-auto" id="basic-addon4" style="width: 200px">Số lượng</span>
                     <input type="number" class="form-control" id="basic-url" aria-describedby="basic-addon4"
                            th:field="*{quantity}">
-                    <small style="color: red" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></small>
+                </div>
+                <div>
+                    <small style="color: red; margin-left: 200px"  th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></small>
                 </div>
 
-                <div class="input-group mb-3">
+                <div class="input-group mb-2">
                     <span class="input-group-text mx-auto" id="basic-addon5" style="width: 200px">Giá</span>
                     <input type="number" class="form-control" aria-describedby="basic-addon5"
                            th:field="*{price}">
-                    <small style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{price}"></small>
+                </div>
+                <div>
+                    <small style="color: red; margin-left: 200px"  th:if="${#fields.hasErrors()}" th:errors="*{price}"></small>
                 </div>
 
-                <div class="input-group mb-3">
+                <div class="input-group mb-2">
+                    <span class="input-group-text mx-auto" style="width: 200px">Mô tả về sản phẩm</span>
+                    <textarea class="form-control" aria-label="With textarea" placeholder="Mô tả sản phẩm"
+                              th:field="*{description}"></textarea>
+                </div>
+                <div>
+                    <small style="color: red; margin-left: 200px"  th:if="${#fields.hasErrors('description')}"
+                           th:errors="*{description}"></small>
+                </div>
+
+                <div class="input-group mb-2">
                     <span class="input-group-text mx-auto" style="width: 200px;">Chọn hình ảnh</span>
                     <input type="hidden" id="thumbnailURL" th:field="*{image}"/>
                     <input id="btnThumbnailURL" type="file" class="form-control choose-file"/>
                 </div>
-                <div class="input-group mb-3">
+
+                <div class="input-group mb-2">
                     <progress id="uploader" value="0" max="100" style="width: 100%">0%</progress>
                 </div>
                 <div class="input-group">
-                    <button class="btn btn-primary" type="submit">Submit form</button>
+                    <button class="btn btn-primary" type="submit">Thêm mới</button>
                 </div>
             </form>
         </div>
-        <div class="col-md-3"></div>
     </div>
 </div>
 
@@ -131,7 +144,18 @@
                 newImage.style.display = 'block';
             });
     });
+
+    // Hiển thị ảnh
+    document.getElementById('btnThumbnailURL').addEventListener('change', function () {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var preview = document.getElementById('imagePreview');
+            preview.src = reader.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
 </script>
+
 <!--footer-->
 <div th:replace="~{home::footer-start}"></div>
 <div th:replace="~{home::back-to-top}"></div>
