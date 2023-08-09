@@ -3,6 +3,7 @@ package com.simple_man_store.customer.service.customer;
 import com.simple_man_store.customer.model.Customer;
 import com.simple_man_store.customer.model.CustomerType;
 import com.simple_man_store.customer.repository.ICustomerRepository;
+import com.simple_man_store.customer.until.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import java.util.List;
 public class CustomerService implements ICustomerService {
     @Autowired
     private ICustomerRepository customerRepository;
+
 
     @Override
     public boolean add(Customer customer) {
@@ -34,14 +36,14 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public boolean delete(Integer id) {
-      Customer customer = customerRepository.findById(id).get();
-      if (customer == null){
-          return false;
-      }else {
-          customer.setFlag(false);
-          customerRepository.save(customer);
-          return true;
-      }
+        Customer customer = customerRepository.findById(id).get();
+        if (customer == null){
+            return false;
+        }else {
+            customer.setFlag(false);
+            customerRepository.save(customer);
+            return true;
+        }
     }
 
     @Override
@@ -57,24 +59,39 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public Page<Customer> findAllPage(Pageable pageable, String name) {
-        return customerRepository.findCustomerByNameContaining(pageable, "%"+name+"%");
+        Page<Customer> customerPage = customerRepository.findCustomerByNameContaining(pageable, "%"+name+"%");
+        for (Customer c:customerPage) {
+            c.setDob(DateUtils.reverseDate(c.getDob()));
+        }
+        return customerPage;
     }
 
     @Override
     public Page<Customer> findAllPageCustomerTypeId(Pageable pageable, String name, String[] customerTypeId) {
-
+        Page<Customer> customerPage;
         List<Integer> customerTypeIds = new ArrayList<>();
         for (String s:customerTypeId ) {
             customerTypeIds.add(Integer.valueOf(s));
         }
-
-        return customerRepository.findCustomerByNameContainingCAndCustomerType_Id(pageable,"%"+name+"%",customerTypeIds);
+        customerPage = customerRepository.findCustomerByNameContainingCAndCustomerType_Id(pageable,"%"+name+"%",customerTypeIds);
+        for (Customer c:customerPage) {
+            c.setDob(DateUtils.reverseDate(c.getDob()));
+        }
+        return customerPage;
 
     }
 
     @Override
     public Customer findById(Integer id) {
-        return customerRepository.findById(id).get();
+        Customer customerFind = customerRepository.findById(id).get();
+        customerFind.setDob(DateUtils.reverseDate(customerFind.getDob()));
+        return customerFind;
+    }
+
+    @Override
+    public Customer searchById(Integer id) {
+        Customer customer = customerRepository.findById(id).get();
+        return customer;
     }
 
     @Override
