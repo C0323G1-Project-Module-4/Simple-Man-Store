@@ -57,8 +57,8 @@
                         </div>
                         <div class="col-md-12  info-input">
                             <label>Số điện thoại <sup style="color: red">*</sup></label>
-                            <input class="form-control" type="text" name="phoneNumber" placeholder="0123 456 789" th:field="*{phoneNumber}">
-                            <small style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></small>
+                            <input class="form-control" type="text" name="phoneNumber" placeholder="0123 456 789" th:field="*{phone_number}">
+                            <small style="color: red" th:if="${#fields.hasErrors('phone_number')}" th:errors="*{phone_number}"></small>
                         </div>
                         <div class="col-md-12  info-input">
                             <label>Địa chỉ <sup style="color: red">*</sup></label>
@@ -97,25 +97,30 @@
                         </div>
                     </div>
                 </div>
+                <input hidden="hidden" id="total" th:value="${cart.countTotalPayment()}">
                 <div class="mb-5" th:unless="${cart.products.isEmpty()}">
                     <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Thanh Toán</span></h5>
                     <div class="bg-light p-30">
+<!--                        <div class="form-group">-->
+<!--                            <div class="custom-control custom-radio">-->
+<!--&lt;!&ndash;                                <input type="radio" class="custom-control-input" name="payment" value="vnpay" id="paypal">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <label class="custom-control-label" for="paypal">VNPAY</label>&ndash;&gt;-->
+<!--                                <select name="payment">-->
+<!--                                    <option value="cash">Thanh toán tiền mặt</option>-->
+<!--                                    <option value="vnpay">VNPAY</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="form-group">
                             <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="paypal">
-                                <label class="custom-control-label" for="paypal">Paypal</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="directcheck">
+                                <input type="radio" checked="checked" class="custom-control-input" name="payment" value="cash" id="directcheck">
                                 <label class="custom-control-label" for="directcheck">Thanh toán tiền mặt</label>
                             </div>
                         </div>
                         <div class="form-group mb-4">
                             <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
-                                <label class="custom-control-label" for="banktransfer">Chuyển khoản</label>
+                                <input type="radio" class="custom-control-input" name="payment" value="vnpay" id="banktransfer">
+                                <label class="custom-control-label" for="banktransfer">VNPAY</label>
                             </div>
                         </div>
                         <button class="btn btn-block btn-primary font-weight-bold py-3">Đặt hàng</button>
@@ -131,6 +136,10 @@
 <div th:replace="~{home::footer-start}"></div>
 <div th:replace="~{home::back-to-top}"></div>
 <div th:replace="~{home::footer}"></div>
+
+
+
+
 </body>
 
 </html>

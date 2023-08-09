@@ -5,6 +5,7 @@
     <title>Danh sách order</title>
 
     <div th:insert="~{home::libraries}"></div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 
 </head>
 <body>
@@ -32,7 +33,7 @@
             <td class="align-middle" th:text="${status.count}"></td>
             <td class="align-middle" th:text="${order.name}"></td>
             <td class="align-middle" th:text="${order.email}"></td>
-            <td class="align-middle" th:text="${order.phoneNumber}"></td>
+            <td class="align-middle" th:text="${order.phone_number}"></td>
             <td class="align-middle" th:text="${order.address}"></td>
             <td class="align-middle" th:text="${order.order_date}"></td>
             <td class="align-middle" th:if="${order.payment_date}!=null" th:text="${order.payment_date}"></td>
@@ -91,8 +92,8 @@
                     Xoá đơn hàng của <span id="deleteName"></span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button class="btn btn-primary">Xoá</button>
                 </div>
             </form>
         </div>
@@ -111,23 +112,33 @@
 </script>
 
 <div th:if="${msg}">
-
+    <span id="message" th:text="${msg}" style="display: none"></span>
 </div>
-<!--    Message-->
 <script>
-    window.onload = (event) => {
-        let myAlert = document.querySelectorAll('.toast')[0];
-        if (myAlert) {
-            let bsAlert = new bootstrap.Toast(myAlert);
-            // bsAlert.delay(5000); // Hiển thị toast trong 5 giây
-            bsAlert.show();
+    let message = document.getElementById("message").innerText;
+    console.log(message);
+
+    function showMessage() {
+        if (message != null) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: message,
+                showConfirmButton: false,
+                timer: 2500
+            })
         }
-    };
+    }
+
+    document.addEventListener("DOMContentLoaded", showMessage());
+
+
 </script>
 
 </div>
 <div th:replace="~{home::footer-start}"></div>
 <div th:replace="~{home::back-to-top}"></div>
 <div th:replace="~{home::footer}"></div>
+<script th:src="@{/jquery-3.7.0.min.js}"></script>
 </body>
 </html>

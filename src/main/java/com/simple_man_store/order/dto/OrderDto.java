@@ -6,7 +6,7 @@ import org.springframework.validation.Validator;
 public class OrderDto implements Validator {
     private String name;
     private String email;
-    private String phoneNumber;
+    private String phone_number;
     private String address;
 
     public String getName() {
@@ -25,12 +25,12 @@ public class OrderDto implements Validator {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone_number() {
+        return phone_number;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
     }
 
     public String getAddress() {
@@ -67,9 +67,9 @@ public class OrderDto implements Validator {
 //            errors.rejectValue("email", null, "Sai định dạng e mail");
 //        }
 
-        if(orderDto.phoneNumber.trim().equals("") || orderDto.phoneNumber == null){
+        if(orderDto.phone_number.trim().equals("") || orderDto.phone_number == null){
             errors.rejectValue("phoneNumber",null,"Vui lòng nhập số điện thoại");
-        }else if(orderDto.phoneNumber.length()>20){
+        }else if(orderDto.phone_number.length()>20){
             errors.rejectValue("phoneNumber",null,"Quá ký tự cho phép");
         }else if(orderDto.email.matches("^(?:\\+84|0)(?:\\d{9,10})$")) {
             errors.rejectValue("phoneNumber", null, "Vui lòng nhập đúng SĐT VD:'0XXXXXXXXX' hoặc '+84XXXXXXXXX'");
