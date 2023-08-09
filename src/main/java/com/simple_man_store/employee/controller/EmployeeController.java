@@ -6,6 +6,7 @@ import com.simple_man_store.account.service.IAccountService;
 import com.simple_man_store.employee.dto.EmployeeDto;
 import com.simple_man_store.employee.model.Employee;
 import com.simple_man_store.employee.service.IEmployeeService;
+import com.simple_man_store.order.model.Cart;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,13 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/employee")
+@SessionAttributes("cart")
 public class EmployeeController {
+    @ModelAttribute("cart")
+    public Cart setupCart() {
+        return new Cart();
+    }
+
     @Autowired
     private IEmployeeService employeeService;
     @Autowired

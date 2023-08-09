@@ -1,5 +1,6 @@
 package com.simple_man_store.product.controller;
 
+import com.simple_man_store.order.model.Cart;
 import com.simple_man_store.product.dto.ProductDto;
 import com.simple_man_store.product.model.Category;
 import com.simple_man_store.product.model.Product;
@@ -26,7 +27,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/product")
+@SessionAttributes("cart")
 public class ProductController {
+    @ModelAttribute("cart")
+    public Cart setupCart() {
+        return new Cart();
+    }
+
     @Autowired
     private IProductService productService;
     @Autowired
@@ -188,5 +195,34 @@ public class ProductController {
         Warehouse warehouse = warehouseService.selectWarehouseByProductId(id);
         model.addAttribute("warehouse", warehouse);
         return "product/detail";
+    }
+
+
+
+
+
+
+
+
+
+
+    @GetMapping("")
+    public String goShopping(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "") String category,
+                                  @RequestParam(defaultValue = "0-10000000") String priceRange,
+                                  @RequestParam(defaultValue = "") String searchName,
+                                  Model model) {
+        Pageable pageable = PageRequest.of(page, 9, Sort.by("id").descending());
+        String[] parts = priceRange.split("-");
+        Double minPrice = Double.valueOf(parts[0]);
+        Double maxPrice = Double.valueOf(parts[1]);
+        List<Category> categoryList = categoryService.showListCategory();
+        Page<Product> productPage = productService.findProduct(pageable, searchName, minPrice, maxPrice, category);
+        model.addAttribute("category", category);
+        model.addAttribute("priceRange", priceRange);
+        model.addAttribute("searchName", searchName);
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("categoryList", categoryList);
+        return "shop";
     }
 }

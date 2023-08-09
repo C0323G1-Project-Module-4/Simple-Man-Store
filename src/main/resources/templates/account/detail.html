@@ -15,12 +15,13 @@
         label {
             display: block;
         }
-        .customer-rank{
+
+        .customer-rank {
             margin-left: 15px;
             border: black;
             border-radius: 28px;
             background-color: black;
-            padding: 6px 12px;
+            padding: 6px 14px;
             color: white;
 
         }
@@ -32,28 +33,35 @@
 
 
 <div class="container">
-    <div><p th:if="${msg!= null}" th:text="${msg}" style="color: green"></p></div>
     <div class="row col-md-12 col-lg-12">
         <h4><i style="margin-right: 5px" class="fa-solid fa-user"></i>Tài Khoản Của Bạn</h4>
     </div>
     <div class="row col-md-12 col-lg-12 mt-4 ">
         <div class="col-md-3 col-lg-3">
-            <div class="container" style="border: 1px solid gray;">
-                <div class="my-4 mx-3" style="border-bottom: 1px solid black;">
-                    <h5><b>Danny</b></h5><span class="customer-rank"><b>Diamond</b></span>
+            <div class="container" style="border: 1px solid gray;min-width: 250px">
+                <div style="height: 80px" class="d-flex">
+                    <div><span style="margin-left: 10px;
+                                    padding-bottom: 30px; padding-top: 30px"
+                               class="d-flex align-self-center"><b
+                            style="color: black;font-size: 20px">Danny Nguyễn</b></span></div>
+                    <div class="d-flex"><small class="d-flex align-self-center"><b class="customer-rank">Gold</b></small>
+                    </div>
                 </div>
-                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " href="#"><b>Thông tin tài khoản</b></a>
+
+                <div class="mb-3 mx-3"><a style="border-top: black solid 1px; padding-top: 10px" class="breadcrumb-item text-dark " th:href="@{/account}"><b>Thông tin tài
+                    khoản</b></a>
                 </div>
-                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " href="#">Lịch sử mua hàng</a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " th:href="@{order/history}">Lịch sử mua
+                    hàng</a></div>
                 <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " href="#">Đổi mật khẩu</a></div>
                 <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" class="mb-3 mx-3"><a
-                        class="breadcrumb-item text-dark " href="#">Quản lý đơn hàng</a></div>
+                        class="breadcrumb-item text-dark " th:href="@{/order/list}">Quản lý đơn hàng</a></div>
                 <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" class="mb-3 mx-3"><a
-                        class="breadcrumb-item text-dark " href="#">Quản lý khách hàng</a></div>
+                        class="breadcrumb-item text-dark " th:href="@{/customer/list}">Quản lý khách hàng</a></div>
                 <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" class="mb-3 mx-3"><a
-                        class="breadcrumb-item text-dark " href="#">Quản lý sản phẩm</a></div>
-                <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" class="mb-3 mx-3"><a
-                        class="breadcrumb-item text-dark " href="#">Quản lý nhân viên</a></div>
+                        class="breadcrumb-item text-dark " th:href="@{/product/list}">Quản lý sản phẩm</a></div>
+                <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" class="mb-3 mx-3"><a style="border-bottom: black solid 1px; padding-bottom: 10px"
+                        class="breadcrumb-item text-dark " th:href="@{/employee/list}">Quản lý nhân viên</a></div>
                 <div class="mb-3 mx-3" style="position: relative"><a class="breadcrumb-item text-dark "
                                                                      th:href="@{/logout}">Đăng xuất <i
                         style="position: relative;top: 4px;margin-left: 5px"

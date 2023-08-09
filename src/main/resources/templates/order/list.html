@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách order</title>
+
+    <div th:insert="~{home::libraries}"></div>
+
+</head>
+<body>
+
+<div th:replace="~{home::navbar-start}"></div>
+
+
+<div class="container-fluid">
+    <table class="table table-light table-borderless table-hover text-center mb-0">
+        <thead class="thead-dark">
+        <tr>
+            <th>Stt</th>
+            <th>Tên khách hàng</th>
+            <th>Email</th>
+            <th>SĐT</th>
+            <th>Địa chỉ</th>
+            <th>Ngày đặt hàng</th>
+            <th>Ngày thanh toán</th>
+            <th>Chi tiết đơn hàng</th>
+            <th>Xoá</th>
+        </tr>
+        </thead>
+        <tbody class="align-middle">
+        <tr th:each="order,status:${orderPage}">
+            <td class="align-middle" th:text="${status.count}"></td>
+            <td class="align-middle" th:text="${order.name}"></td>
+            <td class="align-middle" th:text="${order.email}"></td>
+            <td class="align-middle" th:text="${order.phoneNumber}"></td>
+            <td class="align-middle" th:text="${order.address}"></td>
+            <td class="align-middle" th:text="${order.order_date}"></td>
+            <td class="align-middle" th:if="${order.payment_date}!=null" th:text="${order.payment_date}"></td>
+            <td class="align-middle" th:if="${order.payment_date}==null">Chưa thanh toán</td>
+            <td class="align-middle"><a class="btn btn-primary px-3" th:href="@{/order/order-detail/__${order.id}__}">Xem
+                chi tiết</a></td>
+            <td class="align-middle">
+                <button th:attr="onclick=|showInfo(${order.id},'${order.name}')|" type="button"
+                        class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fa fa-times"></i>
+                </button>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <div class="col-12 py-2">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled" th:unless="${orderPage.hasPrevious()}"><a
+                        class="page-link">Trước</span></a></li>
+                <li class="page-item " th:if="${orderPage.hasPrevious()}"><a class="page-link"
+                                                                             th:href="@{/order/list(page=${orderPage.number-1})}">Trước</a>
+                </li>
+                <li class="page-item" th:if="${orderPage.hasPrevious()}"><a class="page-link"
+                                                                            th:href="@{/order/list(page=${orderPage.number-1})}"
+                                                                            th:text="${orderPage.number}"></a></li>
+                <li class="page-item  active"><a class="page-link" href="#" th:text="${orderPage.number+1}"></a></li>
+                <li class="page-item" th:if="${orderPage.hasNext()}"><a class="page-link"
+                                                                        th:href="@{/order/list(page=${orderPage.number+1})}"
+                                                                        th:text="${orderPage.number+2}"></a></li>
+                <li class="page-item disabled" th:unless="${orderPage.hasNext()}"><a class="page-link">Sau</span></a>
+                </li>
+                <li class="page-item" th:if="${orderPage.hasNext()}"><a class="page-link"
+                                                                        th:href="@{/order/list(page=${orderPage.number+1})}">Sau</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form th:action="@{/order/delete}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xoá đơn hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <input id="id" name="id" hidden="hidden">
+                <div class="modal-body">
+                    Xoá đơn hàng của <span id="deleteName"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Delete-->
+<script>
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
+
+    function showInfo(id, name) {
+        document.getElementById("id").value = +id;
+        document.getElementById("deleteName").innerText = name;
+    }
+</script>
+
+<div th:if="${msg}">
+
+</div>
+<!--    Message-->
+<script>
+    window.onload = (event) => {
+        let myAlert = document.querySelectorAll('.toast')[0];
+        if (myAlert) {
+            let bsAlert = new bootstrap.Toast(myAlert);
+            // bsAlert.delay(5000); // Hiển thị toast trong 5 giây
+            bsAlert.show();
+        }
+    };
+</script>
+
+</div>
+<div th:replace="~{home::footer-start}"></div>
+<div th:replace="~{home::back-to-top}"></div>
+<div th:replace="~{home::footer}"></div>
+</body>
+</html>

@@ -5,6 +5,7 @@ import com.simple_man_store.customer.model.Customer;
 import com.simple_man_store.customer.repository.ICustomerRepository;
 import com.simple_man_store.customer.service.customer.ICustomerService;
 import com.simple_man_store.customer.service.customer_type.ICustomerTypeService;
+import com.simple_man_store.order.model.Cart;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +24,13 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/customer")
+@SessionAttributes("cart")
 public class CustomerController {
+    @ModelAttribute("cart")
+    public Cart setupCart() {
+        return new Cart();
+    }
+
     @Autowired
     private ICustomerService customerService;
     @Autowired
