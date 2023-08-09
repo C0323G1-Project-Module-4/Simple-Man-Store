@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>MultiShop - Online Shop Website Template</title>
+    <title>Simple Man Store</title>
     <div th:insert="~{home::libraries}"></div>
 </head>
 
@@ -30,18 +30,14 @@
         <!-- Shop Sidebar Start -->
         <div class="col-lg-3 col-md-4">
             <form action="">
+                <input type="text" name="sort-type" id="sort-type">
                 <!-- Category Start -->
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Lọc theo loại</span><button>Tìm Kiếm</button>
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Lọc theo loại</span><button id="search-button" type="submit" class="btn-outline-dark">Tìm Kiếm</button>
                 </h5>
                 <div class="bg-light p-4 mb-30">
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="category-all">
-                        <label class="custom-control-label" for="category-all">Tất cả</label>
-                        <span class="badge border font-weight-normal">1000</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="color-1">
-                        <label class="custom-control-label" for="color-1">Quần</label>
+                    <div th:each="category: ${categoryList}" class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" th:id="${category.id}" th:value="${category.id} ">
+                        <label class="custom-control-label" th:for="${category.id}" th:text="${category.name}"></label>
                         <span class="badge border font-weight-normal">150</span>
                     </div>
                 </div>
@@ -51,12 +47,6 @@
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Lọc theo kích cỡ</span>
                 </h5>
                 <div class="bg-light p-4 mb-30">
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="size-all">
-                        <label class="custom-control-label" for="size-all">Tất cả</label>
-                        <span class="badge border font-weight-normal">1000</span>
-                    </div>
-
                     <div th:each="size: ${sizeList}"
                          class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                         <input type="checkbox" class="custom-control-input" th:value="${size.id}" th:id="${size.id}">
@@ -86,8 +76,8 @@
                                         data-toggle="dropdown">Sắp xếp
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" id="ascending" href="#">Giá tăng dần</a>
-                                    <a class="dropdown-item" id="descending" href="#">Giá giảm dần</a>
+                                    <a class="dropdown-item" id="ascending" onclick="sortAscending()" href="#">Giá tăng dần</a>
+                                    <a class="dropdown-item" id="descending" onclick="sortDescending()" href="#">Giá giảm dần</a>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +137,12 @@
 <div th:replace="~{home::back-to-top}"></div>
 <div th:replace="~{home::footer}"></div>
 <script>
+    function sortAscending(){
 
+    }
+    function sortDescending(){
+
+    }
 </script>
 </body>
 
