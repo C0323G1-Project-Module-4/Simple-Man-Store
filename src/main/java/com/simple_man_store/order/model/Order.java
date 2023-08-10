@@ -4,6 +4,7 @@ import com.simple_man_store.account.model.Account;
 import com.simple_man_store.order_detail.model.OrderDetail;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -21,7 +22,7 @@ public class Order {
     @Column(nullable = false)
     private String address;
     @Column(columnDefinition = "date")
-    private String order_date;
+    private String order_date = String.valueOf(LocalDate.now());
     @Column(columnDefinition = "date")
     private String payment_date;
     @Column(columnDefinition = "bit(1)")
