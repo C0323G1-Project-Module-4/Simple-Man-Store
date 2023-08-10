@@ -122,11 +122,10 @@ public class CustomerController {
         Customer customer = new Customer();
         new CustomerDto().validate(customerDto,bindingResult);
         if(bindingResult.hasErrors()){
-            return "redirect:/account";
+            return "/account/detail";
         }
         BeanUtils.copyProperties(customerDto,customer);
         customerService.save(customer);
-        redirectAttributes.addFlashAttribute("msg","Cập nhật thành công!");
         return "redirect:/account";
     }
     @PostMapping("/even")

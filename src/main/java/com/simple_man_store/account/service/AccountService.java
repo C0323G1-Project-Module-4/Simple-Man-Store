@@ -29,5 +29,31 @@ public class AccountService implements IAccountService{
         accountRepository.save(account);
     }
 
+    @Override
+    public boolean checkOldPass(String email, String confirmOldPassword) {
+        Account account = accountRepository.findByEmail(email);
+        String confirmOldPass = EncrytedPasswordUtils.encrytePassword(confirmOldPassword);
+        String oldPass = account.getEncrytedPassword();
+        return oldPass.equals(confirmOldPass);
+    }
+
+    @Override
+    public boolean checkNewPass(String email, String newPassword) {
+        Account account = accountRepository.findByEmail(email);
+        String newPass = EncrytedPasswordUtils.encrytePassword(newPassword);
+        String oldPass = account.getEncrytedPassword();
+        return !newPass.equals(oldPass);
+        // Nếu mật khẩu mới giống mật khẩu cũ --> return true
+
+    }
+
+    @Override
+    public void changePassword(String email, String newPassword) {
+        Account account = accountRepository.findByEmail(email);
+        String newPass = EncrytedPasswordUtils.encrytePassword(newPassword);
+        account.setEncrytedPassword(newPass);
+        accountRepository.save(account);
+    }
+
 
 }

@@ -96,7 +96,7 @@
                                 <a class="btn btn-outline-dark btn-square" th:href="@{/order/detail/__${product.id}__}"><i
                                         class="fa fa-search"></i></a>
                             </div>
-                            <div class="text-center py-4">
+                            <div class="text-center py-4" style="z-index: 22">
                                 <a class="h6 text-decoration-none text-truncate" th:text="${product.name}" th:href="@{/order/detail/__${product.id}__}"></a>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
                                     <h5 th:text="${#numbers.formatInteger(product.price,3,'POINT')}"></h5>
