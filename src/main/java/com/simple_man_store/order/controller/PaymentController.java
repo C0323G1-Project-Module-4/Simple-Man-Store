@@ -3,6 +3,8 @@ package com.simple_man_store.order.controller;
 import com.simple_man_store.order.config.Config;
 import com.simple_man_store.order.dto.PaymentRestDto;
 import com.simple_man_store.order.model.Cart;
+import com.simple_man_store.order.service.IOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,8 @@ public class PaymentController {
     public Cart setupCart() {
         return new Cart();
     }
+    @Autowired
+    private IOrderService orderService;
     @GetMapping("/create_payment")
     public String createPayment(@RequestParam String tempAmount) throws UnsupportedEncodingException {
 
@@ -187,6 +191,7 @@ public class PaymentController {
             cart.clear();
             return "order/success";
         }else {
+            orderService.deleteLast();
             redirectAttributes.addFlashAttribute("msg","Thanh toán thất bại");
             return "redirect:/order/checkout";
         }
