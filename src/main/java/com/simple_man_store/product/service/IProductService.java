@@ -16,4 +16,6 @@ public interface IProductService {
     Page<Product> findAll(Pageable pageable);
 
     Page<Product> findProduct(Pageable pageable, String name, Double minPrice, Double maxPrice, String categoryName);
+    Page<Product> findProductSearch(Pageable pageable,String [] categoryName,String [] sizeName,String order);
+
 }
