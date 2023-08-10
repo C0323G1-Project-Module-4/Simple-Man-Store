@@ -82,6 +82,11 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    public Integer findSumPriceByEmail(String email) {
+        return customerRepository.findCustomerByEmail(email);
+    }
+
+    @Override
     public Customer findById(Integer id) {
         Customer customerFind = customerRepository.findById(id).get();
         customerFind.setDob(DateUtils.reverseDate(customerFind.getDob()));

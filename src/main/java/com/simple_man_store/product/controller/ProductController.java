@@ -47,7 +47,7 @@ public class ProductController {
     @GetMapping("/list")
     public String showListProduct(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "") String category,
-                                  @RequestParam(defaultValue = "0-10000000") String priceRange,
+                                  @RequestParam(defaultValue = "0-100000000") String priceRange,
                                   @RequestParam(defaultValue = "") String searchName,
                                   Model model) {
         Pageable pageable = PageRequest.of(page, 8, Sort.by("id").descending());
@@ -62,6 +62,11 @@ public class ProductController {
         model.addAttribute("productPage", productPage);
         model.addAttribute("categoryList", categoryList);
         return "product/list";
+    }
+    @GetMapping
+    public String searchProduct(Model model){
+
+        return "product/search";
     }
 
     @GetMapping("/create")
@@ -113,6 +118,7 @@ public class ProductController {
 
     @PostMapping("/delete")
     public String delete(@RequestParam int deleteId, RedirectAttributes redirectAttributes) {
+        System.out.println(deleteId);
         Warehouse warehouse = warehouseService.selectWarehouseByProductId(deleteId);
         Product product = productService.selectProductById(deleteId);
         warehouseService.deleteWareHouse(warehouse);
@@ -206,23 +212,24 @@ public class ProductController {
 
 
 
-    @GetMapping("")
+    @RequestMapping("/shopping")
     public String goShopping(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "") String category,
                                   @RequestParam(defaultValue = "0-10000000") String priceRange,
                                   @RequestParam(defaultValue = "") String searchName,
                                   Model model) {
-        Pageable pageable = PageRequest.of(page, 9, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, 35, Sort.by("id").descending());
         String[] parts = priceRange.split("-");
         Double minPrice = Double.valueOf(parts[0]);
         Double maxPrice = Double.valueOf(parts[1]);
         List<Category> categoryList = categoryService.showListCategory();
         Page<Product> productPage = productService.findProduct(pageable, searchName, minPrice, maxPrice, category);
         model.addAttribute("category", category);
-        model.addAttribute("priceRange", priceRange);
         model.addAttribute("searchName", searchName);
         model.addAttribute("productPage", productPage);
         model.addAttribute("categoryList", categoryList);
+        List<Size> sizeList = sizeService.showListSize();
+        model.addAttribute("sizeList",sizeList);
         return "shop";
     }
 }
