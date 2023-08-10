@@ -2,9 +2,8 @@ package com.simple_man_store.account.controller;
 
 
 import com.simple_man_store.account.dto.AccountDto;
-import com.simple_man_store.account.model.Account;
+import com.simple_man_store.account.dto.PasswordDto;
 import com.simple_man_store.account.service.IAccountService;
-import com.simple_man_store.account.util.EncrytedPasswordUtils;
 import com.simple_man_store.account.util.WebUtils;
 import com.simple_man_store.customer.dto.CustomerDto;
 import com.simple_man_store.customer.model.Customer;
@@ -81,8 +80,15 @@ public class AccountController {
         return "detail";
     }
 
+    @GetMapping("/account/change-pass")
+    public String changePassword(Model model){
+        model.addAttribute("passwordDto",new PasswordDto());
+        return "/account/change-password";
+    }
+
+
     @GetMapping("/login")
-    public String signIn(Model model) {
+    public String signIn( Model model) {
         return "sign-in";
     }
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -93,10 +99,27 @@ public class AccountController {
         return "adminPage";
     }
 
-    @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
-    public String logoutSuccessfulPage(Model model) {
-        model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
+    @PostMapping("/account/submit-pass-change")
+    public String submitPassChange(@Valid @ModelAttribute PasswordDto passwordDto,BindingResult bindingResult,
+                                   Principal principal, RedirectAttributes redirectAttributes){
+        String email = principal.getName();
+        new PasswordDto().validate(passwordDto,bindingResult);
+        boolean firstCheck = accountService.checkOldPass(email,passwordDto.getOldPassword());
+        boolean secondCheck = accountService.checkNewPass(email,passwordDto.getNewPassword());
+
+        if(!firstCheck){
+            bindingResult.rejectValue("oldPassword",null,"Mật khẩu cũ không đúng");
+            return "/account/change-password";
+        }
+        if(bindingResult.hasErrors()){
+            return "/account/change-password";
+        }
+        if(secondCheck){
+            bindingResult.rejectValue("newPassword",null,"Mật khẩu mới không được giống mật khẩu cũ");
+            return "/account/change-password";
+        }
+        accountService.changePassword(email,passwordDto.getNewPassword());
+        return "redirect:/account";
     }
 
     @RequestMapping(value = "/userAccountInfo", method = RequestMethod.GET)

@@ -2,14 +2,14 @@ package com.simple_man_store.order.controller;
 
 import com.simple_man_store.order.config.Config;
 import com.simple_man_store.order.dto.PaymentRestDto;
+import com.simple_man_store.order.model.Cart;
+import com.simple_man_store.order.service.IOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.UnsupportedEncodingException;
@@ -19,8 +19,16 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
+@SessionAttributes("cart")
 @RequestMapping("/payment")
 public class PaymentController {
+
+    @ModelAttribute("cart")
+    public Cart setupCart() {
+        return new Cart();
+    }
+    @Autowired
+    private IOrderService orderService;
     @GetMapping("/create_payment")
     public String createPayment(@RequestParam String tempAmount) throws UnsupportedEncodingException {
 
@@ -170,6 +178,7 @@ public class PaymentController {
                               @RequestParam(value = "vnp_PayDate") String date,
                               @RequestParam(value = "vnp_BankCode") String bankCode,
                               @RequestParam(value = "vnp_OrderInfo") String info,
+                              @ModelAttribute Cart cart,
                               Model model,
                               RedirectAttributes redirectAttributes
                               ){
@@ -179,8 +188,10 @@ public class PaymentController {
             model.addAttribute("info",info);
             model.addAttribute("txnRef",txnRef);
             model.addAttribute("date",date);
+            cart.clear();
             return "order/success";
         }else {
+            orderService.deleteLast();
             redirectAttributes.addFlashAttribute("msg","Thanh toán thất bại");
             return "redirect:/order/checkout";
         }

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IEmployeeRepository extends JpaRepository<Employee,Integer> {
-    @Query(value = "select * from employee where flag=true and name like :searchName",nativeQuery = true)
-    Page<Employee> findEmployeeByNameContaining( Pageable pageable,@Param(value = "searchName") String searchName);
+    @Query(value = "select * from employee where flag=true and name like :searchName and phone_number like :phoneNumber",nativeQuery = true)
+    Page<Employee> findEmployeeByNameAndPhoneNumberContaining( Pageable pageable,@Param(value = "searchName") String searchName,@Param(value = "phoneNumber") String phoneNumber);
 }

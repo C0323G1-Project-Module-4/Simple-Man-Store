@@ -51,7 +51,7 @@ public class CustomerController {
                                  @RequestParam(defaultValue = "") String[] customerType,
                                  @RequestParam(defaultValue = "") Integer[] gender
     ) {
-        Pageable pageable = PageRequest.of(page, 2, Sort.by("name").ascending().and(Sort.by("gender").descending()));
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("name").ascending().and(Sort.by("gender").descending()));
         if (customerType.length > 0) {
             Page<Customer> customerPage = customerService.findAllPageCustomerTypeId(pageable, searchName, customerType);
             ModelAndView modelAndView = new ModelAndView("customer/list");
@@ -122,11 +122,10 @@ public class CustomerController {
         Customer customer = new Customer();
         new CustomerDto().validate(customerDto,bindingResult);
         if(bindingResult.hasErrors()){
-            return "redirect:/account";
+            return "/account/detail";
         }
         BeanUtils.copyProperties(customerDto,customer);
         customerService.save(customer);
-        redirectAttributes.addFlashAttribute("msg","Cập nhật thành công!");
         return "redirect:/account";
     }
     @PostMapping("/even")

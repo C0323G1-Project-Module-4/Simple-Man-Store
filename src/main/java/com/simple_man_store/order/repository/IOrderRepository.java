@@ -13,4 +13,6 @@ public interface IOrderRepository extends JpaRepository<Order,Integer> {
     Page<Order> findOrderByNameContaining(Pageable pageable, @Param(value = "searchName") String searchName);
     @Query(value = "select * from order_info where flag=1 and account_id= :account_id",nativeQuery = true)
     Page<Order> findOrdersByAccount_Id(Pageable pageable, @Param(value = "account_id") int id);
+    @Query(value = "update order_info set flag = 0 where id = (select max(id) from order_info);",nativeQuery = true)
+    void deleteLast();
 }

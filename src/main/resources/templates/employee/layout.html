@@ -2,16 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tạo mới nhân viên</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <div th:insert="~{home::libraries}"></div>
-
+    <title>Title</title>
+</head>
 <body>
-<header>
-    <div th:insert="~{home::libraries}"></div>
-    <div th:replace="~{home::navbar-start}"></div>
-</header>
+
+<!--Form Edit, Create -->
+
 <div class="row col-md-12" style="min-height: 28rem">
     <div class="col-md-3"></div>
     <div class="col-md-6">
@@ -103,12 +99,111 @@
     </div>
 </div>
 
-<footer>
-    <div th:replace="~{home::footer-start}"></div>
-    <div th:replace="~{home::back-to-top}"></div>
-    <div th:replace="~{home::footer}"></div>
-</footer>
-</body>
+
+<!--Form Table-->
+
+<div style="min-height: 28rem">
+    <table class="table table-striped table-hover">
+        <thead>
+        <th>STT</th>
+        <th>HỌ VÀ TÊN</th>
+        <th>SỐ ĐIỆN THOẠI</th>
+        <th>GIỚI TÍNH</th>
+        <th colspan="2">CHỨC NĂNG</th>
+        </thead>
+        <tr th:each="employee,status:${employeePage}">
+            <td th:text="${employeePage.number*5+status.count}"></td>
+            <td th:text="${employee.name}"></td>
+            <td th:text="${employee.phoneNumber}"></td>
+            <td th:if="${employee.isGender()==true}" th:text="Nam"></td>
+            <td th:if="${employee.isGender()==false}" th:text="Nữ"></td>
+            <td>
+                <a th:attr="onclick=|showDetail(${employee.getId()})|"
+                   type="button"
+                   class="btn btn-outline-warning border border-dark" data-bs-toggle="modal"
+                   data-bs-target="#modalDetail">
+                    <i class="fas fa-info " style="color: black"></i>
+                </a>
+            </td>
+            <td><a class="btn btn-outline-success border border-dark" th:href="@{/employee/edit/__${employee.id}__}"><i
+                    class="far fa-edit" style="color: black;"></i></a></td>
+        </tr>
+    </table>
+</div>
+
+
+
+
+<!--Pageable-->
+
+<div style="text-align: center;">
+    <a class="btn btn-outline-success" style="color: black" th:if="${employeePage.hasPrevious()}"
+       th:href="@{/employee/list(page=${employeePage.number-1})}">Trước</a>
+    <span class="btn-outline-success" th:text="${employeePage.number+1}"></span>/<span class="btn-outline-success"
+                                                                                       th:text="${employeePage.totalPages}"></span>
+    <a class="btn btn-outline-success" style="color: black" th:if="${employeePage.hasNext()}"
+       th:href="@{/employee/list(page=${employeePage.number+1})}">Sau</a>
+</div>
+
+
+
+<!--Button search-->
+<button class="btn btn-outline-warning border border-dark" type="submit"><i class="fas fa-search" style="color: black;"></i></button>
+
+<!--Button edit-->
+<a class="btn btn-outline-success border border-dark" ><i class="far fa-edit" style="color: black;"></i></a>
+
+<!--Button Delete-->
+<button type="button" class="btn btn-outline-danger" >
+    <i class="fas fa-trash-alt " style="color: black"></i>
+</button>
+
+<!--Button Create-->
+<a class="btn btn-outline-success border border-dark" href="/employee/create" style="margin-left: 3%"><i class="fa-solid fa-plus" style="color: black"></i></a>
+
+
+
+
+
+
+<!--Modal Delete-->
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form th:action="@{/employee/delete}" method="post">
+
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Bạn chắc chắn muốn xóa</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="deleteId" name="deleteId" type="hidden">
+                    <span>Nhân viên tên </span>
+                    <span id="deleteName" name="deleteName"></span>
+                    <p><small>Lưu ý: Cân nhắc trước khi chọn "Xóa" do tác vụ không thể hoàn tác</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Suy nghĩ lại</button>
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Modal-Detail-->
+<div class="modal fade" id="modalDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form id="content">
+            </form>
+        </div>
+    </div>
+</div>
+<!--Detail-->
 
 </body>
 </html>
