@@ -67,7 +67,7 @@
                 <tr>
                     <th class="h-50 text-uppercase " >STT</th>
                     <th class="h-50 text-uppercase ">HỌ VÀ TÊN</th>
-                    <th class="h-50 text-uppercase ">SỐ ĐIỆN THOẠI</th>
+                    <th class="h-50 text-uppercase ">NGÀY SINH</th>
                     <th class="h-50 text-uppercase">GIỚI TÍNH</th>
                     <th class="h-50 text-uppercase" >Bậc</th>
                     <th class="h-50 text-uppercase " colspan="2">Chức năng</th>
@@ -77,7 +77,7 @@
                 <tr class="table-active" th:each="customer,status: ${customerPage}">
                     <td th:text="${customerPage.number*5+status.count}" ></td>
                     <td th:text="${customer.name}"></td>
-                    <td th:text="${customer.phone_number}"></td>
+                    <td th:text="${customer.dob}"></td>
                     <td th:if="${customer.gender}" th:text="Nam"></td>
                     <td th:if="${!(customer.gender)}" th:text="Nữ" ></td>
                     <td th:text="${customer.customerType.name}"></td>
@@ -120,10 +120,11 @@
 
 <div>
     <div style="text-align: center">
-        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasPrevious()}" th:href="@{/customer/list(page=${customerPage.number -1})}">Trước</a>
-        <span class="btn-outline-success" th:text="${customerPage.number + 1}"></span>/<span class="btn-outline-success" th:text="${customerPage.totalPages}"></span>
-        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasNext()}" th:href="@{/customer/list(page=${customerPage.number+1})}">Sau</a>
+        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasPrevious()}" th:href="@{/customer/list(page=${customerPage.number -1},searchName=${searchName},customerType=${customerType})}">Trước</a>
+        <a class="btn btn-outline-success"><span class="btn-outline-success" th:text="${customerPage.number + 1}"></span>/<span class="btn-outline-success" th:text="${customerPage.totalPages}"></span></a>
+        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasNext()}" th:href="@{/customer/list(page=${customerPage.number+1},searchName=${searchName},customerType=${customerType})}">Sau</a>
     </div>
+</div>
 </div>
 
 
@@ -232,9 +233,16 @@ X</button>
                 <input type="hidden" id="idDelete" value="${data.id}">
                 <input type="hidden" id="nameDelete" value="${data.name}">
                    <div>
-                   <h5>Ngày sinh: </h5>
+                   <h5>Ngày sinh: </h5>`;
+                if (data.dob==null){
+                    content +=`
+                    <span>Thiếu thông tin</span> </div>`;
+                }else {
+                content +=`
                     <span>${data.dob}</span>
-</div>
+</div>`;}
+
+                content +=`
                     <div>
                       <h5>Email: </h5>
                       <span>${data.email}</span>
