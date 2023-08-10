@@ -47,22 +47,22 @@
                     <div class="row">
                         <div class="col-md-12  info-input">
                             <label>Tên <sup style="color: red">*</sup></label>
-                            <input class="form-control" type="text" name="name" placeholder="Nguyen Van Tan" th:field="*{name}">
+                            <input class="form-control"  type="text" name="name" placeholder="Nguyen Van Tan" th:field="*{name}" >
                             <small style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
                         </div>
                         <div class="col-md-12 info-input">
                             <label>E-mail <sup style="color: red">*</sup></label>
-                            <input class="form-control" type="email" name="email" placeholder="abc@email.com" th:field="*{email}">
+                            <input   class="form-control" type="email" name="email" placeholder="abc@email.com" th:field="*{email}">
                             <small style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
                         </div>
                         <div class="col-md-12  info-input">
                             <label>Số điện thoại <sup style="color: red">*</sup></label>
-                            <input class="form-control" type="text" name="phoneNumber" placeholder="0123 456 789" th:field="*{phone_number}">
+                            <input   class="form-control" type="text" name="phoneNumber" placeholder="0123 456 789" th:field="*{phone_number}" >
                             <small style="color: red" th:if="${#fields.hasErrors('phone_number')}" th:errors="*{phone_number}"></small>
                         </div>
                         <div class="col-md-12  info-input">
                             <label>Địa chỉ <sup style="color: red">*</sup></label>
-                            <input class="form-control" type="text" name="address" placeholder="123 tên đường, Xã/Phường, Quận/Huyện, Tỉnh/Thành" th:field="*{address}">
+                            <input   class="form-control" type="text" name="address" placeholder="123 tên đường, Xã/Phường, Quận/Huyện, Tỉnh/Thành" th:field="*{address}" >
                             <small style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></small>
                         </div>
 
@@ -73,23 +73,19 @@
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Tổng đơn hàng</span></h5>
                 <div class="bg-light p-30 mb-1" th:object="${cart}" >
                     <div class="border-bottom"  >
-                        <h6 class="mb-3">Sản phẩm</h6>
-                        <div class="d-flex justify-content-between"  th:each="product: ${cart.products}" >
-                            <p th:text="${product.key.name}"></p>
-                            <p th:text="${product.value}"></p>
-                            <p th:text="${#numbers.formatInteger(product.key.price,3,'POINT')}"></p>
-                        </div>
+                        <table style="width: 100%">
+                            <tr class="mb-3">
+                                <th>Sản phẩm</th>
+                                <th style="text-align: center">Số lượng</th>
+                                <th style="text-align: right">Giá</th>
+                            </tr>
+                        <tr   th:each="product: ${cart.products}" >
+                            <td th:text="${product.key.name}"></td>
+                            <td style="text-align: center" th:text="${product.value}"></td>
+                            <td style="text-align: right" th:text="${#numbers.formatInteger(product.key.price,3,'POINT')}"></td>
+                        </tr>
+                        </table>
                     </div>
-<!--                    <div class="border-bottom pt-3 pb-2">-->
-<!--                        <div class="d-flex justify-content-between mb-3">-->
-<!--                            <h6>Tổng phụ</h6>-->
-<!--                            <h6 th:text="${cart.countTotalPayment()}+'đ'"></h6>-->
-<!--                        </div>-->
-<!--                        <div class="d-flex justify-content-between">-->
-<!--                            <h6 class="font-weight-medium">Phí ship</h6>-->
-<!--                            <h6 class="font-weight-medium">10.000 đ</h6>-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Tổng</h5>
@@ -101,16 +97,6 @@
                 <div class="mb-5" th:unless="${cart.products.isEmpty()}">
                     <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Thanh Toán</span></h5>
                     <div class="bg-light p-30">
-<!--                        <div class="form-group">-->
-<!--                            <div class="custom-control custom-radio">-->
-<!--&lt;!&ndash;                                <input type="radio" class="custom-control-input" name="payment" value="vnpay" id="paypal">&ndash;&gt;-->
-<!--&lt;!&ndash;                                <label class="custom-control-label" for="paypal">VNPAY</label>&ndash;&gt;-->
-<!--                                <select name="payment">-->
-<!--                                    <option value="cash">Thanh toán tiền mặt</option>-->
-<!--                                    <option value="vnpay">VNPAY</option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <div class="form-group">
                             <div class="custom-control custom-radio">
                                 <input type="radio" checked="checked" class="custom-control-input" name="payment" value="cash" id="directcheck">
@@ -123,7 +109,7 @@
                                 <label class="custom-control-label" for="banktransfer">VNPAY</label>
                             </div>
                         </div>
-                        <button class="btn btn-block btn-primary font-weight-bold py-3">Đặt hàng</button>
+                        <button class="btn btn-block btn-primary font-weight-bold py-3">Thanh toán</button>
                     </div>
                 </div>
             </div>
@@ -132,13 +118,9 @@
 </form>
     <!-- Checkout End -->
 
-
 <div th:replace="~{home::footer-start}"></div>
 <div th:replace="~{home::back-to-top}"></div>
 <div th:replace="~{home::footer}"></div>
-
-
-
 
 </body>
 
