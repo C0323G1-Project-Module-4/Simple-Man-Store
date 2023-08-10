@@ -212,7 +212,7 @@ public class ProductController {
 
 
 
-    @GetMapping("")
+    @RequestMapping("/shopping")
     public String goShopping(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "") String category,
                                   @RequestParam(defaultValue = "0-10000000") String priceRange,
