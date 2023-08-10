@@ -11,7 +11,12 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-
+<style>
+    .table th, .table tbody td {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
 </head>
 <body >
 <header>
@@ -21,7 +26,7 @@
 <div class="col-12 mx-auto" style="width: 100%">
     <div class="mx-auto " style="width: 100%; margin: 2%">
         <header class=" d-flex justify-content-center px-xl-5 ">
-        <h1 STYLE="margin-top: 0.5rem">DANH SÁCH KHÁCH HÀNG</h1>
+        <h2 STYLE="margin-top: 0.5rem">DANH SÁCH KHÁCH HÀNG</h2>
         </header>
 
         <form class="mx-auto" style="width: 90%;margin-top: 2%" th:action="@{/customer/list}" method="get" >
@@ -57,22 +62,22 @@
 
         </form>
         <div class="d-flex  p-3" style="min-height: 26rem">
-            <table class="table table-light table-striped  ">
+            <table class="table table-light table-striped table-hover " >
                 <thead>
                 <tr>
                     <th class="h-50 text-uppercase " >STT</th>
-                    <th class="h-50 text-uppercase ">Tên KH</th>
-                    <th class="h-50 text-uppercase " >Ngày sinh</th>
-                    <th class="h-50 text-uppercase">GT</th>
+                    <th class="h-50 text-uppercase ">HỌ VÀ TÊN</th>
+                    <th class="h-50 text-uppercase ">SỐ ĐIỆN THOẠI</th>
+                    <th class="h-50 text-uppercase">GIỚI TÍNH</th>
                     <th class="h-50 text-uppercase" >Bậc</th>
-                    <th colspan="4" class="h-50 text-uppercase" align="center">Chức năng</th>
+                    <th class="h-50 text-uppercase " colspan="2">Chức năng</th>
                 </tr>
                 </thead>
                 <tbody class="table-group-divider">
                 <tr class="table-active" th:each="customer,status: ${customerPage}">
                     <td th:text="${customerPage.number*5+status.count}" ></td>
                     <td th:text="${customer.name}"></td>
-                    <td th:text="${customer.dob}" ></td>
+                    <td th:text="${customer.phone_number}"></td>
                     <td th:if="${customer.gender}" th:text="Nam"></td>
                     <td th:if="${!(customer.gender)}" th:text="Nữ" ></td>
                     <td th:text="${customer.customerType.name}"></td>
@@ -84,8 +89,9 @@
 
                             <i class="fas fa-info" style="color: #02060d;"></i>
                         </button>
+
                     </td>
-                    <td align="center">
+                    <td>
                         <a th:href="@{/customer/showUpdate/{id}(id=${customer.getId()})}">
                             <button class="btn btn-outline-primary border-dark">
                                 <i class="far fa-edit" style="color: #02060d;"></i>
