@@ -68,11 +68,11 @@ public class OrderDto implements Validator {
 //        }
 
         if(orderDto.phone_number.trim().equals("") || orderDto.phone_number == null){
-            errors.rejectValue("phoneNumber",null,"Vui lòng nhập số điện thoại");
+            errors.rejectValue("phone_number",null,"Vui lòng nhập số điện thoại");
         }else if(orderDto.phone_number.length()>20){
-            errors.rejectValue("phoneNumber",null,"Quá ký tự cho phép");
+            errors.rejectValue("phone_number",null,"Quá ký tự cho phép");
         }else if(orderDto.email.matches("^(?:\\+84|0)(?:\\d{9,10})$")) {
-            errors.rejectValue("phoneNumber", null, "Vui lòng nhập đúng SĐT VD:'0XXXXXXXXX' hoặc '+84XXXXXXXXX'");
+            errors.rejectValue("phone_number", null, "Vui lòng nhập đúng SĐT VD:'0XXXXXXXXX' hoặc '+84XXXXXXXXX'");
         }
 
         if(orderDto.address.trim().equals("") || orderDto.address == null){
