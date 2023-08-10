@@ -45,4 +45,9 @@ public class OrderService implements IOrderService{
     public Page<Order> getByAcount(Pageable pageable, Account account) {
         return orderRepository.findOrdersByAccount_Id(pageable,account.getId());
     }
+
+    @Override
+    public void deleteLast() {
+        orderRepository.deleteLast();
+    }
 }
