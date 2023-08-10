@@ -27,8 +27,8 @@
                 <span class="input-group-text mx-auto" id="basic-addon1" style="width: 200px">Tên khách hàng</span>
                 <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" th:field="*{name}">
             </div>
-            <div style="height: 1.5rem">
-                <small style="color: red;margin-left: 10%" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" ></small>
+            <div style="height: 1.5rem" class="my-auto">
+                <small  style="color: red;margin-left: 10%" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" ></small>
             </div>
 
 
@@ -69,10 +69,15 @@
             </div> <div style="height: 1.5rem">
             <small style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
         </div>
-            <div class="input-group">
-                <button class="btn btn-primary" type="submit">Lưu</button>
+            <div class="input-group mb-3 row mx-auto" style="width: 100%">
+                <div class="col-6" align="center">
+                    <button class="btn btn-primary" type="submit" style="width: 90%">Lưu</button>
+                </div>
+                <div class="col-6" align="center">
+                    <a th:href="@{/customer/list}"><button class=" btn btn-info" style="width: 90%" type="button">Hủy bỏ</button></a>
+                </div>
             </div >
-            <a th:href="@{/customer/list}"><div class="input-group">Hủy bỏ</div></a>
+
         </form>
     </div>
     <div class="col-md-3">

@@ -11,12 +11,13 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-<style>
-    .table th, .table tbody td {
-        text-align: center;
-        vertical-align: middle;
-    }
-</style>
+
+    <style>
+        .table th, .table tbody td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body >
 <header>
@@ -33,7 +34,7 @@
             <div class="d-flex container-fluid justify-content-end" style="width: 100%">
                 <div class="d-flex ">
                     <input   type="search" placeholder="Tìm kiếm khách hàng" aria-label="Search"
-                             name="searchName">
+                             name="searchName" th:value="${searchName}">
                     <button class="btn btn-outline-warning border-dark" type="submit">
                         <i class="fa-solid fa-magnifying-glass " style="color: #0a0a0a;"></i></button>
                 </div>
@@ -50,9 +51,11 @@
                         <div class="h-50 text-uppercase">LOẠI KHÁCH HÀNG</div>
                         <div class="col-lg-2 col-md-4 col-sm-6 pb-1 d-flex" th:each="c: ${customer_type}"
                              style="margin-right: 2%">
-                            <input class="mx-md-3" id="checkbox" name="customerType" type="checkbox"
+
+                            <input class="mx-md-3" id="customerType" name="customerType" type="checkbox"
                                    th:value="${c.id}">
-                            <label for="checkbox" th:text="${c.name}"></label>
+                            <label for="customerType" th:text="${c.name}"></label>
+
                         </div>
 
                     </div>
@@ -120,9 +123,9 @@
 
 <div>
     <div style="text-align: center">
-        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasPrevious()}" th:href="@{/customer/list(page=${customerPage.number -1})}">Trước</a>
+        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasPrevious()}" th:href="@{/customer/list(page=${customerPage.number -1},searchName=${searchName},customerType=${customerType})}">Trước</a>
         <span class="btn-outline-success" th:text="${customerPage.number + 1}"></span>/<span class="btn-outline-success" th:text="${customerPage.totalPages}"></span>
-        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasNext()}" th:href="@{/customer/list(page=${customerPage.number+1})}">Sau</a>
+        <a class="btn btn-outline-success" style="color: black" th:if="${customerPage.hasNext()}" th:href="@{/customer/list(page=${customerPage.number+1},searchName=${searchName},customerType=${customerType})}">Sau</a>
     </div>
 </div>
 
