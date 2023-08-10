@@ -83,6 +83,7 @@ public class EmployeeController {
             model.addAttribute("employeeDto", employeeDto);
             return "employee/edit";
         }
+
         BeanUtils.copyProperties(employeeDto, employee);
         Account account = accountService.findByEmail(emailAccount);
         employee.setAccount(account);
