@@ -41,18 +41,18 @@
                             <th>Giá</th>
                             <th>Số lượng</th>
                             <th>Tổng</th>
-                            <th>Xoá</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
                         <tr th:each="product: ${cart.products}">
                             <td class="align-middle"><img th:src="@{${product.key.image}}" th:text="${product.key.name}" alt="" style="width: 50px;margin-right:5px " ></td>
-                            <td class="align-middle">XL</td>
+                            <td class="align-middle" th:text="${product.key.size}"></td>
                             <td class="align-middle" th:text="${#numbers.formatInteger(product.key.price,3,'POINT')}"></td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn" th:if="${product.getValue()}>1">
-                                        <a class="btn btn-sm btn-primary btn-minus"  th:href="@{/order/add/__${product.getKey().id}__(action='reduce')}">
+                                        <a class="btn btn-sm btn-primary btn-minus"  th:href="@{/order/add/__${product.getKey().id}__(action='reduce')(sizes=${product.key.size})}">
                                         <i class="fa fa-minus"></i>
                                         </a>
                                     </div>
@@ -63,14 +63,14 @@
                                     </div>
                                     <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" th:value="${product.getValue()}">
                                     <div class="input-group-btn">
-                                        <a th:href="@{/order/add/__${product.getKey().id}__(action='increase')}" class="btn btn-sm btn-primary btn-plus">
+                                        <a th:href="@{/order/add/__${product.getKey().id}__(action='increase',sizes=${product.key.size})}" class="btn btn-sm btn-primary btn-plus">
                                             <i class="fa fa-plus"></i>
                                         </a>
                                     </div>
                                 </div>
                             </td>
                             <td class="align-middle" th:text="${#numbers.formatInteger(product.key.price*product.getValue(),3,'POINT')}"></td>
-                            <td class="align-middle"><a th:href="@{/order/add/__${product.getKey().id}__(action='delete')}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a></td>
+                            <td class="align-middle"><a th:href="@{/order/add/__${product.getKey().id}__(action='delete',sizes=${product.key.size})}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a></td>
                         </tr>
                     </tbody>
                 </table>

@@ -1,20 +1,23 @@
 package com.simple_man_store.order.model;
 
+import com.simple_man_store.order.dto.OrderDetailDto;
+import com.simple_man_store.order.dto.ProductCartDto;
 import com.simple_man_store.product.model.Product;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Cart {
-    private Map<Product,Integer> products = new HashMap<>();
+    private Map<ProductCartDto, Integer> products = new HashMap<>();
+
 
     public Cart() {
     }
 
-    public Cart(Map<Product,Integer> products) {
+    public Cart(Map<ProductCartDto,Integer> products) {
         this.products = products;
     }
 
-    public Map<Product,Integer> getProducts() {
+    public Map<ProductCartDto,Integer> getProducts() {
         return products;
     }
 
@@ -27,8 +30,8 @@ public class Cart {
 //        return false;
 //    }
 
-    private Map.Entry<Product, Integer> selectItemInCart(Product product){
-        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+    private Map.Entry<ProductCartDto, Integer> selectItemInCart(Product product){
+        for (Map.Entry<ProductCartDto, Integer> entry : products.entrySet()) {
             if(entry.getKey().getId().equals(product.getId())){
                 return entry;
             }
@@ -36,21 +39,22 @@ public class Cart {
         return null;
     }
 
-    public void addProduct(Product product,int quantity){
+    public void addProduct(ProductCartDto product,int quantity){
+        product.getSize();
         if (products.containsKey(product)){
-            products.put(product, products.get(product) + quantity);
+            products.put(product,products.get(product)+quantity);
         } else {
-            products.put(product, quantity);
+            products.put(product,quantity);
         }
     }
 
-    public Integer countProductQuantity(){
-        Integer productQuantity = 0;
-        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-            productQuantity += entry.getValue();
-        }
-        return productQuantity;
-    }
+//    public Integer countProductQuantity(){
+//        Integer productQuantity = 0;
+//        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+//            productQuantity += entry.getValue();
+//        }
+//        return productQuantity;
+//    }
 
     public Integer countItemQuantity(){
         return products.size();
@@ -58,7 +62,7 @@ public class Cart {
 
     public Float countTotalPayment(){
         float payment = 0;
-        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+        for (Map.Entry<ProductCartDto, Integer> entry : products.entrySet()) {
             payment += entry.getKey().getPrice() * (float) entry.getValue();
         }
         return payment;
@@ -68,7 +72,7 @@ public class Cart {
         products.clear();
     }
 
-    public void removeProduct(Product product){
+    public void removeProduct(ProductCartDto product){
         products.remove(product);
         System.out.println("remove");
     }

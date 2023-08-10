@@ -1,16 +1,20 @@
 package com.simple_man_store.order.controller;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.simple_man_store.account.model.Account;
 import com.simple_man_store.account.service.IAccountService;
+import com.simple_man_store.customer.model.Customer;
+import com.simple_man_store.customer.service.customer.ICustomerService;
 import com.simple_man_store.order.dto.OrderDto;
+import com.simple_man_store.order.dto.ProductCartDto;
 import com.simple_man_store.order.model.Cart;
 import com.simple_man_store.order.model.Order;
 import com.simple_man_store.order.service.IOrderService;
 import com.simple_man_store.order_detail.model.OrderDetail;
 import com.simple_man_store.order_detail.service.IODService;
 import com.simple_man_store.product.model.Product;
+import com.simple_man_store.product.model.Size;
 import com.simple_man_store.product.service.IProductService;
+import com.simple_man_store.product.service.ISizeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,6 +44,8 @@ public class OrderController {
     }
 
     @Autowired
+    private ISizeService sizeService;
+    @Autowired
     private IOrderService orderService;
     @Autowired
     private IODService iodService;
@@ -47,6 +53,9 @@ public class OrderController {
     private IProductService productService;
     @Autowired
     private IAccountService accountService;
+
+    @Autowired
+    private ICustomerService customerService;
 
     @RequestMapping("/cart")
     public String showCart() {
@@ -87,7 +96,9 @@ public class OrderController {
     public String showDetail(@PathVariable int id, Model model) {
 
         Product product = productService.selectProductById(id);
+        List<Size> sizeList = sizeService.showListSize();
         model.addAttribute("product", product);
+        model.addAttribute("sizeList", sizeList);
         return "detail";
     }
 
@@ -105,31 +116,45 @@ public class OrderController {
     public String addToCart(@PathVariable int id,
                             @RequestParam(required = false, defaultValue = "1") int quantity,
                             @ModelAttribute Cart cart,
+                            @RequestParam(defaultValue = "") String sizes,
                             @RequestParam(required = false, defaultValue = "") String action,
                             RedirectAttributes redirectAttributes) {
         Product product = productService.selectProductById(id);
+        ProductCartDto productCartDto = new ProductCartDto(product.getId(),product.getName(),product.getPrice(),product.getImage(),sizes);
         if (action.equals("increase")) {
-            cart.addProduct(product, 1);
+            cart.addProduct(productCartDto, 1);
             return "redirect:/order/cart";
         }
         if (action.equals("reduce")) {
-            cart.addProduct(product, -1);
+            cart.addProduct(productCartDto, -1);
             return "redirect:/order/cart";
         }
         if (action.equals("delete")) {
-            cart.removeProduct(product);
+            cart.removeProduct(productCartDto);
             redirectAttributes.addFlashAttribute("msg", "Đã xoá sản phẩm khỏi giỏ hàng");
             return "redirect:/order/cart";
         }
-        cart.addProduct(product, quantity);
+        if(sizes.equals("")){
+            redirectAttributes.addFlashAttribute("msg", "Vui lòng chọn size");
+            return "redirect:/order/detail/"+id;
+        }
+        cart.addProduct(productCartDto, quantity);
         redirectAttributes.addFlashAttribute("msg", "Đã thêm vào giỏ hàng");
         return "redirect:/order/cart";
     }
 
     @GetMapping("/checkout")
-    public String showCheckout(Model model) {
+    public String showCheckout(Model model,Principal principal) {
         OrderDto orderDto = new OrderDto();
+        Customer customer = customerService.findByEmail(principal.getName());
+        if(customer!=null){
+            orderDto.setName(customer.getName());
+            orderDto.setEmail(customer.getEmail());
+            orderDto.setAddress(customer.getAddress());
+            orderDto.setPhone_number(customer.getPhone_number());
+        }
         model.addAttribute("orderDto",orderDto);
+        model.addAttribute("customer",customer);
         return "checkout";
     }
     @RequestMapping("/asd")
@@ -145,8 +170,6 @@ public class OrderController {
                            RedirectAttributes redirectAttributes,
                            Principal principal
     ) {
-
-        System.out.println(payment+"123123123123123123123333333333333333333333333");
         new OrderDto().validate(orderDto,bindingResult);
         if (bindingResult.hasErrors()){
             return "checkout";
@@ -157,13 +180,16 @@ public class OrderController {
         order.setAccount(account);
         orderService.add(order);
         Set<OrderDetail> orderDetail = new HashSet<>();
-        for (Product key : cart.getProducts().keySet()) {
-            orderDetail.add(new OrderDetail(key.getPrice(), cart.getProducts().get(key), "xl", order, key));
+        for (ProductCartDto key : cart.getProducts().keySet()) {
+            Product product = productService.selectProductById(key.getId());
+            orderDetail.add(new OrderDetail(key.getPrice(), cart.getProducts().get(key), key.getSize(), order, product));
         }
         iodService.addAll(orderDetail);
         if(payment.equals("vnpay")){
-            int i= (int) (cart.countTotalPayment()*1);
-            return "redirect:/payment/create_payment?tempAmount="+ i;
+            order.setPayment_date(String.valueOf(LocalDate.now()));
+            orderService.add(order);
+            int amount= (int) (cart.countTotalPayment()*1);
+            return "redirect:/payment/create_payment?tempAmount="+ amount;
         }
         cart.clear();
         redirectAttributes.addFlashAttribute("msg", "Đặt hàng thành công");
@@ -181,6 +207,7 @@ public class OrderController {
         }
         model.addAttribute("total",total);
         model.addAttribute("orderDetails",orderDetails);
+        model.addAttribute("order",order);
         return "order/detail";
     }
 
@@ -200,14 +227,22 @@ public class OrderController {
         return "history";
     }
 
+    @PostMapping("/is-receive")
+    public String isReceive(@RequestParam int id,RedirectAttributes redirectAttributes){
+        Order order = orderService.getById(id);
+        order.setStatus(true);
+        orderService.add(order);
+        redirectAttributes.addFlashAttribute("msg","Xác nhận thành công");
+        return "redirect:/order/history";
+    }
+
     @PostMapping("/is-checkout")
     public String isCheckout(@RequestParam int id,RedirectAttributes redirectAttributes){
-
         Order order = orderService.getById(id);
         order.setPayment_date(String.valueOf(LocalDate.now()));
         orderService.add(order);
         redirectAttributes.addFlashAttribute("msg","Xác nhận thành công");
-        return "redirect:/order/history";
+        return "redirect:/order/list";
     }
 
     @RequestMapping("/history-detail/{id}")

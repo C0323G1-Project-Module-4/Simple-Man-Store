@@ -14,4 +14,6 @@ public interface IOrderService {
     boolean delete(int id);
 
     Page<Order> getByAcount(Pageable pageable, Account account);
+
+    void deleteLast();
 }
