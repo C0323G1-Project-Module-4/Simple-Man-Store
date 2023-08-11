@@ -140,6 +140,29 @@ public class AccountController {
         return "redirect:/account";
     }
 
+
+    @GetMapping("/forget-password")
+    public String showForgetPasswordForm(){
+        return "account/forgetPasswordForm";
+    }
+
+    @GetMapping("/check-email/")
+    public String checkEmailOnForget(@RequestParam ("email") String email,Model model, RedirectAttributes redirectAttributes){
+        Customer customer = customerService.findByEmail(email);
+        if(email.equals("")){
+            redirectAttributes.addFlashAttribute("msg","Vui lòng không để trống");
+            return "redirect:/forget-password";
+        } else if(!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+            redirectAttributes.addFlashAttribute("msg","Email không hợp lệ");
+            return "redirect:/forget-password";
+        } else if(customer == null){
+            redirectAttributes.addFlashAttribute("msg","Email không hợp lệ");
+            return "redirect:/forget-password";
+        }
+        return "account/newPasswordForm";
+    }
+
+
     @RequestMapping(value = "/userAccountInfo", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal) {
 
