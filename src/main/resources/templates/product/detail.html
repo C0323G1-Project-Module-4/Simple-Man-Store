@@ -52,7 +52,7 @@
             <div class="row r3">
                 <div class="col-md-5 p-0 klo">
                     <ul>
-                        <li><h1 th:text="${warehouse.product.name}"></h1></li>
+                        <li><h3 th:text="${warehouse.product.name}"></h3></li>
                         <li th:text="'Loại sản phẩm: '+ ${warehouse.product.category.name}"></li>
                         <li th:text="'Mô tả: '+ ${warehouse.product.description}"></li>
                         <li th:text="'Giá: ' + ${#numbers.formatInteger(warehouse.product.price, 2, 'COMMA')} +' VNĐ'" ></li>

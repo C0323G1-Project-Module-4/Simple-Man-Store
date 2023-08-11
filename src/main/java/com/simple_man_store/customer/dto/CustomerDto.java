@@ -129,7 +129,7 @@ public class CustomerDto implements Validator {
     public void validate(Object target, Errors errors) {
         CustomerDto customerDto = (CustomerDto) target;
         if (customerDto.getName().equals("")){
-            errors.rejectValue("name",null,"Không để trống họ và tên");
+            errors.rejectValue("name",null,"Vui lòng không để trống họ và tên");
         }
         if (customerDto.getName().length()>255) {
             errors.rejectValue("name",null,"Họ và tên không vượt quá 255 kí tự");
@@ -141,6 +141,9 @@ public class CustomerDto implements Validator {
         }
         if(customerDto.getAddress().length() >255) {
             errors.rejectValue("address",null,"Địa chỉ không được quá 255 kí tự");
+        }
+        if(customerDto.getAddress().equals("")) {
+            errors.rejectValue("address",null,"Vui lòng không để trống địa chỉ");
         }
         if (!customerDto.getEmail().matches(regexEmail)){
             errors.rejectValue("email",null,"Sau định dạng email. Mẫu định dạng email đúng:A-z..@gmail.com");
