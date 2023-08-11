@@ -107,7 +107,7 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0" style="position: relative">
                         <a th:href="@{/}" class="nav-item nav-link active">Trang Chủ</a>
-                        <a th:href="@{/product/shopping}" class="nav-item nav-link">Sản Phẩm</a>
+                        <a th:href="@{/product}" class="nav-item nav-link">Sản Phẩm</a>
                         <a href="#" class="nav-item nav-link">Ưu Đãi</a>
                         <a href="#" class="nav-item nav-link">Best Seller</a>
                     </div>
@@ -149,8 +149,8 @@
                                 <div><span><b
                                         style="color: black"><a th:href="@{/account}" style="margin-left: 30px;
                                     padding-bottom: 10px; padding-top: 10px; margin-bottom: 20px;margin-top: 20px"
-                                                                class="d-flex align-self-center">Danny Nguyễn</a></b></span></div>
-                                <div class="d-flex"><small class="d-flex align-self-center"><b class="customer-rank">Gold</b></small>
+                                                                class="d-flex align-self-center" th:text="${customer_name}"></a></b></span></div>
+                                <div class="d-flex"><small class="d-flex align-self-center"><b class="customer-rank" th:text="${type}"></b></small>
                                 </div>
                             </div>
                             <a th:href="@{/account}" style="border-top: black solid 1px">Thông tin tài khoản</a>

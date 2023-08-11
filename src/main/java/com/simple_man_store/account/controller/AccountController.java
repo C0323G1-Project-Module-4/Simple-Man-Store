@@ -35,12 +35,22 @@ public class AccountController {
     @Autowired
     private ICustomerService customerService;
     @RequestMapping(value = {""}, method = RequestMethod.GET)
-    public String landingPage(Model model) {
+    public String landingPage(Model model, Principal principal) {
+        if (principal != null) {
+            String email = principal.getName();
+            Customer customer = customerService.findByEmail(email);
+            String type = customerService.findCustomerTypeByEmail(email);
+            model.addAttribute("type", type);
+            model.addAttribute("customer_name", customer.getName());
+        }
         return "home";
     }
     @GetMapping("/account")
     public String accountDetail(Model model,Principal principal) {
         Customer customer = customerService.findByEmail(principal.getName());
+        String type = customerService.findCustomerTypeByEmail(customer.getEmail());
+        model.addAttribute("type",type);
+        model.addAttribute("customer_name",customer.getName());
         CustomerDto customerDto = new CustomerDto();
         BeanUtils.copyProperties(customer,customerDto);
         model.addAttribute("customerDto",customerDto);
@@ -81,7 +91,12 @@ public class AccountController {
     }
 
     @GetMapping("/account/change-pass")
-    public String changePassword(Model model){
+    public String changePassword(Model model, Principal principal){
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         model.addAttribute("passwordDto",new PasswordDto());
         return "/account/change-password";
     }
@@ -101,12 +116,15 @@ public class AccountController {
 
     @PostMapping("/account/submit-pass-change")
     public String submitPassChange(@Valid @ModelAttribute PasswordDto passwordDto,BindingResult bindingResult,
-                                   Principal principal, RedirectAttributes redirectAttributes){
+                                   Principal principal, Model model){
         String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         new PasswordDto().validate(passwordDto,bindingResult);
         boolean firstCheck = accountService.checkOldPass(email,passwordDto.getOldPassword());
         boolean secondCheck = accountService.checkNewPass(email,passwordDto.getNewPassword());
-
         if(!firstCheck){
             bindingResult.rejectValue("oldPassword",null,"Mật khẩu cũ không đúng");
             return "/account/change-password";

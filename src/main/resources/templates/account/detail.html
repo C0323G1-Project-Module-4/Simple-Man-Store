@@ -44,9 +44,9 @@
                     <div><span style="margin-left: 10px;
                                     padding-bottom: 30px; padding-top: 30px"
                                class="d-flex align-self-center"><b
-                            style="color: black;font-size: 20px">Danny Nguyễn</b></span></div>
+                            style="color: black;font-size: 20px" th:text="${customer_name}"></b></span></div>
                     <div class="d-flex"><small class="d-flex align-self-center"><b
-                            class="customer-rank">Gold</b></small>
+                            class="customer-rank" th:text="${type}"></b></small>
                     </div>
                 </div>
 
@@ -119,17 +119,8 @@
                     <input th:field="*{id}" type="hidden">
                     <input th:field="*{account}" type="hidden">
                     <input th:field="*{customerType}" type="hidden">
-                    <div class="slider-container mt-4">
-                        <input style=" width: 300px" type="range" id="weight-range" min="0" max="100" step="1">
-                        <label for="weight-range">Cân nặng: <span id="weight-value">0</span> kg</label>
-                    </div>
-
-                    <div class="slider-container">
-                        <input style=" width: 300px" type="range" id="height-range" min="0" max="200" step="1">
-                        <label for="height-range">Chiều cao: <span id="height-value">0</span> cm</label>
-                    </div>
                     <button type="submit"
-                            style="margin-left:50px;width: 280px;height: 50px; padding: 10px;font-size: 14px; border: 1px solid  black">
+                            style="margin-left:50px; margin-top: 50px;width: 280px;height: 50px; padding: 10px;font-size: 14px; border: 1px solid  black">
                         <b>Cập Nhật Thông Tin</b>
                     </button>
                 </form>
@@ -153,18 +144,7 @@
 
 
 <script>
-    const weightRange = document.getElementById('weight-range');
-    const weightValue = document.getElementById('weight-value');
-    const heightRange = document.getElementById('height-range');
-    const heightValue = document.getElementById('height-value');
 
-    weightRange.addEventListener('input', function () {
-        weightValue.textContent = weightRange.value;
-    });
-
-    heightRange.addEventListener('input', function () {
-        heightValue.textContent = heightRange.value;
-    });
 </script>
 
 
