@@ -20,4 +20,5 @@ public interface ICustomerService {
     void save(Customer customer);
     Customer searchById(Integer id);
     Integer findSumPriceByEmail(String email);
+    String findCustomerTypeByEmail(String email);
 }

@@ -127,4 +127,9 @@ public class CustomerService implements ICustomerService {
     public void save(Customer customer) {
         customerRepository.save(customer);
     }
+
+    @Override
+    public String findCustomerTypeByEmail(String email) {
+        return customerRepository.findCustomerTypeByEmail(email);
+    }
 }
