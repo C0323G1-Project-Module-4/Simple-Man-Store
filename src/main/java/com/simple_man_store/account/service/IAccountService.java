@@ -13,4 +13,6 @@ public interface IAccountService {
     boolean checkNewPass(String email, String newPassword);
 
     void changePassword(String email, String newPassword);
+    void sendEmail(String to, String subject, String body);
+    String sendEmailAndReturnCode(String to);
 }
