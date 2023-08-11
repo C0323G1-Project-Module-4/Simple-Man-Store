@@ -20,9 +20,9 @@
     <div class="row px-xl-5">
         <div class="col-12">
             <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" href="#">Home</a>
-                <a class="breadcrumb-item text-dark" href="#">Shop</a>
-                <span class="breadcrumb-item active">Shop Detail</span>
+                <a class="breadcrumb-item text-dark" th:href="@{/}">Trang chủ</a>
+                <a class="breadcrumb-item text-dark" href="/product/shopping">Sản phẩm</a>
+                <span class="breadcrumb-item active">Chi tiết sản phẩm</span>
             </nav>
         </div>
     </div>
@@ -62,7 +62,7 @@
                     </div>
                     <small class="pt-1">(99 Reviews)</small>
                 </div>
-                <h3 class="font-weight-semi-bold mb-4" th:text="${product.price}"></h3>
+                <h3 class="font-weight-semi-bold mb-4" th:text="${#numbers.formatInteger(product.price,3,'POINT')}"></h3>
                 <p class="mb-4" th:text="${product.description}"></p>
                 <div class="mb-4">
                     <strong class="text-dark mr-3">Loại: </strong><span th:text="${product.category.name}"></span>

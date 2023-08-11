@@ -16,4 +16,7 @@ public interface IOrderService {
     Page<Order> getByAcount(Pageable pageable, Account account);
 
     void deleteLast();
+
+    void checkTotalToRankUpCustomer();
+
 }

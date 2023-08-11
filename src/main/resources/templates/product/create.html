@@ -23,7 +23,7 @@
                 <div class="d-flex justify-content-center">
                     <h1>Tạo mới sản phẩm</h1>
                 </div>
-
+                <!--tên sản phẩm-->
                 <div class="input-group mb-2">
                     <span class="input-group-text mx-auto" id="basic-addon1" style="width: 200px">Tên sản phẩm</span>
                     <input type="text" class="form-control" placeholder="Tên sản phẩm" aria-label="Tên sản phẩm"
@@ -33,6 +33,7 @@
                     <small style="color: red; margin-left: 200px"  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
                 </div>
 
+<!--                loại sản phẩm-->
                 <div class="input-group mb-2">
                     <label class="input-group-text mx-auto" for="inputGroupSelect01" style="width: 200px">Loại sản
                         phẩm</label>
@@ -43,6 +44,7 @@
                     </select>
                 </div>
 
+<!--                kích thước sản phẩm-->
                 <div class="input-group mb-2">
                     <label class="input-group-text mx-auto" for="inputGroupSelect02" style="width: 200px">Kích
                         cở</label>
@@ -52,6 +54,7 @@
                     </select>
                 </div>
 
+<!--                số lượng sản phẩm-->
                 <div class="input-group mb-2">
                     <span class="input-group-text mx-auto" id="basic-addon4" style="width: 200px">Số lượng</span>
                     <input type="number" class="form-control" id="basic-url" aria-describedby="basic-addon4"
@@ -61,6 +64,7 @@
                     <small style="color: red; margin-left: 200px"  th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></small>
                 </div>
 
+<!--                    giá sản phẩm-->
                 <div class="input-group mb-2">
                     <span class="input-group-text mx-auto" id="basic-addon5" style="width: 200px">Giá</span>
                     <input type="number" class="form-control" aria-describedby="basic-addon5"
@@ -70,6 +74,7 @@
                     <small style="color: red; margin-left: 200px"  th:if="${#fields.hasErrors()}" th:errors="*{price}"></small>
                 </div>
 
+<!--                    mô tả sản phẩm-->
                 <div class="input-group mb-2">
                     <span class="input-group-text mx-auto" style="width: 200px">Mô tả về sản phẩm</span>
                     <textarea class="form-control" aria-label="With textarea" placeholder="Mô tả sản phẩm"
@@ -80,17 +85,27 @@
                            th:errors="*{description}"></small>
                 </div>
 
+<!--                hình ảnh-->
                 <div class="input-group mb-2">
                     <span class="input-group-text mx-auto" style="width: 200px;">Chọn hình ảnh</span>
                     <input type="hidden" id="thumbnailURL" th:field="*{image}"/>
                     <input id="btnThumbnailURL" type="file" class="form-control choose-file"/>
                 </div>
-
+                <div>
+                    <small style="color: red; margin-left: 200px"  th:if="${#fields.hasErrors('image')}"
+                           th:errors="*{image}"></small>
+                </div>
+<!--                    submit-->
                 <div class="input-group mb-2">
                     <progress id="uploader" value="0" max="100" style="width: 100%">0%</progress>
                 </div>
-                <div class="input-group">
-                    <button class="btn btn-primary" type="submit">Thêm mới</button>
+                <div class="input-group row" >
+                    <div class=" col-6 " align="center">
+                        <a th:href="@{/product/list}"><button style="width: 90%" class="btn btn-info" type="button">Quay lại</button></a>
+                    </div>
+                    <div class=" col-6 " align="center">
+                        <button style="width: 90%"  class="btn btn-primary" type="submit">Thêm mới</button>
+                    </div>
                 </div>
             </form>
         </div>

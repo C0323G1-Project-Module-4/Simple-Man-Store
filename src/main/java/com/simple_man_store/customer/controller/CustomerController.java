@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 
 @Controller
@@ -49,9 +50,15 @@ public class CustomerController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView showList(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "") String searchName,
-                                 @RequestParam(defaultValue = "") String[] customerType
+                                 @RequestParam(defaultValue = "") String[] customerType,
+                                 Principal principal, Model model
     ) {
         Pageable pageable = PageRequest.of(page, 3, Sort.by("name").ascending().and(Sort.by("gender").descending()));
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         if (customerType.length > 0) {
             Page<Customer> customerPage = customerService.findAllPageCustomerTypeId(pageable, searchName, customerType);
             ModelAndView modelAndView = new ModelAndView("customer/list");
@@ -87,9 +94,14 @@ public class CustomerController {
     }
 
     @GetMapping("/showCreate")
-    public ModelAndView showCreate() {
+    public ModelAndView showCreate(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("customer/create_customer");
         modelAndView.addObject("customer", new CustomerDto());
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        modelAndView.addObject("type", type);
+        modelAndView.addObject("customer_name", customer.getName());
         return modelAndView;
     }
     @PostMapping("/create")
@@ -99,13 +111,19 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
     @GetMapping("/showUpdate/{id}")
-    public ModelAndView showUpdate(@PathVariable Integer id){
+    public ModelAndView showUpdate(@PathVariable Integer id, Principal principal){
+
         ModelAndView modelAndView = new ModelAndView("customer/update");
         Customer customer = customerService.searchById(id);
         CustomerDto customerDto = new CustomerDto();
         BeanUtils.copyProperties(customer,customerDto);
         System.out.println(customerDto.getDob());
         modelAndView.addObject("customerDto",customerDto);
+        String email = principal.getName();
+        Customer baseCustomer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        modelAndView.addObject("type", type);
+        modelAndView.addObject("customer_name", baseCustomer.getName());
         return modelAndView;
     }
     @PostMapping("/edit")

@@ -3,6 +3,8 @@ package com.simple_man_store.employee.controller;
 import com.simple_man_store.account.dto.AccountDto;
 import com.simple_man_store.account.model.Account;
 import com.simple_man_store.account.service.IAccountService;
+import com.simple_man_store.customer.model.Customer;
+import com.simple_man_store.customer.service.customer.ICustomerService;
 import com.simple_man_store.employee.dto.EmployeeDto;
 import com.simple_man_store.employee.model.Employee;
 import com.simple_man_store.employee.service.IEmployeeService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/employee")
@@ -34,12 +37,19 @@ public class EmployeeController {
     private IEmployeeService employeeService;
     @Autowired
     private IAccountService accountService;
+    @Autowired
+    private ICustomerService customerService;
 
     @GetMapping("/list")
     public String showList(@RequestParam(defaultValue = "0") int page,
                            @RequestParam(defaultValue = "") String searchName,
                            @RequestParam(defaultValue = "") String phoneNumber,
-                           Model model) {
+                           Model model, Principal principal) {
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         Pageable pageable = PageRequest.of(page, 5, Sort.by("name").ascending());
         Page<Employee> employeePage = employeeService.findAll(pageable, searchName,phoneNumber);
         model.addAttribute("employeePage", employeePage);
@@ -60,8 +70,13 @@ public class EmployeeController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showFormEdit(@PathVariable int id, Model model) {
+    public String showFormEdit(@PathVariable int id, Model model,Principal principal) {
         Employee employee = employeeService.findById(id);
+        String baseEmail = principal.getName();
+        Customer customer = customerService.findByEmail(baseEmail);
+        String type = customerService.findCustomerTypeByEmail(baseEmail);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         EmployeeDto employeeDto = new EmployeeDto();
         BeanUtils.copyProperties(employee, employeeDto);
         System.out.println(employeeDto);
@@ -94,7 +109,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/create")
-    public String showFormCreateEmployee(Model model) {
+    public String showFormCreateEmployee(Model model,Principal principal) {
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         EmployeeDto employeeDto = new EmployeeDto();
         model.addAttribute("employeeDto", employeeDto);
         return "/employee/create";
