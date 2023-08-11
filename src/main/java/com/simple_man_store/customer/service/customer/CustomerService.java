@@ -61,7 +61,11 @@ public class CustomerService implements ICustomerService {
     public Page<Customer> findAllPage(Pageable pageable, String name) {
         Page<Customer> customerPage = customerRepository.findCustomerByNameContaining(pageable, "%"+name+"%");
         for (Customer c:customerPage) {
-            c.setDob(DateUtils.reverseDate(c.getDob()));
+            if(c.getDob()==null){
+                c.setDob("Chưa có thông tin");
+            }else {
+                c.setDob(DateUtils.reverseDate(c.getDob()));
+            }
         }
         return customerPage;
     }
@@ -75,7 +79,11 @@ public class CustomerService implements ICustomerService {
         }
         customerPage = customerRepository.findCustomerByNameContainingCAndCustomerType_Id(pageable,"%"+name+"%",customerTypeIds);
         for (Customer c:customerPage) {
-            c.setDob(DateUtils.reverseDate(c.getDob()));
+            if (c.getDob()==null){
+                c.setDob("Chưa có thông tin");
+            }else {
+                c.setDob(DateUtils.reverseDate(c.getDob()));
+            }
         }
         return customerPage;
 
@@ -89,7 +97,11 @@ public class CustomerService implements ICustomerService {
     @Override
     public Customer findById(Integer id) {
         Customer customerFind = customerRepository.findById(id).get();
-        customerFind.setDob(DateUtils.reverseDate(customerFind.getDob()));
+        if (customerFind.getDob()==null){
+            customerFind.setDob("Chưa có thông tin");
+        }else {
+            customerFind.setDob(DateUtils.reverseDate(customerFind.getDob()));
+        }
         return customerFind;
     }
 
@@ -114,5 +126,10 @@ public class CustomerService implements ICustomerService {
     @Override
     public void save(Customer customer) {
         customerRepository.save(customer);
+    }
+
+    @Override
+    public String findCustomerTypeByEmail(String email) {
+        return customerRepository.findCustomerTypeByEmail(email);
     }
 }

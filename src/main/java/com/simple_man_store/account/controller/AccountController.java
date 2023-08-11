@@ -2,9 +2,8 @@ package com.simple_man_store.account.controller;
 
 
 import com.simple_man_store.account.dto.AccountDto;
-import com.simple_man_store.account.model.Account;
+import com.simple_man_store.account.dto.PasswordDto;
 import com.simple_man_store.account.service.IAccountService;
-import com.simple_man_store.account.util.EncrytedPasswordUtils;
 import com.simple_man_store.account.util.WebUtils;
 import com.simple_man_store.customer.dto.CustomerDto;
 import com.simple_man_store.customer.model.Customer;
@@ -36,12 +35,22 @@ public class AccountController {
     @Autowired
     private ICustomerService customerService;
     @RequestMapping(value = {""}, method = RequestMethod.GET)
-    public String landingPage(Model model) {
+    public String landingPage(Model model, Principal principal) {
+        if (principal != null) {
+            String email = principal.getName();
+            Customer customer = customerService.findByEmail(email);
+            String type = customerService.findCustomerTypeByEmail(email);
+            model.addAttribute("type", type);
+            model.addAttribute("customer_name", customer.getName());
+        }
         return "home";
     }
     @GetMapping("/account")
     public String accountDetail(Model model,Principal principal) {
         Customer customer = customerService.findByEmail(principal.getName());
+        String type = customerService.findCustomerTypeByEmail(customer.getEmail());
+        model.addAttribute("type",type);
+        model.addAttribute("customer_name",customer.getName());
         CustomerDto customerDto = new CustomerDto();
         BeanUtils.copyProperties(customer,customerDto);
         model.addAttribute("customerDto",customerDto);
@@ -81,8 +90,20 @@ public class AccountController {
         return "detail";
     }
 
+    @GetMapping("/account/change-pass")
+    public String changePassword(Model model, Principal principal){
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
+        model.addAttribute("passwordDto",new PasswordDto());
+        return "/account/change-password";
+    }
+
+
     @GetMapping("/login")
-    public String signIn(Model model) {
+    public String signIn( Model model) {
         return "sign-in";
     }
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -93,10 +114,30 @@ public class AccountController {
         return "adminPage";
     }
 
-    @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
-    public String logoutSuccessfulPage(Model model) {
-        model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
+    @PostMapping("/account/submit-pass-change")
+    public String submitPassChange(@Valid @ModelAttribute PasswordDto passwordDto,BindingResult bindingResult,
+                                   Principal principal, Model model){
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
+        new PasswordDto().validate(passwordDto,bindingResult);
+        boolean firstCheck = accountService.checkOldPass(email,passwordDto.getOldPassword());
+        boolean secondCheck = accountService.checkNewPass(email,passwordDto.getNewPassword());
+        if(!firstCheck){
+            bindingResult.rejectValue("oldPassword",null,"Mật khẩu cũ không đúng");
+            return "/account/change-password";
+        }
+        if(bindingResult.hasErrors()){
+            return "/account/change-password";
+        }
+        if(secondCheck){
+            bindingResult.rejectValue("newPassword",null,"Mật khẩu mới không được giống mật khẩu cũ");
+            return "/account/change-password";
+        }
+        accountService.changePassword(email,passwordDto.getNewPassword());
+        return "redirect:/account";
     }
 
     @RequestMapping(value = "/userAccountInfo", method = RequestMethod.GET)

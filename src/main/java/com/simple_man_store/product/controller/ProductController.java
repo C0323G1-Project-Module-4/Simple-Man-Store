@@ -63,11 +63,7 @@ public class ProductController {
         model.addAttribute("categoryList", categoryList);
         return "product/list";
     }
-    @GetMapping
-    public String searchProduct(Model model){
 
-        return "product/search";
-    }
 
     @GetMapping("/create")
     public String showCreate(Model model) {
@@ -126,15 +122,7 @@ public class ProductController {
         redirectAttributes.addFlashAttribute("msg", "Xóa sản phẩm thành công");
         return "redirect:/product/list";
     }
-//    @GetMapping("/delete/{id}")
-//    public String delete(@PathVariable int id, RedirectAttributes redirectAttributes) {
-//        Warehouse warehouse = warehouseService.selectWarehouseByProductId(id);
-//        Product product = productService.selectProductById(id);
-//        warehouseService.deleteWareHouse(warehouse);
-//        productService.deleteProduct(product);
-//        redirectAttributes.addFlashAttribute("msg", "Xóa sản phẩm thành công");
-//        return "redirect:/product/list";
-//    }
+
 
 
     @GetMapping("/edit/{id}")
@@ -203,33 +191,33 @@ public class ProductController {
         return "product/detail";
     }
 
-
-
-
-
-
-
-
-
-
-    @RequestMapping("/shopping")
+    @GetMapping("")
     public String goShopping(@RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "") String category,
-                                  @RequestParam(defaultValue = "0-10000000") String priceRange,
-                                  @RequestParam(defaultValue = "") String searchName,
-                                  Model model) {
-        Pageable pageable = PageRequest.of(page, 35, Sort.by("id").descending());
-        String[] parts = priceRange.split("-");
-        Double minPrice = Double.valueOf(parts[0]);
-        Double maxPrice = Double.valueOf(parts[1]);
+                             @RequestParam(defaultValue = "") String[] categoryName,
+                             @RequestParam(defaultValue = "") String[] sizeName,
+                             @RequestParam(defaultValue = "ASC") String sortType,
+                             Model model) {
+        Pageable pageable = PageRequest.of(page, 8);
         List<Category> categoryList = categoryService.showListCategory();
-        Page<Product> productPage = productService.findProduct(pageable, searchName, minPrice, maxPrice, category);
-        model.addAttribute("category", category);
-        model.addAttribute("searchName", searchName);
-        model.addAttribute("productPage", productPage);
-        model.addAttribute("categoryList", categoryList);
         List<Size> sizeList = sizeService.showListSize();
-        model.addAttribute("sizeList",sizeList);
+
+        if( (categoryName.length > 0) || (sizeName.length > 0)) {
+            Page<Product> productPage = productService.findProductSearch(pageable, categoryName, sizeName, sortType);
+
+            //             Gởi dữ liệu qua để detail product
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("sizeList", sizeList);
+            model.addAttribute("productPage", productPage);
+            //            Gởi dữ liệu qua để phân trang
+            model.addAttribute("sizeName",sizeName);
+            model.addAttribute("categoryName",categoryName);
+            model.addAttribute("order",sortType);
+            return "shop";
+        }
+        Page<Product> productPage = productService.findAll(pageable);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("sizeList", sizeList);
+        model.addAttribute("productPage",productPage);
         return "shop";
     }
 }

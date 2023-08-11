@@ -45,18 +45,21 @@ public class CustomerController {
     private ICustomerRepository customerRepository;
 
 
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView showList(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "") String searchName,
-                                 @RequestParam(defaultValue = "") String[] customerType,
-                                 @RequestParam(defaultValue = "") Integer[] gender
+                                 @RequestParam(defaultValue = "") String[] customerType
     ) {
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("name").ascending().and(Sort.by("gender").descending()));
+        Pageable pageable = PageRequest.of(page, 1, Sort.by("name").ascending().and(Sort.by("gender").descending()));
         if (customerType.length > 0) {
             Page<Customer> customerPage = customerService.findAllPageCustomerTypeId(pageable, searchName, customerType);
             ModelAndView modelAndView = new ModelAndView("customer/list");
             modelAndView.addObject("customerPage", customerPage);
+            modelAndView.addObject("searchName",searchName);
+            modelAndView.addObject("customerType",customerType);
             modelAndView.addObject("customer_type", customerTypeService.findAll());
+//            modelAndView.addObject("")
             return modelAndView;
         }
 
@@ -64,11 +67,12 @@ public class CustomerController {
 
         Page<Customer> customerPage = customerService.findAllPage(pageable, searchName);
         ModelAndView modelAndView = new ModelAndView("customer/list");
+        modelAndView.addObject("searchName",searchName);
+
         modelAndView.addObject("customerPage", customerPage);
         modelAndView.addObject("customer_type", customerTypeService.findAll());
         return modelAndView;
     }
-
     @PostMapping("/delete")
     public String delete(@RequestParam Integer deleteId, RedirectAttributes redirectAttributes) {
         Boolean check = customerService.delete(deleteId);
@@ -122,11 +126,10 @@ public class CustomerController {
         Customer customer = new Customer();
         new CustomerDto().validate(customerDto,bindingResult);
         if(bindingResult.hasErrors()){
-            return "redirect:/account";
+            return "/account/detail";
         }
         BeanUtils.copyProperties(customerDto,customer);
         customerService.save(customer);
-        redirectAttributes.addFlashAttribute("msg","Cập nhật thành công!");
         return "redirect:/account";
     }
     @PostMapping("/even")
