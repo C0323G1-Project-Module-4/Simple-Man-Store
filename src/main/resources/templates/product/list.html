@@ -22,41 +22,44 @@
 
 
 <!-- chọn yêu cầu tìm kiếm sản phẩm-->
-<div class="container d-flex align-items-center justify-content-center">
-<form th:action="@{/product/list}" method="get">
-    <!-- Thêm sản phẩm mới-->
-    <a th:href="@{/product/create}">
-        <input type="button" value="Thêm mới sản phẩm">
-    </a>
-    <!-- search loại sản phâm-->
-    <label for="category">Loại sản phẩm: </label>
-    <select name="category" id="category">
-        <option th:each="c: ${categoryList}"
-                th:value="${c.name}"
-                th:text="${c.name != '' ? c.name : 'Tất cả'}"
-                th:selected="${c.name == category}">
-        </option>
-    </select>
+<div class="container d-flex align-items-center justify-content-end" style="width: 100%">
+    <!-- Các phần tử khác trong div -->
+    <form th:action="@{/product/list}" method="get">
 
-    <!--    search giá-->
-    <label for="priceRange">Giá sản phẩm: </label>
-    <select name="priceRange" id="priceRange" th:value="${priceRange}">
-        <option th:selected="${priceRange=='0-300000'}" value="0-300000">0.0VND-300.000VNĐ</option>
-        <option th:selected="${priceRange=='300000-500000'}" value="300000-500000">300.000VND-500.000VNĐ</option>
-        <option th:selected="${priceRange=='500000-800000'}" value="500000-800000">500.000VND-800.000VNĐ</option>
-        <option th:selected="${priceRange=='800000-1000000'}" value="800000-1000000">800.000VND-1000.000VNĐ</option>
-        <option th:selected="${priceRange=='1000000-50000000'}" value="1000000-50000000">Lớn hơn 1000.000VND</option>
-        <option th:selected="${priceRange=='0-50000000'}" value="0-50000000">Tất cả</option>
-    </select>
+        <!-- search loại sản phâm-->
+        <label for="category">Loại sản phẩm: </label>
+        <select name="category" id="category" style="height: 30px">
+            <option th:each="c: ${categoryList}"
+                    th:value="${c.name}"
+                    th:text="${c.name != '' ? c.name : 'Tất cả'}"
+                    th:selected="${c.name == category}">
+            </option>
+        </select>
 
-    <!--    search tên-->
-    <label for="nameProduct">Nhập tên sản phẩm: </label>
-    <input type="text" name="searchName" id="nameProduct" th:value="${searchName}">
+        <!--    search giá-->
+        <label for="priceRange">Giá sản phẩm: </label>
+        <select name="priceRange" id="priceRange" style="height: 30px" th:value="${priceRange}">
+            <option th:selected="${priceRange=='0-300000'}" value="0-300000">0.0VND-300.000VNĐ</option>
+            <option th:selected="${priceRange=='300000-500000'}" value="300000-500000">300.000VND-500.000VNĐ</option>
+            <option th:selected="${priceRange=='500000-800000'}" value="500000-800000">500.000VND-800.000VNĐ</option>
+            <option th:selected="${priceRange=='800000-1000000'}" value="800000-1000000">800.000VND-1000.000VNĐ</option>
+            <option th:selected="${priceRange=='1000000-50000000'}" value="1000000-50000000">Lớn hơn 1000.000VND
+            </option>
+            <option th:selected="${priceRange=='0-50000000'}" value="0-50000000">Tất cả</option>
+        </select>
 
-    <!--    nút-->
-    <input type="submit" value="Tìm kiếm">
+        <!--    search tên-->
+        <label for="nameProduct">Nhập tên sản phẩm: </label>
+        <input type="text" name="searchName" id="nameProduct" th:value="${searchName}">
 
-</form>
+        <!--    nút-->
+        <button type="submit"><i class="fas fa-search" style="color: black;"></i></button>
+        <!-- Thêm sản phẩm mới-->
+        <a th:href="@{/product/create}">
+            <button type="button"><i class="fa-solid fa-plus" style="color: black"></i></button>
+        </a>
+
+    </form>
 </div>
 
 <!-- Hiển thị danh sách product-->
@@ -64,12 +67,12 @@
 
 <div class="py-3"></div>
 <!--list product-->
-<div class="container-fluid">
+<div class="container-fluid min-vh-100">
     <div class="row mx-auto" style="width: 95%">
         <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product,loop: ${productPage}">
             <div class="product-item bg-light mb-4">
                 <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" th:src="${product.image}" >
+                    <img class="img-fluid w-100" th:src="${product.image}">
                     <div class="product-action">
                         <!--                        detail-->
                         <a th:href="@{/product/detail/{id}(id=${product.getId()})}"
@@ -137,11 +140,16 @@
     }
 </script>
 <!-- phân trang-->
-<a th:if="${productPage.hasPrevious()}"
-   th:href="@{/product/list(page=${productPage.number-1},category=${category},priceRange=${priceRange},searchName=${searchName})}">Prev</a>
-<span th:text="${productPage.number+1}"></span>/<span th:text="${productPage.totalPages}"></span>
-<a th:if="${productPage.hasNext()}"
-   th:href="@{/product/list(page=${productPage.number+1},category=${category},priceRange=${priceRange},searchName=${searchName})}">Next</a>
+
+<div style="text-align: center">
+    <a class="btn btn-outline-success" style="color: black" th:if="${productPage.hasPrevious()}"
+       th:href="@{/product/list(page=${productPage.number-1},category=${category},priceRange=${priceRange},searchName=${searchName})}">Trước</a>
+    <a class="btn btn-outline-success" style="color: black"><span class="btn-outline-success" style="color: black"
+                                                                  th:text="${productPage.number+1}"></span>/<span
+            class="btn-outline-success" style="color: black" th:text="${productPage.totalPages}"></span></a>
+    <a class="btn btn-outline-success" style="color: black" th:if="${productPage.hasNext()}"
+       th:href="@{/product/list(page=${productPage.number+1},category=${category},priceRange=${priceRange},searchName=${searchName})}">Sau</a>
+</div>
 
 <!--boostrap 5.2-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

@@ -28,7 +28,6 @@
         <header class=" d-flex justify-content-center px-xl-5 ">
         <h2 STYLE="margin-top: 0.5rem">DANH SÁCH KHÁCH HÀNG</h2>
         </header>
-
         <form class="mx-auto" style="width: 90%;margin-top: 2%" th:action="@{/customer/list}" method="get" >
             <div class="d-flex container-fluid justify-content-end" style="width: 100%">
                 <div class="d-flex ">
@@ -45,6 +44,10 @@
                 </div>
             </div>
             <div class="collapse bg-light" id="collapseExample" >
+
+
+
+
                 <div class=" card-body border-light bg-light">
                     <div class="row mx-auto d-flex justify-content-center " style="width: 80%">
                         <div class="h-50 text-uppercase">LOẠI KHÁCH HÀNG</div>
@@ -61,8 +64,8 @@
             </div>
 
         </form>
-        <div style="min-height: 26rem">
-            <table class="table table-light table-striped table-hover ">
+        <div style="min-height: 26rem" >
+            <table class="table table-light table-striped table-hover table-responsive-sm ">
                 <thead>
                 <tr>
                     <th class="h-50 text-uppercase ">STT</th>
@@ -101,15 +104,6 @@
 
                 </tr>
                 </tbody>
-
-                <tfoot>
-                <tr>
-                    <td colspan="2">
-                        <p>Trang hiện tại <span th:text="${customerPage.number +1}"></span> / <span
-                                th:text="${customerPage.totalPages}"></span></p>
-                    </td>
-                </tr>
-                </tfoot>
             </table>
 
 
@@ -260,8 +254,16 @@ X</button>
                 content += `
 </div>
                   <div>
-                  <h5>Địa chỉ: </h5>
-                    <span>${data.address}</span>
+                  <h5>Địa chỉ: </h5>`;
+                if (data.address !=null){
+                    content+=`
+                    <span>${data.address}</span>`;
+                }else {
+                    content+=`
+                    <span>Chưa có thông tin</span>`;
+                }
+
+                        content +=`
 </div>
                     <div>
                      <h5>Điện thoại: </h5>

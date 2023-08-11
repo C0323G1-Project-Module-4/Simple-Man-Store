@@ -21,11 +21,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -57,8 +60,19 @@ public class OrderController {
     @Autowired
     private ICustomerService customerService;
 
+//    @Scheduled(cron = "0 0 12 * * ?")
+    @Scheduled(cron = "*/30 * * * * *")
+    public void scheduleTaskUsingCronExpression() {
+        orderService.checkTotalToRankUpCustomer();
+    }
+
     @RequestMapping("/cart")
-    public String showCart() {
+    public String showCart(Model model, Principal principal) {
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         return "cart";
     }
 
@@ -93,8 +107,12 @@ public class OrderController {
     }
 
     @RequestMapping("/detail/{id}")
-    public String showDetail(@PathVariable int id, Model model) {
-
+    public String showDetail(@PathVariable int id, Model model,Principal principal) {
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         Product product = productService.selectProductById(id);
         List<Size> sizeList = sizeService.showListSize();
         model.addAttribute("product", product);
@@ -105,7 +123,12 @@ public class OrderController {
     @RequestMapping("/list")
     public String showList(@RequestParam(defaultValue = "0") int page,
                            @RequestParam(defaultValue = "") String searchName,
-                           Model model) {
+                           Model model, Principal principal) {
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         Pageable pageable = PageRequest.of(page, 8, Sort.by("id").descending());
         Page<Order> orderPage = orderService.findAllInPage(pageable, searchName);
         model.addAttribute("orderPage", orderPage);
@@ -145,7 +168,15 @@ public class OrderController {
 
     @GetMapping("/checkout")
     public String showCheckout(Model model,Principal principal) {
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         OrderDto orderDto = new OrderDto();
+        if(principal==null){
+            return "redirect:/login";
+        }
         Customer customer = customerService.findByEmail(principal.getName());
         if(customer!=null){
             orderDto.setName(customer.getName());
@@ -168,8 +199,13 @@ public class OrderController {
                            @RequestParam String payment,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes,
-                           Principal principal
+                           Principal principal, Model model
     ) {
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         new OrderDto().validate(orderDto,bindingResult);
         if (bindingResult.hasErrors()){
             return "checkout";
@@ -192,12 +228,18 @@ public class OrderController {
             return "redirect:/payment/create_payment?tempAmount="+ amount;
         }
         cart.clear();
+//        Integer total = customerService.findSumPriceByEmail(principal.getName());
         redirectAttributes.addFlashAttribute("msg", "Đặt hàng thành công");
         return "redirect:/order/home";
     }
 
     @RequestMapping("/order-detail/{id}")
-    public String showOrderDetail(@PathVariable int id,Model model){
+    public String showOrderDetail(@PathVariable int id,Model model, Principal principal){
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         Order order = orderService.getById(id);
         List<OrderDetail> orderDetails = iodService.getByOrder(order);
         double total=0;
@@ -223,6 +265,11 @@ public class OrderController {
         Pageable pageable = PageRequest.of(page, 8, Sort.by("id").descending());
         Account account = accountService.findByEmail(principal.getName());
         Page<Order> orderPage = orderService.getByAcount(pageable,account);
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         model.addAttribute("orderPage",orderPage);
         return "history";
     }
@@ -246,13 +293,18 @@ public class OrderController {
     }
 
     @RequestMapping("/history-detail/{id}")
-    public String historyDetail(@PathVariable int id,Model model){
+    public String historyDetail(@PathVariable int id,Model model,Principal principal){
         Order order = orderService.getById(id);
         List<OrderDetail> orderDetails = iodService.getByOrder(order);
         double total=0;
         for (OrderDetail o:orderDetails) {
             total += (o.getPrice()*o.getQuantity());
         }
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         model.addAttribute("total",total);
         model.addAttribute("orderDetails",orderDetails);
         model.addAttribute("order",order);
