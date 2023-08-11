@@ -22,7 +22,7 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
     Customer findByEmail(String email);
     @Query(value = "select sum(order_detail.price * order_detail.quantity) as total_money from customer  join account  on customer.account_id = account.id join order_info on account.id = order_info.account_id join order_detail  on order_info.id = order_detail.order_id  where customer.email = :email",nativeQuery = true)
      Integer findCustomerByEmail(@Param(value = "email") String email);
-    @Query(value = "select customer.name from customer join customer_type on customer.customer_type_id = customer_type.id where customer.email = :email;",nativeQuery = true)
+    @Query(value = "select customer_type.`name` from customer join customer_type on customer.customer_type_id = customer_type.id where customer.email = :email ;",nativeQuery = true)
      String findCustomerTypeByEmail(@Param(value = "email") String email);
 }
 
