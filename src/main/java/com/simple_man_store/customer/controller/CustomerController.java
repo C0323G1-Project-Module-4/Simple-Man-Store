@@ -51,7 +51,7 @@ public class CustomerController {
                                  @RequestParam(defaultValue = "") String searchName,
                                  @RequestParam(defaultValue = "") String[] customerType
     ) {
-        Pageable pageable = PageRequest.of(page, 1, Sort.by("name").ascending().and(Sort.by("gender").descending()));
+        Pageable pageable = PageRequest.of(page, 3, Sort.by("name").ascending().and(Sort.by("gender").descending()));
         if (customerType.length > 0) {
             Page<Customer> customerPage = customerService.findAllPageCustomerTypeId(pageable, searchName, customerType);
             ModelAndView modelAndView = new ModelAndView("customer/list");
