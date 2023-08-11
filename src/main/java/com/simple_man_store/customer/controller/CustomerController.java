@@ -53,12 +53,12 @@ public class CustomerController {
                                  @RequestParam(defaultValue = "") String[] customerType,
                                  Principal principal, Model model
     ) {
+        Pageable pageable = PageRequest.of(page, 3, Sort.by("name").ascending().and(Sort.by("gender").descending()));
         String email = principal.getName();
         Customer customer = customerService.findByEmail(email);
         String type = customerService.findCustomerTypeByEmail(email);
         model.addAttribute("type", type);
         model.addAttribute("customer_name", customer.getName());
-        Pageable pageable = PageRequest.of(page, 1, Sort.by("name").ascending().and(Sort.by("gender").descending()));
         if (customerType.length > 0) {
             Page<Customer> customerPage = customerService.findAllPageCustomerTypeId(pageable, searchName, customerType);
             ModelAndView modelAndView = new ModelAndView("customer/list");
