@@ -67,12 +67,6 @@
             </td>
             <td><a class="btn btn-outline-success border border-dark" th:href="@{/employee/edit/__${employee.id}__}"><i
                     class="far fa-edit" style="color: black;"></i></a></td>
-            <!--        <td>-->
-            <!--            <button th:attr="onclick=|showInfo(${employee.getId()},'${employee.getName()}')|" type="button"-->
-            <!--                    class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">-->
-            <!--                    <i class="fas fa-trash-alt " style="color: black"></i>-->
-            <!--            </button>-->
-            <!--        </td>-->
         </tr>
     </table>
 </div>
@@ -81,8 +75,8 @@
 <div style="text-align: center;">
     <a class="btn btn-outline-success" style="color: black" th:if="${employeePage.hasPrevious()}"
        th:href="@{/employee/list(page=${employeePage.number-1})}">Trước</a>
-    <span class="btn-outline-success" th:text="${employeePage.number+1}"></span>/<span class="btn-outline-success"
-                                                                                       th:text="${employeePage.totalPages}"></span>
+    <a class="btn btn-outline-success" style="color: black">
+        <span class="btn-outline-success" style="color: black" th:text="${employeePage.number+1}"></span>/<span class="btn-outline-success" style="color: black" th:text="${employeePage.totalPages}"></span></a>
     <a class="btn btn-outline-success" style="color: black" th:if="${employeePage.hasNext()}"
        th:href="@{/employee/list(page=${employeePage.number+1})}">Sau</a>
 </div>
