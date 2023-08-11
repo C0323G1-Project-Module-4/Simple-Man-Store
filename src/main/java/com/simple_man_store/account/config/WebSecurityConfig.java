@@ -84,7 +84,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-
     public PersistentTokenRepository persistentTokenRepository() {
         InMemoryTokenRepositoryImpl memory = new InMemoryTokenRepositoryImpl();
         return memory;
