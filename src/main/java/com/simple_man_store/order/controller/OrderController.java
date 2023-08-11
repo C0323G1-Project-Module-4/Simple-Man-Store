@@ -21,11 +21,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -56,6 +59,12 @@ public class OrderController {
 
     @Autowired
     private ICustomerService customerService;
+
+//    @Scheduled(cron = "0 0 12 * * ?")
+    @Scheduled(cron = "*/30 * * * * *")
+    public void scheduleTaskUsingCronExpression() {
+        orderService.checkTotalToRankUpCustomer();
+    }
 
     @RequestMapping("/cart")
     public String showCart() {
@@ -146,6 +155,9 @@ public class OrderController {
     @GetMapping("/checkout")
     public String showCheckout(Model model,Principal principal) {
         OrderDto orderDto = new OrderDto();
+        if(principal==null){
+            return "redirect:/login";
+        }
         Customer customer = customerService.findByEmail(principal.getName());
         if(customer!=null){
             orderDto.setName(customer.getName());
@@ -192,6 +204,7 @@ public class OrderController {
             return "redirect:/payment/create_payment?tempAmount="+ amount;
         }
         cart.clear();
+//        Integer total = customerService.findSumPriceByEmail(principal.getName());
         redirectAttributes.addFlashAttribute("msg", "Đặt hàng thành công");
         return "redirect:/order/home";
     }

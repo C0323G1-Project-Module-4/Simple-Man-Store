@@ -52,7 +52,7 @@
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn" th:if="${product.getValue()}>1">
-                                        <a class="btn btn-sm btn-primary btn-minus"  th:href="@{/order/add/__${product.getKey().id}__(action='reduce')(sizes=${product.key.size})}">
+                                        <a class="btn btn-sm btn-primary btn-minus"  th:href="@{/order/add/__${product.getKey().id}__(action='reduce',sizes=${product.key.size})}">
                                         <i class="fa fa-minus"></i>
                                         </a>
                                     </div>
