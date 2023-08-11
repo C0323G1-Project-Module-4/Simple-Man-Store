@@ -197,7 +197,7 @@ public class ProductController {
                              @RequestParam(defaultValue = "") String[] sizeName,
                              @RequestParam(defaultValue = "ASC") String sortType,
                              Model model) {
-        Pageable pageable = PageRequest.of(page, 8);
+        Pageable pageable = PageRequest.of(page, 12);
         List<Category> categoryList = categoryService.showListCategory();
         List<Size> sizeList = sizeService.showListSize();
 
