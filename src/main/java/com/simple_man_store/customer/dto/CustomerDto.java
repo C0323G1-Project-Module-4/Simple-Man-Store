@@ -129,30 +129,30 @@ public class CustomerDto implements Validator {
     public void validate(Object target, Errors errors) {
         CustomerDto customerDto = (CustomerDto) target;
         if (customerDto.getName().equals("")){
-            errors.rejectValue("name",null,"Vui lòng không để trống họ và tên");
+            errors.rejectValue("name",null,"Vui lòng không để trống họ và tên.");
         }
         if (customerDto.getName().length()>255) {
-            errors.rejectValue("name",null,"Họ và tên không vượt quá 255 kí tự");
+            errors.rejectValue("name",null,"Họ và tên không vượt quá 255 kí tự.");
         } else if(!customerDto.getName().matches(regexName)){
-            errors.rejectValue("name",null,"Sai định dạng tên. Định dạng họ và tên mẫu: Trần Văn Hoàng");
+            errors.rejectValue("name",null,"Sai định dạng tên. Định dạng họ và tên mẫu: Trần Văn Hoàng.");
         }
         if(!customerDto.getPhone_number().matches(regexPhoneNumber)) {
-            errors.rejectValue("phone_number",null,"Sau định dạng số điện thoại. Mẫu định dạng số điện thoại đúng: 0987123456 hoặc 84987123456");
+            errors.rejectValue("phone_number",null,"Sau định dạng số điện thoại. Mẫu định dạng số điện thoại đúng: 0987123456 hoặc 84987123456.");
         }
         if(customerDto.getAddress().length() >255) {
             errors.rejectValue("address",null,"Địa chỉ không được quá 255 kí tự");
         }
         if(customerDto.getAddress().equals("")) {
-            errors.rejectValue("address",null,"Vui lòng không để trống địa chỉ");
+            errors.rejectValue("address",null,"Vui lòng không để trống địa chỉ.");
         }
         if (!customerDto.getEmail().matches(regexEmail)){
-            errors.rejectValue("email",null,"Sau định dạng email. Mẫu định dạng email đúng:A-z..@gmail.com");
+            errors.rejectValue("email",null,"Sau định dạng email. Mẫu định dạng email đúng:A-z..@gmail.com.");
         }
         if (!Validate.checkAge(customerDto.getDob())){
-            errors.rejectValue("dob",null,"Cảnh báo chưa đủ 18 tuổi");
+            errors.rejectValue("dob",null,"Cảnh báo chưa đủ 18 tuổi.");
         }
         if(customerDto.dob.equals("")) {
-            errors.rejectValue("dob",null,"Vui lòng nhập ngày sinh");
+            errors.rejectValue("dob",null,"Vui lòng nhập ngày sinh.");
         }
     }
 }

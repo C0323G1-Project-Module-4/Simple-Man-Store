@@ -46,7 +46,7 @@
 <body>
 <div th:replace="~{home::navbar-start}"></div>
 
-<div class="shadow-lg p-3 mb-5 bg-body rounded mx-auto" style="width: 80%" >
+<div class="shadow-lg p-3 mb-5 bg-body rounded mx-auto" style="width: 70%" >
     <div class="container py-4 my-4 mx-auto d-flex flex-column" th:object="${warehouse}">
         <div class="container-body mt-4">
             <div class="row r3">
@@ -59,12 +59,14 @@
                         <li th:text="'Size: '+ ${warehouse.size.name}"></li>
                         <li th:text="'Số lượng: '+ ${warehouse.quantity}"></li>
                         <li>Thương hiệu: SimpleMan</li>
-                        <li><a th:href="@{/product/list}"><i class="fa-solid fa-arrow-left" style="font-size: 48px"></i></a></li>
+                        <li>
+                                <a th:href="@{/product/list}"><button class="btn btn-info" type="button">Quay lại</button></a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-md-7"><img
                         th:src="${warehouse.product.image}"
-                        width="90%" height="95%"></div>
+                        width="85%" height="90%"></div>
             </div>
         </div>
     </div>
