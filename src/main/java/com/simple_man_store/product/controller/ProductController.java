@@ -1,5 +1,7 @@
 package com.simple_man_store.product.controller;
 
+import com.simple_man_store.customer.model.Customer;
+import com.simple_man_store.customer.service.customer.ICustomerService;
 import com.simple_man_store.order.model.Cart;
 import com.simple_man_store.product.dto.ProductDto;
 import com.simple_man_store.product.model.Category;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -42,15 +45,21 @@ public class ProductController {
     private IWarehouseService warehouseService;
     @Autowired
     private ISizeService sizeService;
-
+    @Autowired
+    private ICustomerService customerService;
 
     @GetMapping("/list")
     public String showListProduct(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "") String category,
                                   @RequestParam(defaultValue = "0-100000000") String priceRange,
                                   @RequestParam(defaultValue = "") String searchName,
+                                  Principal principal,
                                   Model model) {
         Pageable pageable = PageRequest.of(page, 8, Sort.by("id").descending());
+        Customer customer = customerService.findByEmail(principal.getName());
+        String type = customerService.findCustomerTypeByEmail(customer.getEmail());
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         String[] parts = priceRange.split("-");
         Double minPrice = Double.valueOf(parts[0]);
         Double maxPrice = Double.valueOf(parts[1]);
@@ -73,7 +82,7 @@ public class ProductController {
     public String showCreate(Model model) {
         ProductDto productDto = new ProductDto();
         List<Category> categoryList = categoryService.showListCategory();
-        List<Size> sizeList =sizeService.showListSize();
+        List<Size> sizeList = sizeService.showListSize();
         model.addAttribute("productDto", productDto);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("sizeList", sizeList);
@@ -86,11 +95,11 @@ public class ProductController {
                          Model model,
                          RedirectAttributes redirectAttributes) {
 //        validate
-        new ProductDto().validate(productDto,bindingResult);
+        new ProductDto().validate(productDto, bindingResult);
         List<Category> categoryList = categoryService.showListCategory();
         List<Size> sizeList = sizeService.showListSize();
-        if (bindingResult.hasErrors()){
-            model.addAttribute("productDto",productDto);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("productDto", productDto);
             model.addAttribute("categoryList", categoryList);
             model.addAttribute("sizeList", sizeList);
             return "/product/create";
@@ -128,10 +137,9 @@ public class ProductController {
     }
 
 
-
     @GetMapping("/edit/{id}")
     public String showEdit(@PathVariable int id, Model model) {
-        Warehouse warehouse =warehouseService.selectWarehouseByProductId(id);
+        Warehouse warehouse = warehouseService.selectWarehouseByProductId(id);
         ProductDto productDto = new ProductDto();
         productDto.setId(warehouse.getProduct().getId());
         productDto.setName(warehouse.getProduct().getName());
@@ -146,10 +154,9 @@ public class ProductController {
         List<Size> sizeList = sizeService.showListSize();
         model.addAttribute("productDto", productDto);
         model.addAttribute("categoryList", categoryList);
-        model.addAttribute("sizeList",sizeList);
+        model.addAttribute("sizeList", sizeList);
         return "product/edit";
     }
-
 
 
     @PostMapping("/edit")
@@ -158,13 +165,13 @@ public class ProductController {
                        Model model,
                        RedirectAttributes redirectAttributes) {
 //        Validation
-        new ProductDto().validate(productDto,bindingResult);
+        new ProductDto().validate(productDto, bindingResult);
         List<Category> categoryList = categoryService.showListCategory();
         List<Size> sizeList = sizeService.showListSize();
-        if (bindingResult.hasErrors()){
-            model.addAttribute("productDto",productDto);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("productDto", productDto);
             model.addAttribute("categoryList", categoryList);
-            model.addAttribute("sizeList",sizeList);
+            model.addAttribute("sizeList", sizeList);
             return "/product/edit";
         }
 //        Product
@@ -200,12 +207,18 @@ public class ProductController {
                              @RequestParam(defaultValue = "") String[] categoryName,
                              @RequestParam(defaultValue = "") String[] sizeName,
                              @RequestParam(defaultValue = "ASC") String sortType,
+                             Principal principal,
                              Model model) {
-        Pageable pageable = PageRequest.of(page, 12);
+        Pageable pageable = PageRequest.of(page, 9);
         List<Category> categoryList = categoryService.showListCategory();
         List<Size> sizeList = sizeService.showListSize();
-
-        if( (categoryName.length > 0) || (sizeName.length > 0)) {
+        if(principal!= null) {
+            Customer customer = customerService.findByEmail(principal.getName());
+            String type = customerService.findCustomerTypeByEmail(customer.getEmail());
+            model.addAttribute("type", type);
+            model.addAttribute("customer_name", customer.getName());
+        }
+        if ((categoryName.length > 0) || (sizeName.length > 0)) {
             Page<Product> productPage = productService.findProductSearch(pageable, categoryName, sizeName, sortType);
 
             //             Gởi dữ liệu qua để detail product
@@ -213,15 +226,15 @@ public class ProductController {
             model.addAttribute("sizeList", sizeList);
             model.addAttribute("productPage", productPage);
             //            Gởi dữ liệu qua để phân trang
-            model.addAttribute("sizeName",sizeName);
-            model.addAttribute("categoryName",categoryName);
-            model.addAttribute("order",sortType);
+            model.addAttribute("sizeName", sizeName);
+            model.addAttribute("categoryName", categoryName);
+            model.addAttribute("order", sortType);
             return "shop";
         }
         Page<Product> productPage = productService.findAll(pageable);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("sizeList", sizeList);
-        model.addAttribute("productPage",productPage);
+        model.addAttribute("productPage", productPage);
         return "shop";
     }
 }

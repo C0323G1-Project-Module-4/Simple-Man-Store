@@ -169,10 +169,10 @@ public class OrderController {
     @GetMapping("/checkout")
     public String showCheckout(Model model,Principal principal) {
         String email = principal.getName();
-        Customer customer = customerService.findByEmail(email);
+        Customer baseCustomer = customerService.findByEmail(email);
         String type = customerService.findCustomerTypeByEmail(email);
         model.addAttribute("type", type);
-        model.addAttribute("customer_name", customer.getName());
+        model.addAttribute("customer_name", baseCustomer.getName());
         OrderDto orderDto = new OrderDto();
         if(principal==null){
             return "redirect:/login";
@@ -230,7 +230,7 @@ public class OrderController {
         cart.clear();
 //        Integer total = customerService.findSumPriceByEmail(principal.getName());
         redirectAttributes.addFlashAttribute("msg", "Đặt hàng thành công");
-        return "redirect:/order/home";
+        return "redirect:/";
     }
 
     @RequestMapping("/order-detail/{id}")
