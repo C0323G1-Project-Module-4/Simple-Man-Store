@@ -65,6 +65,11 @@ public class CustomerController {
             modelAndView.addObject("customerPage", customerPage);
             modelAndView.addObject("searchName",searchName);
             modelAndView.addObject("customerType",customerType);
+            String message;
+            if (customerPage.getTotalElements()==0){
+                message = "Không tìm thấy kết quả";
+                modelAndView.addObject("message",message);
+            }
             modelAndView.addObject("customer_type", customerTypeService.findAll());
 //            modelAndView.addObject("")
             return modelAndView;
