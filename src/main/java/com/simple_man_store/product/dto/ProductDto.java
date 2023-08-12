@@ -150,5 +150,8 @@ public class ProductDto implements Validator {
         } else if (productDto.getPrice() < 1) {
             errors.rejectValue("price", null, "Giá của sản phẩm không thể < 1 VNĐ");
         }
+        if (productDto.getImage().equals("")){
+            errors.rejectValue("image",null,"Hình ảnh sản phẩm không để trống");
+        }
     }
 }
