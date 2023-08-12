@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Chi tiết lịch sử mua hàng</title>
     <div th:insert="~{home::libraries}"></div>
 </head>
 <body>
@@ -26,9 +26,9 @@
         <div style="margin-left: 60px" class="p-2">
             <h5>Địa chỉ nhận hàng</h5>
             <div style="margin-left: 10px">
-                <p>Tên :<span th:text="${order.name}"></span></p>
+                <p>Tên: <span th:text="${order.name}"></span></p>
                 <p>Số điện thoại: <span th:text="${order.phone_number}"></span></p>
-                <p>Địa chỉ<span th:text="${order.address}"></span></p>
+                <p>Địa chỉ: <span th:text="${order.address}"></span></p>
 
             </div>
         </div>

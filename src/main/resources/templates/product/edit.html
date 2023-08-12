@@ -13,13 +13,13 @@
 <body>
 <div th:replace="~{home::navbar-start}"></div>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-4 mx-auto">
-            <img id="imagePreview" style="width: 100%; height: 550px">
+            <img id="imagePreview" style="width: 100%; height: 90%">
         </div>
         <div class="col-md-8">
-            <form class="was-validated" th:object="${productDto}" th:action="@{/product/edit}" method="post">
+            <form  th:object="${productDto}" th:action="@{/product/edit}" method="post">
 
                 <div class="d-flex justify-content-center">
                     <h1>Chỉnh sửa thông tin sản phẩm</h1>
@@ -30,7 +30,7 @@
 
 <!--                name-->
                 <div class="input-group mb-2">
-                    <span class="input-group-text mx-auto" id="basic-addon1" style="width: 200px">Tên sản phẩm</span>
+                    <span class="input-group-text mx-auto" id="basic-addon1" style="width: 200px">Tên sản phẩm<b style="color:red;margin-left: 0.25rem">*</b></span>
                     <input type="text" class="form-control" placeholder="Tên sản phẩm" aria-label="Tên sản phẩm"
                            aria-describedby="basic-addon1" th:field="*{name}">
                 </div>
@@ -41,7 +41,7 @@
 <!--                    loại sản phẩm-->
                 <div class="input-group mb-2">
                     <label class="input-group-text mx-auto" for="inputGroupSelect01" style="width: 200px">Loại sản
-                        phẩm</label>
+                        phẩm<b style="color:red;margin-left: 0.25rem">*</b></label>
                     <select class="form-select" id="inputGroupSelect01" th:field="*{categoryId}">
                         <option th:each="category: ${categoryList}" th:if="${category.name !=''}"
                                 th:value="${category.id}" th:text="${category.name}">
@@ -52,7 +52,7 @@
                 <!--                kích thước sản phẩm-->
                 <div class="input-group mb-2">
                     <label class="input-group-text mx-auto" for="inputGroupSelect02" style="width: 200px">Kích
-                        cở</label>
+                        cở<b style="color:red;margin-left: 0.25rem">*</b></label>
                     <select class="form-select" id="inputGroupSelect02" th:field="*{sizeId}">
                         <option th:each="size: ${sizeList}" th:value="${size.id}" th:text="${size.name}">
                         </option>
@@ -62,7 +62,7 @@
 
                 <!--                số lượng sản phẩm-->
                 <div class="input-group mb-2">
-                    <span class="input-group-text mx-auto" id="basic-addon4" style="width: 200px">Số lượng</span>
+                    <span class="input-group-text mx-auto" id="basic-addon4" style="width: 200px">Số lượng<b style="color:red;margin-left: 0.25rem">*</b></span>
                     <input type="number" class="form-control" id="basic-url" aria-describedby="basic-addon4"
                            th:field="*{quantity}">
                 </div>
@@ -72,8 +72,8 @@
 
                 <!--                    giá sản phẩm-->
                 <div class="input-group mb-2">
-                    <span class="input-group-text mx-auto" id="basic-addon5" style="width: 200px">Giá</span>
-                    <input type="number" class="form-control" aria-describedby="basic-addon5"
+                    <span class="input-group-text mx-auto" id="basic-addon6" style="width: 200px">Giá<b style="color:red;margin-left: 0.25rem">*</b></span>
+                    <input type="number" class="form-control" aria-describedby="basic-addon6"
                            th:field="*{price}">
                 </div>
                 <div>
@@ -82,15 +82,15 @@
 
 <!--                giá-->
                 <div class="input-group mb-3">
-                    <span class="input-group-text mx-auto" id="basic-addon5" style="width: 200px">Giá</span>
-                    <input type="number" class="form-control" aria-describedby="basic-addon5"
+                    <span class="input-group-text mx-auto" id="basic-addon7" style="width: 200px">Giá<b style="color:red;margin-left: 0.25rem">*</b></span>
+                    <input type="number" class="form-control" aria-describedby="basic-addon7"
                            th:field="*{price}">
                     <small style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{price}"></small>
                 </div>
 
                 <!--                    mô tả sản phẩm-->
                 <div class="input-group mb-2">
-                    <span class="input-group-text mx-auto" style="width: 200px">Mô tả về sản phẩm</span>
+                    <span class="input-group-text mx-auto" style="width: 200px">Mô tả về sản phẩm<b style="color:red;margin-left: 0.25rem">*</b></span>
                     <textarea class="form-control" aria-label="With textarea" placeholder="Mô tả sản phẩm"
                               th:field="*{description}"></textarea>
                 </div>
@@ -100,7 +100,7 @@
                 </div>
                 <!--                hình ảnh-->
                 <div class="input-group mb-2">
-                    <span class="input-group-text mx-auto" style="width: 200px;">Chọn hình ảnh</span>
+                    <span class="input-group-text mx-auto" style="width: 200px;">Chọn hình ảnh<b style="color:red;margin-left: 0.25rem">*</b></span>
                     <input type="hidden" id="thumbnailURL" th:field="*{image}"/>
                     <input id="btnThumbnailURL" type="file" class="form-control choose-file"/>
                 </div>
@@ -113,11 +113,11 @@
                     <progress id="uploader" value="0" max="100" style="width: 100%">0%</progress>
                 </div>
                 <div class="input-group row" >
-                    <div class=" col-6 " align="center">
-                        <a th:href="@{/product/list}"><button style="width: 90%" class="btn btn-info" type="button">Quay lại</button></a>
+                    <div class=" col-6 " align="end">
+                        <button style="width: 50%"  class="btn btn-primary" type="submit">Cập nhật</button>
                     </div>
-                    <div class=" col-6 " align="center">
-                        <button style="width: 90%"  class="btn btn-primary" type="submit">Thêm mới</button>
+                    <div class=" col-6 " align="start">
+                        <a th:href="@{/product/list}"><button style="width: 50%" class="btn btn-info" type="button">Hủy bỏ</button></a>
                     </div>
                 </div>
             </form>
