@@ -55,6 +55,12 @@ public class EmployeeController {
         model.addAttribute("employeePage", employeePage);
         model.addAttribute("searchName",searchName);
         model.addAttribute("phoneNumber",phoneNumber);
+        String noResultMessage;
+        if(employeePage.getTotalElements()==0) {
+            noResultMessage = "Không tìm thấy kết quả";
+            model.addAttribute("noResultMessage",noResultMessage);
+        }
+
         return "employee/list";
     }
 
