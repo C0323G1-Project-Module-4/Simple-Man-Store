@@ -78,6 +78,7 @@ public class AccountController {
             return "sign-up";
         }
         accountService.save(accountDto);
+       redirectAttributes.addFlashAttribute("msg","Đăng ký thành công");
         return "redirect:/login";
     }
     @GetMapping("/shop")
@@ -100,7 +101,6 @@ public class AccountController {
         model.addAttribute("passwordDto",new PasswordDto());
         return "/account/change-password";
     }
-
 
     @GetMapping("/login")
     public String signIn( Model model) {
