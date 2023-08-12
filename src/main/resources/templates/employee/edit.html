@@ -26,12 +26,12 @@
             <input type="hidden" name="emailAccount" th:value="${emailAccount}">
             <input type="hidden" th:field="*{flag}">
             <div class="d-flex justify-content-center">
-                <h2>CHỈNH SỬA THÔNG TIN NHÂN VIÊN</h2>
+                <h2>Chỉnh sửa thông tin nhân viên</h2>
             </div>
             <div class="input-group" style="margin-top: 1rem">
                 <span class="input-group-text mx-auto" id="basic-addon1" style="width: 12.5rem">Họ và tên
                     <b style="color:red;margin-left: 0.25rem">*</b></span>
-                <input type="text" class="form-control" aria-label="Username"
+                <input type="text" class="form-control"
                        aria-describedby="basic-addon1" th:field="*{name}">
             </div>
             <div style="height: 1rem;margin-bottom: 0.8rem;margin-left: 12.5rem">
@@ -43,7 +43,7 @@
                 <span class="input-group-text mx-auto" id="basic-addon2" style="width: 12.5rem">Ngày sinh
                     <b style="color:red;margin-left: 0.25rem">*</b>
                 </span>
-                <input type="date" class="form-control" aria-label="Username"
+                <input type="date" class="form-control"
                        aria-describedby="basic-addon1" th:field="*{dob}">
             </div>
             <div style="height: 1rem;margin-bottom: 0.8rem;margin-left: 12.5rem">
@@ -65,8 +65,7 @@
                 <span class="input-group-text" style="width: 12.5rem">Số điện thoại
                     <b style="color:red;margin-left: 0.25rem">*</b>
                 </span>
-                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
-                       th:field="*{phoneNumber}">
+                <input type="text" class="form-control" th:field="*{phoneNumber}">
 
             </div>
             <div style="height: 1rem;margin-bottom: 0.8rem;margin-left: 12.5rem">
@@ -91,7 +90,7 @@
                 <span class="input-group-text mx-auto" style="width: 12.5rem">Địa chỉ nhân viên
                 <b style="color:red;margin-left: 0.25rem">*</b>
                 </span>
-                <textarea class="form-control" aria-label="With textarea" th:field="*{address}"></textarea>
+                <textarea class="form-control" th:field="*{address}"></textarea>
 
             </div>
             <div style="height: 1rem;margin-bottom: 0.8rem;margin-left: 12.5rem">
@@ -101,9 +100,8 @@
             </div>
 
             <div style="text-align: center">
-                <button class="btn btn-outline-warning" style="color: black">Cập nhật</button>
-                <a class="btn btn-outline-success" style="color: black;margin-left: 3%" href="/employee/list">Quay
-                    lại</a>
+                <button class="btn btn-primary" style="color: black">Cập nhật</button>
+                <a class="btn btn-info" style="color: black;margin-left: 3%" href="/employee/list">Hủy bỏ</a>
             </div>
         </form>
     </div>
