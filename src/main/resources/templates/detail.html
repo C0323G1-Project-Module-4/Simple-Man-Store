@@ -70,7 +70,7 @@
                 <form th:action="@{/order/add/__${product.id}__}" method="get">
                     <div style="height: 50px">
                         <div class="d-flex">
-                            <strong class="text-dark mr-3">Sizes<sup style="color: red">*</sup>:</strong>
+                            <strong class="text-dark mr-3">Size<sup style="color: red">*</sup>:</strong>
                             <div class="custom-control custom-radio custom-control-inline" th:each="size:${sizeList}">
                                 <input type="radio" class="custom-control-input" th:id="${size.id}" name="sizes"
                                        th:value="${size.name}">

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Đăng Nhập</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
     <style>
         a {
             text-decoration: none;
@@ -60,10 +62,30 @@
         </div>
     </section>
 </div>
+<div th:if="${msg}">
+    <span id="message" th:text="${msg}" style="display: none"></span>
+</div>
 <script>
+    let message = document.getElementById("message").innerText;
+    console.log(message);
+
+    function showMessage() {
+        if (message != null) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: message,
+                showConfirmButton: false,
+                timer: 2500
+            })
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", showMessage());
 
 
 </script>
+
 <script src="/signup_signin/vendor/jquery/jquery.min.js"></script>
 <script src="/signup_signin/js/main.js"></script>
 </body>
