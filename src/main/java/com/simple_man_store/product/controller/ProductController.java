@@ -56,6 +56,10 @@ public class ProductController {
         Double maxPrice = Double.valueOf(parts[1]);
         List<Category> categoryList = categoryService.showListCategory();
         Page<Product> productPage = productService.findProduct(pageable, searchName, minPrice, maxPrice, category);
+        System.out.println(productPage);
+        if (productPage.getTotalElements()==0){
+            model.addAttribute("isEmpty","Không tìm thấy sản phẩm hoặc sản phẩm đã hết");
+        }
         model.addAttribute("category", category);
         model.addAttribute("priceRange", priceRange);
         model.addAttribute("searchName", searchName);
