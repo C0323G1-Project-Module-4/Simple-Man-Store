@@ -199,14 +199,14 @@ public class OrderController {
         if (principal == null) {
             return "redirect:/login";
         }
-        if (customer != null) {
-            orderDto.setName(customer.getName());
-            orderDto.setEmail(customer.getEmail());
-            orderDto.setAddress(customer.getAddress());
-            orderDto.setPhone_number(customer.getPhone_number());
+        if (baseCustomer != null) {
+            orderDto.setName(baseCustomer.getName());
+            orderDto.setEmail(baseCustomer.getEmail());
+            orderDto.setAddress(baseCustomer.getAddress());
+            orderDto.setPhone_number(baseCustomer.getPhone_number());
         }
         model.addAttribute("orderDto", orderDto);
-        model.addAttribute("customer", customer);
+        model.addAttribute("customer", baseCustomer);
         return "checkout";
     }
 
@@ -229,7 +229,7 @@ public class OrderController {
             o.setPayment_date(String.valueOf(LocalDate.now()));
             orderService.add(o);
         }
-        model.addAttribute("amount",amount);
+        model.addAttribute("amount",(Integer.parseInt(amount)/100));
         model.addAttribute("bankCode",bankCode);
         model.addAttribute("info",info);
         model.addAttribute("txnRef",txnRef);
