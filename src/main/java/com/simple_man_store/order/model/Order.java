@@ -27,8 +27,8 @@ public class Order {
     private String payment_date;
     @Column(columnDefinition = "bit(1)")
     private boolean flag = true;
-    @Column(columnDefinition = "bit(1)")
-    private boolean status = false;
+    @Column(columnDefinition = "int default 0")
+    private int status ;
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false, referencedColumnName = "id")
     private Account account;
@@ -63,11 +63,11 @@ public class Order {
         this.orderDetailSet = orderDetailSet;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

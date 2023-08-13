@@ -8,6 +8,7 @@
 </head>
 <body>
 <div th:replace="~{home::navbar-start}"></div>
+<div class="container-fluid py-3" style="text-align: center"><h1>Lịch sử mua hàng</h1> </div>
 
 
 <div class="container-fluid">
@@ -25,7 +26,7 @@
         <table class="table table-light table-borderless table-hover text-center mb-0">
             <thead class="thead-dark">
             <tr>
-                <th>Stt</th>
+                <th>STT</th>
                 <th>Tên</th>
                 <th>Email</th>
                 <th>SĐT</th>
@@ -33,7 +34,7 @@
                 <th>Ngày đặt</th>
                 <th>Ngày thanh toán</th>
                 <th>Chi tiết</th>
-                <th>Xác nhận</th>
+                <th>Trạng thái</th>
             </tr>
             </thead>
             <tbody class="align-middle">
@@ -48,15 +49,10 @@
                 <td class="align-middle" th:if="${order.payment_date}==null">Chưa thanh toán</td>
                 <td class="align-middle"><a class="btn btn-primary px-3"
                                             th:href="@{/order/history-detail/__${order.id}__}">Xem chi tiết</a></td>
-                <td class="align-middle" th:unless="${order.status}">
-
-                    <button th:attr="onclick=|showInfo(${order.id},'${order.name}')|" type="button"
-                            class="btn btn-primary px-3" data-toggle="modal" data-target="#exampleModal">
-                        Đã nhận hàng
-                    </button>
-                </td>
-                <td class="align-middle" th:if="${order.status}">Đã xác nhận</td>
                 <!--            <td class="align-middle" th:if="${order.payment_date}!=null" ></td>-->
+                <td class="align-middle" th:if="${order.status==0}">Chưa thanh toán</td>
+                <td class="align-middle" th:if="${order.status==1}">Đang thanh toán</td>
+                <td class="align-middle" th:if="${order.status==2}">Đã thanh toán</td>
             </tr>
             </tbody>
         </table>
@@ -86,36 +82,36 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form th:action="@{/order/is-receive}" method="post">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Xác nhận đơn hàng</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <input id="id" name="id" hidden="hidden">
-                    <div class="modal-body">
-                        Đơn hàng của <span id="deleteName"></span>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button class="btn btn-primary">Xác nhân</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<!--    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--        <div class="modal-dialog">-->
+<!--            <div class="modal-content">-->
+<!--                <form th:action="@{/order/is-receive}" method="post">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="exampleModalLabel">Xác nhận đơn hàng</h5>-->
+<!--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                            <span aria-hidden="true">&times;</span>-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                    <input id="id" name="id" hidden="hidden">-->
+<!--                    <div class="modal-body">-->
+<!--                        Đơn hàng của <span id="deleteName"></span>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>-->
+<!--                        <button class="btn btn-primary">Xác nhân</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
 
-<script>
-    function showInfo(id, name) {
-        document.getElementById("id").value = +id;
-        document.getElementById("deleteName").innerText = name;
-    }
-</script>
+<!--<script>-->
+<!--    function showInfo(id, name) {-->
+<!--        document.getElementById("id").value = +id;-->
+<!--        document.getElementById("deleteName").innerText = name;-->
+<!--    }-->
+<!--</script>-->
 <div th:replace="~{home::footer-start}"></div>
 <div th:replace="~{home::back-to-top}"></div>
 <div th:replace="~{home::footer}"></div>
