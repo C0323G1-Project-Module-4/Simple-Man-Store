@@ -17,15 +17,14 @@ public class PasswordDto implements Validator {
     public void validate(Object target, Errors errors) {
         PasswordDto passwordDto = (PasswordDto) target;
 
-        if (!passwordDto.getNewPassword().equals("")) {
+        if (passwordDto.getOldPassword().equals("")) {
+            errors.rejectValue("oldPassword",null,"Vui lòng không để trống");
+        }
+        if (passwordDto.getNewPassword().equals("")) {
             errors.rejectValue("newPassword",null,"Vui lòng không để trống");
-        } else if (!passwordDto.getNewPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
-            errors.rejectValue("newPassword", null, "Mật khẩu tối thiểu 8 ký tự và có ít nhất 1 ký tự in hoa");
         }
 
-        if (!passwordDto.newPassword.equals(passwordDto.reNewPassword)) {
-            errors.rejectValue("reNewPassword", null, "Mật khẩu không khớp");
-        }
+
 
 
     }

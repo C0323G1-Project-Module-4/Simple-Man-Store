@@ -9,7 +9,6 @@ public interface IAccountService {
     void save(AccountDto accountDto);
 
     boolean checkOldPass(String email, String confirmOldPassword);
-
     boolean checkNewPass(String email, String newPassword);
 
     void changePassword(String email, String newPassword);

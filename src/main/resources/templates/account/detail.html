@@ -2,10 +2,11 @@
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Thông tin tài khoản</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
     <div th:insert="~{home::libraries}"></div>
     <style>
         .slider-container {
@@ -35,7 +36,8 @@
 
 <div class="container" style="min-height: 800px">
     <div class="row col-md-12 col-lg-12">
-        <h4><i style="margin-right: 11px;position: relative;bottom: 2px;" class="fa-solid fa-user"></i>Tài Khoản Của Bạn</h4>
+        <h4><i style="margin-right: 11px;position: relative;bottom: 2px;" class="fa-solid fa-user"></i>Tài Khoản Của Bạn
+        </h4>
     </div>
     <div class="row col-md-12 col-lg-12 mt-4 ">
         <div class="col-md-3 col-lg-3">
@@ -56,7 +58,8 @@
                 </div>
                 <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " th:href="@{order/history}">Lịch sử mua
                     hàng</a></div>
-                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " th:href="@{/account/change-pass}">Đổi mật khẩu</a></div>
+                <div class="mb-3 mx-3"><a class="breadcrumb-item text-dark " th:href="@{/account/change-pass}">Đổi mật
+                    khẩu</a></div>
                 <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" class="mb-3 mx-3"><a
                         class="breadcrumb-item text-dark " th:href="@{/order/list}">Quản lý đơn hàng</a></div>
                 <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" class="mb-3 mx-3"><a
@@ -82,7 +85,8 @@
                     <div class="mt-4">
                         <p>Tên<small style="color: red;"> *</small></p>
                         <input th:field="*{name}" class="ml-5 form-control" style="width: 250px;" type="text">
-                        <p class="ml-5"><small style="color: red;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small></p>
+                        <p class="ml-5"><small style="color: red;" th:if="${#fields.hasErrors('name')}"
+                                               th:errors="*{name}"></small></p>
                     </div>
                     <div class="mt-4">
                         <p>Email<small style="color: red;"> *</small></p>
@@ -91,7 +95,8 @@
                     <div class="mt-4">
                         <p>Số điện thoại<small style="color: red;"> *</small></p>
                         <input th:field="*{phone_number}" class="ml-5 form-control" style="width: 250px;" type="text">
-                        <p class="ml-5"><small style="color: red;" th:if="${#fields.hasErrors('phone_number')}" th:errors="*{phone_number}"></small></p>
+                        <p class="ml-5"><small style="color: red;" th:if="${#fields.hasErrors('phone_number')}"
+                                               th:errors="*{phone_number}"></small></p>
                     </div>
                     <div class="mt-4">
                         <p>Địa chỉ</p>
@@ -140,10 +145,30 @@
         </div>
     </div>
 </div>
+
+
+
+<div th:if="${msg}">
+    <span id="message" th:text="${msg}" style="display: none"></span>
 </div>
-
-
 <script>
+    let message = document.getElementById("message").innerText;
+    console.log(message);
+
+    function showMessage() {
+        if (message != null) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: message,
+                showConfirmButton: false,
+                timer: 2500
+            })
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", showMessage());
+
 
 </script>
 
