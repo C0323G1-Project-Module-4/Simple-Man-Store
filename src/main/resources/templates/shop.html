@@ -90,7 +90,7 @@
                             <img class="img-fluid w-100" style="max-height: 294.74px;width: auto"
                                  th:src="${product.image}" th:href="@{order/detail/__${product.id}__}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" th:href="@{/order/add/__${product.id}__}"><i
+                                <a class="btn btn-outline-dark btn-square" th:href="@{/order/add/__${product.id}__(sizes=29)}"><i
                                         class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" th:href="@{/order/detail/__${product.id}__}"><i

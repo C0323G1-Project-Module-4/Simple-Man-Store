@@ -51,7 +51,7 @@
 
         <div class="col-lg-7 h-auto mb-30">
             <div class="h-100 bg-light p-30">
-                <h3 th:text="${product.name}">Product Name Goes Here</h3>
+                <h3 th:text="${product.name}">  </h3>
                 <div class="d-flex mb-3">
                     <div class="text-primary mr-2">
                         <small class="fas fa-star"></small>
@@ -81,12 +81,14 @@
                             <small style="color: red" th:if="${msg}" th:text="${msg}"></small>
                         </div>
                     </div>
-
-                    <strong class="text-dark mr-3">Số lượng:</strong>
+                    <strong class="text-dark mr-3">Số lượng:
+                        <span th:unless="${warehouse.quantity}==0" th:text="${warehouse.quantity}"></span>
+                        <span style="color: red" th:if="${warehouse.quantity}==0">Sản phẩm đã hết hàng</span>
+                    </strong>
 
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: auto;">
-                            <input type="number" min="1" value="1" name="quantity"
+                            <input type="number" min="1" th:max="${warehouse.quantity}" value="1" name="quantity"
                                    style="height: 37px;width: 59px;text-align: center">
                             <!--                            <div class="input-group-btn">-->
                             <!--                                <a class="btn btn-primary btn-minus">-->

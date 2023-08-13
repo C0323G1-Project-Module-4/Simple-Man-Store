@@ -7,6 +7,8 @@
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
     <div th:insert="~{home::libraries}"></div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
 
 </head>
 
@@ -47,7 +49,10 @@
                     <tbody class="align-middle">
                         <tr th:each="product: ${cart.products}">
                             <td class="align-middle"><img th:src="@{${product.key.image}}" th:text="${product.key.name}" alt="" style="width: 50px;margin-right:5px " ></td>
-                            <td class="align-middle" th:text="${product.key.size}"></td>
+                            <td class="align-middle" ><select>
+                                <option th:text="${product.key.size}"></option>
+                                <option th:each="size:${sizeList}" th:if="${product.key.size!=size.name}" th:text="${size.name}" ></option>
+                            </select></td>
                             <td class="align-middle" th:text="${#numbers.formatInteger(product.key.price,3,'POINT')}"></td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
@@ -111,7 +116,27 @@
     </div>
 </form>
     <!-- Cart End -->
+<div th:if="${msgError}">
+    <span id="message" th:text="${msgError}" style="display: none"></span>
+</div>
+<script>
+    let message = document.getElementById("message").innerText;
+    console.log(message);
 
+    function showMessage() {
+        if (message != null) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+            })
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", showMessage());
+
+
+</script>
 <div th:replace="~{home::footer-start}"></div>
 <div th:replace="~{home::back-to-top}"></div>
 <div th:replace="~{home::footer}"></div>

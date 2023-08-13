@@ -15,7 +15,7 @@
 <h1 style=" text-align: center">Thanh toán thành công</h1>
     <div class="container" style="width: 34%">
 <p>Mã giao dịch thanh toán: <span th:text="${txnRef}"></span></p>
-<p>Số tiền: <span th:text="${amount}"></span></p>
+<p>Số tiền: <span th:text="${#numbers.formatInteger(amount/100,3,'POINT')}"></span></p>
 <p>Mô tả giao dịch: <span th:text="${info}"></span></p>
 <p>Mã ngân hàng thanh toán: <span th:text="${bankCode}"></span></p>
 <p>Thời gian thanh toán: <span th:text="${date}"></span></p>

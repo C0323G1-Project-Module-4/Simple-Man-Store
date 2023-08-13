@@ -105,7 +105,7 @@ public class PaymentController {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String vnp_TxnRef = Config.getRandomNumber(8);
-        String vnp_OrderInfo = "Thanh toan don hang tu Simple-Man: " + vnp_TxnRef;
+        String vnp_OrderInfo = "Thanh toan don hang tu Simple-Man " + vnp_TxnRef;
         String orderType = "150000";
         String vnp_IpAddr = "0:0:0:0:0:0:0:1";
         String vnp_TmnCode = Config.vnp_TmnCode;
@@ -178,18 +178,11 @@ public class PaymentController {
                               @RequestParam(value = "vnp_PayDate") String date,
                               @RequestParam(value = "vnp_BankCode") String bankCode,
                               @RequestParam(value = "vnp_OrderInfo") String info,
-                              @ModelAttribute Cart cart,
                               Model model,
                               RedirectAttributes redirectAttributes
                               ){
         if(status.equals("00")){
-            model.addAttribute("amount",amount);
-            model.addAttribute("bankCode",bankCode);
-            model.addAttribute("info",info);
-            model.addAttribute("txnRef",txnRef);
-            model.addAttribute("date",date);
-            cart.clear();
-            return "order/success";
+            return "redirect:/order/success?amount="+amount+"&bankCode="+bankCode+"&info="+info+"&txnRef="+txnRef+"&date="+date;
         }else {
             orderService.deleteLast();
             redirectAttributes.addFlashAttribute("msg","Thanh toán thất bại");
