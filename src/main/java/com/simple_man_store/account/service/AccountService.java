@@ -43,7 +43,7 @@ public class AccountService implements IAccountService {
         // Sinh mã ngẫu nhiên
         String code = generateRandomCode(6); // Mã có độ dài 6
         // Tạo nội dung email
-        String body = "Mã xác nhận của bạn là: " + code;
+        String body = "Mã xác nhận của bạn là: <b>" + code + "</b>";
         // Cấu hình subject
         String subject = "Thay đổi mật khẩu";
         sendEmail(email, subject, body);
@@ -60,6 +60,7 @@ public class AccountService implements IAccountService {
         }
         return code.toString();
     }
+
 
 
     @Override
@@ -83,6 +84,7 @@ public class AccountService implements IAccountService {
         String oldPass = account.getEncrytedPassword();
         return oldPass.equals(confirmOldPass);
     }
+
 
     @Override
     public boolean checkNewPass(String email, String newPassword) {
