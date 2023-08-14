@@ -14,8 +14,7 @@ public interface IProductService {
     void deleteProduct(Product product);
     void editProduct(Product product);
     Page<Product> findAll(Pageable pageable);
-
     Page<Product> findProduct(Pageable pageable, String name, Double minPrice, Double maxPrice, String categoryName);
     Page<Product> findProductSearch(Pageable pageable,String [] categoryName,String [] sizeName,String order);
-
+    List<Product> bestSellers();
 }

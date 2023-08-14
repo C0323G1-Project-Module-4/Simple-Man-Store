@@ -145,7 +145,11 @@ public class CustomerController {
     }
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute CustomerDto customerDto, BindingResult bindingResult,
-                       RedirectAttributes redirectAttributes){
+                       Model model,Principal principal){
+        Customer newCustomer = customerService.findByEmail(principal.getName());
+        String type = customerService.findCustomerTypeByEmail(newCustomer.getEmail());
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", newCustomer.getName());
         Customer customer = new Customer();
         new CustomerDto().validate(customerDto,bindingResult);
         if(bindingResult.hasErrors()){

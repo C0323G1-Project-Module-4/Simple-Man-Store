@@ -9,6 +9,8 @@ import com.simple_man_store.customer.dto.CustomerDto;
 import com.simple_man_store.customer.model.Customer;
 import com.simple_man_store.customer.service.customer.ICustomerService;
 import com.simple_man_store.order.model.Cart;
+import com.simple_man_store.product.model.Product;
+import com.simple_man_store.product.service.IProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @SessionAttributes("cart")
@@ -34,6 +37,8 @@ public class AccountController {
     private IAccountService accountService;
     @Autowired
     private ICustomerService customerService;
+    @Autowired
+    private IProductService productService;
 
     private String code;
     @RequestMapping(value = {""}, method = RequestMethod.GET)
@@ -45,6 +50,8 @@ public class AccountController {
             model.addAttribute("type", type);
             model.addAttribute("customer_name", customer.getName());
         }
+        List<Product> bestSellers = productService.bestSellers();
+        model.addAttribute("bestSellers",bestSellers);
         return "home";
     }
 
@@ -144,7 +151,7 @@ public class AccountController {
             bindingResult.rejectValue("newPassword", null, "Mật khẩu tối thiểu 8 ký tự và một ký tự in hoa");
             return "/account/change-password";
         }
-        if (!secondCheck) {
+        if (secondCheck) {
             bindingResult.rejectValue("newPassword", null, "Mật khẩu mới không được giống mật khẩu cũ");
             return "/account/change-password";
         }

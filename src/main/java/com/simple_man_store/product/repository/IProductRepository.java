@@ -24,4 +24,10 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
             "JOIN warehouse on product.id = warehouse.product_id JOIN size on warehouse.size_id = size.id " +
             "WHERE category.name in :category_name and size.name in :size_name ORDER BY product.price DESC ",nativeQuery = true)
     Page<Product> findListProductDESC(Pageable pageable, @Param("category_name") List<String> categoryName,@Param("size_name") List<String> sizeName);
+
+    @Query(value = "select p.id, p.`name`, p.image,p.price,p.category_id,sum(o.quantity) as sum,p.description,p.flag from product p join order_detail o on p.id = o.product_id\n" +
+            "group by p.id\n" +
+            "order by sum desc\n" +
+            "limit 8;",nativeQuery = true)
+    List<Product> bestSellers ();
 }
