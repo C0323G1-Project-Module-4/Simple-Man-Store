@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IEmployeeService {
-    Page<Employee> findAll(Pageable pageable, String searchName);
+    Page<Employee> findAll(Pageable pageable, String searchName, String phoneNumber);
 
     Employee findById(int id);
 

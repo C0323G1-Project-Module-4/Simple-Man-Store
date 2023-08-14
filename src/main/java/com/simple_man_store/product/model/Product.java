@@ -3,6 +3,7 @@ package com.simple_man_store.product.model;
 import com.simple_man_store.order_detail.model.OrderDetail;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -49,6 +50,19 @@ public class Product {
         this.category = category;
         this.orderDetailSet = orderDetailSet;
         this.warehouseSet = warehouseSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Integer getId() {
@@ -122,4 +136,5 @@ public class Product {
     public void setWarehouseSet(Set<Warehouse> warehouseSet) {
         this.warehouseSet = warehouseSet;
     }
+
 }

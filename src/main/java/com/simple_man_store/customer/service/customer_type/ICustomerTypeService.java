@@ -10,4 +10,5 @@ public interface ICustomerTypeService {
     void delete(Integer id);
 
     List<CustomerType> findAll();
+    CustomerType findByName(Integer id);
 }

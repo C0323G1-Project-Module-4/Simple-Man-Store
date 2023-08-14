@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Danh sách khách hàng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -10,180 +10,176 @@
             crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+<style>
+    .table th, .table tbody td {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
 </head>
-<body>
+<body >
 <header>
+    <div th:insert="~{home::libraries}"></div>
+    <div th:replace="~{home::navbar-start}"></div>
 </header>
-<div class="row ">
-    <div class="col-3">
-        <!-- As a link -->
-        <nav class="navbar sticky-bottom" style="margin-top: 10%">
-            <div class="container-fluid">
-                <button class="navbar-toggler border border-light" id="hide" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    <span>Danh mục quản lý</span>
-                </button>
-            </div>
-            <div class="container-fluid">
-                <div class="collapse" id="navbarToggleExternalContent">
-                    <div class="p-4">
-                        <h5 class="text-white h4">Collapsed content</h5>
-                        <a class="text-muted" th:href="@{/employee/list}" style="text-decoration: none;">QUẢN LÝ NHÂN VIÊN</a>
-                    </div>
-                    <div class="p-4">
-                        <h5 class="text-white h4">Collapsed content</h5>
-                        <a class="text-muted" th:href="@{/customer/list}" id="customer" style="text-decoration: none;">QUẢN LÝ KHÁCH HÀNG</a>
-                    </div>
-                    <div class="p-4">
-                        <h5 class="text-white h4">Collapsed content</h5>
-                        <a class="text-muted" th:href="@{/product/list}" id="product" style="text-decoration: none;">QUẢN LÝ SẢN PHẨM</a>
-                    </div>
+<div class="col-12 mx-auto" style="width: 100%">
+    <div class="mx-auto " style="width: 100%; margin: 2%">
+        <header class=" d-flex justify-content-center px-xl-5 ">
+        <h2 STYLE="margin-top: 0.5rem">Danh sách khách hàng
+
+
+        </h2>
+        </header>
+        <form class="mx-auto" style="width: 90%;margin-top: 2%" th:action="@{/customer/list}" method="get" >
+            <div class="d-flex container-fluid justify-content-end" style="width: 100%">
+                <div class="d-flex ">
+                    <input   type="search" placeholder="Tìm kiếm khách hàng" aria-label="Search"
+                             name="searchName">
+                    <button class="btn btn-outline-warning border-dark" type="submit">
+                        <i class="fa-solid fa-magnifying-glass " style="color: #0a0a0a;"></i></button>
+                </div>
+                <div class="d-flex">
+                    <button class="btn btn-outline-warning border-dark" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseExample" aria-expanded="false"
+                            aria-controls="collapseExample">
+                        <i class="fa-solid fa-bars fa-beat-fade" style="color: #050505;"></i></button>
                 </div>
             </div>
-        </nav>
-<script  th:src="@{/jquery-3.7.0.min.js}">
-    $(document).ready(function () {
-        $(`#hide`).click(function () {
-            $(`#customer`).hidden;
-        });
-    });
-</script>
-    </div>
-    <div class="col-9">
-        <div class="mx-auto shadow-lg mb-5 bg-body rounded" style="width: 90%; margin: 7%">
-            <header class=" d-flex justify-content-center bg bg-warning " style=" color: black">
+            <div class="collapse bg-light" id="collapseExample" >
 
-                   <h1 style="font-family: 'Dancing Script', cursive;margin-top: 0.5rem" >DANH SÁCH KHÁCH HÀNG</h1>
-               </header>
-            <div class="d-flex justify-content-center p-3">
-                <nav class="navbar bg-light ">
-                    <div class="container-fluid">
-                        <form class="d-flex " role="search" th:action="@{/customer/list}" method="get">
-                            <input class="form-control " type="search" placeholder="Search" aria-label="Search"
-                                   name="searchName">
-                            <select class="form-select " id="inputGroupSelect01" name="customerTypeId" style="width: 20%">
-                                <option th:each="type: ${customer_type}" th:value="${type.name}" th:text="${type.name}"></option>
-                                <option th:value="0">Tất cả</option>
-                            </select>
-                            <button class="btn btn-outline-warning" type="submit">
-                                <i class="fas fa-search" style="color: #121212;"></i></button>
-                        </form>
+
+
+
+                <div class=" card-body border-light bg-light">
+                    <div class="row mx-auto d-flex justify-content-center " style="width: 80%">
+                        <div class="h-50 text-uppercase">LOẠI KHÁCH HÀNG</div>
+                        <div class="col-lg-2 col-md-4 col-sm-6 pb-1 d-flex" th:each="c: ${customer_type}"
+                             style="margin-right: 2%">
+                            <input class="mx-md-3" id="checkbox" name="customerType" type="checkbox"
+                                   th:value="${c.id}">
+                            <label for="checkbox" th:text="${c.name}"></label>
+                        </div>
+
                     </div>
-                </nav>
-            </div>
-            <div class="d-flex justify-content-center p-3">
-                <table class="table table-light table-striped ">
-                    <thead>
-                    <tr style="text-align: center">
-                        <th>STT</th>
-                        <th>Tên KH</th>
-                        <th>GT</th>
-                        <th>Bậc</th>
-                        <th colspan="3">Chức năng</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-group-divider" style="text-align: center">
-                    <tr class="table-active" th:each="customer,status: ${customerPage}">
-                        <td th:text="${customerPage.number*5+status.count}"></td>
-                        <td th:text="${customer.name}"></td>
-                        <td th:if="${customer.gender}" th:text="Nam"></td>
-                        <td th:if="${!(customer.gender)}" th:text="Nữ"></td>
-                        <td th:text="${customer.customerType.name}"></td>
-                        <td>
-                            <a th:href="@{/customer/showUpdate/{id}(id=${customer.getId()})}">
-                                <button class="btn btn-light border-warning">
-                                    <i class="far fa-edit" style="color: #e0ee11;"></i>
-                                </button>
-                            </a>
-                        </td>
-                        <td>
-                            <button th:attr="onclick=|showDetail(${customer.getId()})|"
-                                    type="button"
-                                    class="btn btn-light border border-warning" data-bs-toggle="modal"
-                                    data-bs-target="#modalDetail">
-                                <i class="fas fa-info "></i>
-                            </button>
-                        </td>
-                        <td>
-                            <button th:attr="onclick=|showDelete(${customer.getId()},'${customer.getName()}')|"
-                                    type="button"
-                                    class="btn btn-light border border-warning" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">
-                                <i class="fas fa-trash-alt " style="color: #02060d;"></i>
 
-                            </button>
-                        </td>
-                    </tr>
-
-                    </tbody>
-                </table>
+                </div>
             </div>
 
+        </form>
+        <div style="min-height: 26rem" >
+            <table class="table table-light table-striped table-hover table-responsive-sm ">
+                <thead>
+                <tr>
+                    <th class="h-50  ">Stt</th>
+                    <th class="h-50  ">Họ và tên</th>
+                    <th class="h-50  ">Ngày sinh</th>
+                    <th class="h-50 ">Giới tính</th>
+                    <th class="h-50 ">Bậc</th>
+                    <th class="h-50  " colspan="2">Chức năng</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="" th:each="customer,status: ${customerPage}">
+                    <td th:text="${customerPage.number*5+status.count}"></td>
+                    <td th:text="${customer.name}"></td>
+                    <td th:text="${customer.dob}"></td>
+                    <td th:if="${customer.gender}" th:text="Nam"></td>
+                    <td th:if="${!(customer.gender)}" th:text="Nữ"></td>
+                    <td th:text="${customer.customerType.name}"></td>
+                    <td align="center">
+                        <button th:attr="onclick=|showDetail(${customer.getId()})|"
+                                type="button"
+                                class="btn btn-outline-primary border border-dark" data-bs-toggle="modal"
+                                data-bs-target="#modalDetail">
 
-            <!--        Page table-->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" th:if="${customerPage.hasPrevious()}"
-                           th:href="@{/customer/list(page=${customerPage.number - 1},searchName=${searchName})}"
-                           aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+                            <i class="fas fa-info" style="color: #02060d;"></i>
+                        </button>
 
-                    <li class="page-item">
-                        <a th:if="${customerPage.hasNext()}"
-                           th:href="@{/customer/list(page=${customerPage.number + 1},searchName=${searchName})}"
-                           class="page-link" aria-label="Next">
-                            <span aria-hidden="true">next</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/customer/showUpdate/{id}(id=${customer.getId()})}">
+                            <button class="btn btn-outline-primary border-dark">
+                                <i class="far fa-edit" style="color: #02060d;"></i>
+                            </button>
                         </a>
-                    </li>
-                </ul>
-            </nav>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
         </div>
 
     </div>
 
 </div>
-<a th:href="@{/customer/showCreate}">
-    <button>aa</button>
-</a>
+
+<div>
+    <div style="text-align: center">
+        <a class="btn btn-light" style="color: black" th:if="${customerPage.hasPrevious()}" th:href="@{/customer/list(page=${customerPage.number -1},searchName=${searchName},customerType=${customerType})}">Trước</a>
+        <a class="btn" style="background-color: #FFD333" th:if="${customerPage.getTotalElements()!=0}"><span th:text="${customerPage.number + 1}"></span>/<span
+                th:text="${customerPage.totalPages}"></span></a>
+        <a class="btn btn-light" style="color: black" th:if="${customerPage.hasNext()}" th:href="@{/customer/list(page=${customerPage.number+1},searchName=${searchName},customerType=${customerType})}">Sau</a>
+    </div>
+</div>
+</div>
 
 
-<!--Message ajax-->
+<!--    footer-->
+<footer>
+    <div th:replace="~{home::footer-start}"></div>
+    <div th:replace="~{home::back-to-top}"></div>
+    <div th:replace="~{home::footer}"></div>
+</footer>
+<!--    ----->
+
+<!--Message -->
 <div th:if="${msg}">
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-warning">
-                <img src="https://antimatter.vn/wp-content/uploads/2022/04/meme-gau-truc-hoi-cham.jpg"
-                     style="width: 7%;height: 7%" alt="...">
-                <strong class="me-auto">Message</strong>
-                <small>11 mins ago</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                <h5 th:text="${msg}"></h5>
-            </div>
-        </div>
-    </div>
-
-
-    <!--    Message-->
-    <script>
-        window.onload = (event) => {
-            let myAlert = document.querySelectorAll('.toast')[0];
-            if (myAlert) {
-                let bsAlert = new bootstrap.Toast(myAlert);
-                bsAlert.show();
-            }
-        };
-
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <span id="message" th:text="${msg}"></span>
 </div>
+<script>
+    let message = document.getElementById("message").innerText;
+    console.log(message);
+
+    function showMessage() {
+        if (message != null) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: message,
+                showConfirmButton: false,
+                timer: 2500
+            })
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", showMessage());
+
+
+</script>
+<!--Message Search-->
+<div th:if="${message}" style="display: none">
+    <span id="messageSearch" th:text="${message}"></span>
+</div>
+<script>
+    let messageSearch = document.getElementById("messageSearch").innerText;
+    console.log(messageSearch);
+
+    function showMessage2() {
+        if (messageSearch != null) {
+            Swal.fire({
+                icon: 'error',
+                title: messageSearch,
+                showConfirmButton: false,
+                timer: 2500,
+            })
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", showMessage2());
+
+
+</script>
 
 
 <!--Modal Delete-->
@@ -193,18 +189,21 @@
         <div class="modal-content">
             <form th:action="@{/customer/delete}" method="post">
 
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Bạn chắc chắn muốn xóa</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header " style="background-color: #FFD333">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Bạn muốn xóa </h1>
+                    <a type="button" data-bs-dismiss="modal"><i class="fa-regular fa-rectangle-xmark fa-2xl" style="color: #1f1e1e;"></i></a>
                 </div>
                 <div class="modal-body">
                     <input id="deleteId" name="deleteId" type="hidden">
-                    <span>Khách hàng tên </span>
-                    <span id="deleteName" name="deleteName"></span>
+                    <span>Khách hàng tên: </span>
+                    <span id="deleteName" name="deleteName" ></span>
+                    <div>
+                        <small style="color:red;">Lưu ý thao tác sẽ không được hoàn tác</small>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Suy nghĩ lại</button>
-                    <button type="submit" class="btn btn-primary">Xóa</button>
+                    <button type="submit" class="btn-danger">
+                    Xóa</button>
                 </div>
             </form>
         </div>
@@ -222,6 +221,12 @@
         </div>
     </div>
 </div>
+<!--Hidden url-->
+<script>
+    const currentUrl = window.location.href;
+    const cleanUrl = currentUrl.split('?')[0];
+    history.replaceState(null, null, cleanUrl);
+</script>
 <!--Detail-->
 <script th:src="@{/jquery-3.7.0.min.js}"></script>
 <script th:inline="javascript">
@@ -237,23 +242,48 @@
                 let content = `
  <div class="modal-header bg bg-warning">
                     <h1 class="modal-title fs-5" id="modalDetailLabel" style="color: #02060d">${data.name}</h1>
-                     <button type="button" class="btn btn-warning border border-dark"data-bs-dismiss="modal">
-<i class="fab fa-xbox" style="color: #121212;"></i></button>
+                     <a type="button" data-bs-dismiss="modal"><i class="fa-regular fa-rectangle-xmark fa-2xl" style="color: #1f1e1e;"></i></a>
                 </div>
                 <div class="modal-body">
                 <input type="hidden" id="idDelete" value="${data.id}">
                 <input type="hidden" id="nameDelete" value="${data.name}">
                    <div>
-                   <h5>Ngày sinh: </h5>
+                   <h5>Ngày sinh: </h5>`;
+                if (data.dob==null){
+                    content +=`
+                    <span>Thiếu thông tin</span> </div>`;
+                }else {
+                content +=`
                     <span>${data.dob}</span>
-</div>
+</div>`;}
+
+                content +=`
                     <div>
                       <h5>Email: </h5>
                       <span>${data.email}</span>
 </div>
+<div>
+<h5>Giới tính</h5>
+`;
+                if (data.gender) {
+                    content += `<span>Nam</span>`;
+                } else {
+                    content += `<span>Nữ</span>`;
+                }
+
+                content += `
+</div>
                   <div>
-                  <h5>Địa chỉ: </h5>
-                    <span>${data.address}</span>
+                  <h5>Địa chỉ: </h5>`;
+                if (data.address !=null){
+                    content+=`
+                    <span>${data.address}</span>`;
+                }else {
+                    content+=`
+                    <span>Chưa có thông tin</span>`;
+                }
+
+                        content +=`
 </div>
                     <div>
                      <h5>Điện thoại: </h5>
@@ -263,16 +293,12 @@
                    <h5>Loại khách hàng: </h5>
                     <span>${data.customerType.name}</span>
 </div>
-<div>
-            <h5>Tài khoản: </h5>
-            <span>${data.account.email} </span>
-</div>
                 </div>
                 <div class="modal-footer">
                      <button
                       onclick="showInfoDelete()"
                                     type="button"
-                                    class="btn btn-light border border-warning" data-bs-toggle="modal"
+                                    class="btn btn-light border border-outline-warning btn-outline-warning" data-bs-toggle="modal"
                                     data-bs-target="#staticBackdrop">
                                 <i class="fas fa-trash-alt " style="color: #02060d;"></i>
 
@@ -292,9 +318,37 @@
     }
     function showDelete(id, name) {
         document.getElementById("deleteId").value = id;
-        document.getElementById("deleteName").innerText = name;
-    }
-// ---Footer----
+        document.getElementById("deleteName").innerText = name;}
+
+        var checkboxes = document.querySelectorAll("input[type='checkbox']");
+//         Lưu trữ trạng thái chex box
+
+        var checkboxes = document.querySelectorAll("input[type='checkbox']");
+
+// Khởi tạo mảng để lưu trạng thái của từng checkbox
+        var checkboxStates = [];
+
+// Kiểm tra trạng thái đã được lưu trong localStorage hay chưa
+        if (localStorage.getItem("checkboxStates")) {
+            // Nếu đã có dữ liệu trong localStorage, lấy mảng trạng thái từ localStorage
+            checkboxStates = JSON.parse(localStorage.getItem("checkboxStates"));
+
+            // Cập nhật trạng thái của các checkbox từ mảng
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = checkboxStates[i];
+            }
+        }
+
+// Thêm sự kiện "change" vào các checkbox
+        checkboxes.forEach(function(checkbox, index) {
+            checkbox.addEventListener("change", function() {
+                // Cập nhật trạng thái của checkbox trong mảng
+                checkboxStates[index] = checkbox.checked;
+
+                // Lưu mảng trạng thái vào localStorage
+                localStorage.setItem("checkboxStates", JSON.stringify(checkboxStates));
+            });
+        });
 
 </script>
 </body>

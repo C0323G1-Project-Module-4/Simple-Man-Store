@@ -18,10 +18,10 @@ public class CustomerDto implements Validator {
     private String phone_number;
     private boolean gender;
     private String address;
-    private boolean flag;
+    private boolean flag = true;
     private CustomerType customerType;
     private Account account;
-    private final String regexName = "^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]+)+$";
+    private final String regexName = "^([\\p{Lu}][\\p{Ll}]{1,8})(\\s([\\p{Lu}]|[\\p{Lu}][\\p{Ll}]{1,10})){0,5}$";
     private final String regexPhoneNumber = "^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$";
     private final String regexEmail = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     public CustomerDto() {
@@ -128,22 +128,31 @@ public class CustomerDto implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         CustomerDto customerDto = (CustomerDto) target;
+        if (customerDto.getName().equals("")){
+            errors.rejectValue("name",null,"Vui lòng không để trống họ và tên.");
+        }
         if (customerDto.getName().length()>255) {
-            errors.rejectValue("name",null,"Họ và tên không vượt quá 255 kí tự");
+            errors.rejectValue("name",null,"Họ và tên không vượt quá 255 kí tự.");
         } else if(!customerDto.getName().matches(regexName)){
-            errors.rejectValue("name",null,"Sai định dạng tên. Định dạng họ và tên mẫu: Trần Văn Hoàng");
+            errors.rejectValue("name",null,"Sai định dạng tên. Định dạng họ và tên mẫu: Trần Văn Hoàng.");
         }
         if(!customerDto.getPhone_number().matches(regexPhoneNumber)) {
-            errors.rejectValue("phone_number",null,"Sau định dạng số điện thoại. Mẫu định dạng số điện thoại đúng: 0987123456 hoặc 84987123456");
+            errors.rejectValue("phone_number",null,"Sau định dạng số điện thoại. Mẫu định dạng số điện thoại đúng: 0987123456 hoặc 84987123456.");
         }
         if(customerDto.getAddress().length() >255) {
             errors.rejectValue("address",null,"Địa chỉ không được quá 255 kí tự");
         }
+        if(customerDto.getAddress().equals("")) {
+            errors.rejectValue("address",null,"Vui lòng không để trống địa chỉ.");
+        }
         if (!customerDto.getEmail().matches(regexEmail)){
-            errors.rejectValue("email",null,"Sau định dạng email. Mẫu định dạng email đúng:A-z..@gmail.com");
+            errors.rejectValue("email",null,"Sau định dạng email. Mẫu định dạng email đúng:A-z..@gmail.com.");
         }
         if (!Validate.checkAge(customerDto.getDob())){
-            errors.rejectValue("dob",null,"Cảnh báo chưa đủ 18 tuổi");
+            errors.rejectValue("dob",null,"Cảnh báo chưa đủ 18 tuổi.");
+        }
+        if(customerDto.dob.equals("")) {
+            errors.rejectValue("dob",null,"Vui lòng nhập ngày sinh.");
         }
     }
 }

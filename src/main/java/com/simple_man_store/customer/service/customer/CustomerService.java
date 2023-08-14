@@ -3,16 +3,21 @@ package com.simple_man_store.customer.service.customer;
 import com.simple_man_store.customer.model.Customer;
 import com.simple_man_store.customer.model.CustomerType;
 import com.simple_man_store.customer.repository.ICustomerRepository;
-import com.simple_man_store.customer.service.customer_type.CustomerTypeService;
+import com.simple_man_store.customer.until.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class CustomerService implements ICustomerService {
     @Autowired
     private ICustomerRepository customerRepository;
+
 
     @Override
     public boolean add(Customer customer) {
@@ -31,14 +36,14 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public boolean delete(Integer id) {
-      Customer customer = customerRepository.findById(id).get();
-      if (customer == null){
-          return false;
-      }else {
-          customer.setFlag(false);
-          customerRepository.save(customer);
-          return true;
-      }
+        Customer customer = customerRepository.findById(id).get();
+        if (customer == null){
+            return false;
+        }else {
+            customer.setFlag(false);
+            customerRepository.save(customer);
+            return true;
+        }
     }
 
     @Override
@@ -54,13 +59,77 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public Page<Customer> findAllPage(Pageable pageable, String name) {
-        return customerRepository.findCustomerByNameContaining(pageable, "%"+name+"%");
+        Page<Customer> customerPage = customerRepository.findCustomerByNameContaining(pageable, "%"+name+"%");
+        for (Customer c:customerPage) {
+            if(c.getDob()==null){
+                c.setDob("Chưa có thông tin");
+            }else {
+                c.setDob(DateUtils.reverseDate(c.getDob()));
+            }
+        }
+        return customerPage;
+    }
+
+    @Override
+    public Page<Customer> findAllPageCustomerTypeId(Pageable pageable, String name, String[] customerTypeId) {
+        Page<Customer> customerPage;
+        List<Integer> customerTypeIds = new ArrayList<>();
+        for (String s:customerTypeId ) {
+            customerTypeIds.add(Integer.valueOf(s));
+        }
+        customerPage = customerRepository.findCustomerByNameContainingCAndCustomerType_Id(pageable,"%"+name+"%",customerTypeIds);
+        for (Customer c:customerPage) {
+            if (c.getDob()==null){
+                c.setDob("Chưa có thông tin");
+            }else {
+                c.setDob(DateUtils.reverseDate(c.getDob()));
+            }
+        }
+        return customerPage;
+
+    }
+
+    @Override
+    public Integer findSumPriceByEmail(String email) {
+        return customerRepository.findCustomerByEmail(email);
     }
 
     @Override
     public Customer findById(Integer id) {
-        return customerRepository.findById(id).get();
+        Customer customerFind = customerRepository.findById(id).get();
+        if (customerFind.getDob()==null){
+            customerFind.setDob("Chưa có thông tin");
+        }else {
+            customerFind.setDob(DateUtils.reverseDate(customerFind.getDob()));
+        }
+        return customerFind;
     }
 
+    @Override
+    public Customer searchById(Integer id) {
+        Customer customer = customerRepository.findById(id).get();
+        return customer;
+    }
 
+    @Override
+    public Page<Customer> findAllPageCustomerTypeIdGender(Pageable pageable, String name, String[] customerTypeId, Boolean gender) {
+        List<Integer> customerTypeIds = new ArrayList<>();
+        for (String s:customerTypeId ) {
+            customerTypeIds.add(Integer.valueOf(s));
+        }
+        return customerRepository.findCustomerByNameContainingCAndCustomerType_IdAndGender(pageable,name,customerTypeIds,gender);
+    }
+    public Customer findByEmail(String email) {
+        return customerRepository.findByEmail(email);
+    }
+
+    @Override
+    public void save(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public String findCustomerTypeByEmail(String email) {
+        return customerRepository.findCustomerTypeByEmail(email);
+    }
 }

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <title>Simple Man Store</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+    <div th:fragment="libraries">
+
+
+        <!-- Favicon -->
+        <link href="/main/img/favicon.ico" rel="icon">
+
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+        <!-- Libraries Stylesheet -->
+        <link href="/main/lib/animate/animate.min.css" rel="stylesheet">
+        <link href="/main/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="/main/css/style.css" rel="stylesheet">
+
+        <style>
+            /* Dropdown Button */
+            .dropbtn {
+                padding: 16px;
+                cursor: pointer;
+            }
+
+            /* Dropdown button on hover & focus */
+
+
+            /* The container <div> - needed to position the dropdown content */
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+
+            /* Dropdown Content (Hidden by Default) */
+            .dropdown-content {
+                /*display: inline-block;*/
+                display: none;
+                position: absolute;
+                right: -50px;
+                top: 70px;
+                background-color: #f1f1f1;
+                min-width: 280px;
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                z-index: 99;
+            }
+
+            /* Links inside the dropdown */
+            .dropdown-content a {
+                color: black;
+                margin-left: 30px;
+                margin-right: 30px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-decoration: none;
+                display: block;
+            }
+
+            /* Change color of dropdown links on hover */
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+
+            /* Show the dropdown menu (use JS to add this class to the .dropdown-content container
+            when the user clicks on the dropdown button) */
+            .show {
+                display: block;
+            }
+
+            .customer-rank {
+                margin-left: 15px;
+                border: black;
+                border-radius: 28px;
+                background-color: black;
+                padding: 6px 14px;
+                color: white;
+
+            }
+        </style>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navbar Start -->
+<div class="container-fluid bg-dark mb-30" th:fragment="navbar-start">
+    <div class="row px-xl-5">
+        <div class="col-lg-3 d-none d-lg-block">
+            <a th:href="@{/}" class="text-decoration-none" style="position: relative;top:8px">
+                <span class="h1 text-uppercase text-primary bg-dark px-2">Simple</span>
+                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Man</span>
+            </a>
+        </div>
+        <div class="col-lg-9">
+            <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav mr-auto py-0" style="position: relative">
+                        <a th:href="@{/}" class="nav-item nav-link active">Trang Chủ</a>
+                        <a th:href="@{/product}" class="nav-item nav-link">Sản Phẩm</a>
+                        <a th:href="@{/}" id ="best-sellers-button" class="nav-item nav-link">Best Seller</a>
+                    </div>
+                    <!--                    Heart (Favorite Items) -->
+                    <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
+                        <div style="display: inline-block">
+                            <a href="" class="btn px-0">
+                                <i class="fas fa-heart text-primary"></i>
+                                <span class="badge text-secondary border border-secondary rounded-circle"
+                                      style="padding-bottom: 2px;">0</span>
+                            </a>
+                        </div>
+                        <!--                        Cart Icon -->
+                        <div style="display: inline-block">
+                            <a th:href="@{/order/cart}" class="btn px-0 ml-3">
+                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <span class="badge text-secondary border border-secondary rounded-circle"
+                                      style="padding-bottom: 2px;" th:unless="${cart.products.isEmpty()}"
+                                      th:text="${cart.countItemQuantity()}"></span>
+                                <span class="badge text-secondary border border-secondary rounded-circle"
+                                      style="padding-bottom: 2px;" th:if="${cart.products.isEmpty()}">0</span>
+                            </a>
+                        </div>
+                        <!--                        User Icon -->
+                        <div style="display: inline-block">
+                            <a th:if="${#request.userPrincipal != null}" id="dropdown-icon"
+                               class="btn px-0 ml-3">
+                                <i class="fa-solid fa-user text-primary dropdown"></i>
+                            </a>
+                        </div>
+                        <div style="display: inline-block">
+                            <a th:if="${#request.userPrincipal == null}" id="dropdown-icon-plus"
+                               class="btn px-0 ml-3">
+                                <i class="fa-solid fa-user text-primary dropdown"></i>
+                            </a>
+                        </div>
+                        <div id="dropdown-menu" class="dropdown-content">
+                            <div style="height: 80px" class="d-flex">
+                                <div><span><b
+                                        style="color: black"><a th:href="@{/account}" style="margin-left: 30px;
+                                    padding-bottom: 10px; padding-top: 10px; margin-bottom: 20px;margin-top: 20px"
+                                                                class="d-flex align-self-center"
+                                                                th:text="${customer_name}"></a></b></span></div>
+                                <div class="d-flex"><small class="d-flex align-self-center"><b class="customer-rank"
+                                                                                               th:text="${type}"></b></small>
+                                </div>
+                            </div>
+                            <a th:href="@{/account}" style="border-top: black solid 1px">Thông tin tài khoản</a>
+                            <a th:href="@{/order/history}">Lịch sử mua hàng</a>
+                            <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" th:href="@{/order/list}">Quản lý
+                                đơn hàng</a>
+                            <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" th:href="@{/product/list}">Quản
+                                lý sản phẩm</a>
+                            <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" th:href="@{/customer/list}">Quản
+                                lý khách hàng</a>
+                            <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')" th:href="@{/employee/list}">Quản
+                                lý nhân viên</a>
+                            <a style="border-bottom: black solid 1px;" th:href="@{/account/change-pass}">Đổi mật
+                                khẩu</a>
+                            <a th:href="@{/logout}" style="position:relative; padding:8px 0;margin: 30px 30px">Đăng xuất
+                                <i style="position: relative;margin-left: 5px"
+                                   class="fa-solid fa-right-from-bracket"></i></a>
+                        </div>
+                        <div id="dropdown-menu-plus" class="dropdown-content" style="min-width: 210px">
+                            <a style="margin: 10px 10px;text-align: center;padding: 10px 40px ;color: white; background-color: #3f464c"
+                               th:href="@{/login}">Đăng Nhập</a>
+                            <a style="margin: 10px 10px;text-align: center;padding: 10px 40px ;border: #3f464c solid 1px"
+                               th:href="@{/register}">Đăng Ký</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Navbar End -->
+
+
+<!-- Carousel Start -->
+<div class="container-fluid mb-3">
+    <div class="row px-xl-5">
+        <div class="col-lg-8">
+            <div id="header-carousel" class="carousel slide carousel-fade mb-30 mb-lg-0" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#header-carousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#header-carousel" data-slide-to="1"></li>
+                    <li data-target="#header-carousel" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item position-relative active" style="height: 430px;">
+                        <img class="position-absolute w-100 h-100" src="/main/img/image-10.png"
+                             style="object-fit: cover;">
+                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                            <div class="p-3" style="max-width: 700px;">
+                                <a class="btn btn-primary py-2 px-4 mt-3 animate__animated animate__fadeInUp"
+                                   th:href="@{/product}">Xem Thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item position-relative" style="height: 430px;">
+                        <img class="position-absolute w-100 h-100" src="/main/img/image-11.jpeg"
+                             style="object-fit: cover;">
+                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                            <div class="p-3" style="max-width: 700px;">
+                                <a class="btn btn-primary py-2 px-4 mt-3 animate__animated animate__fadeInUp"
+                                   th:href="@{/product}">Xem Thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item position-relative" style="height: 430px;">
+                        <img class="position-absolute w-100 h-100" src="/main/img/image-11.jpeg"
+                             style="object-fit: cover;">
+                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                            <div class="p-3" style="max-width: 700px;">
+                                <a class="btn btn-primary py-2 px-4 mt-3 animate__animated animate__fadeInUp"
+                                   th:href="@{/product}">Xem Thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="product-offer mb-30" style="height: 200px;">
+                <img class="img-fluid" src="/main/img/image-12.jpeg" alt="">
+                <div class="offer-text">
+                    <h3 class="text-white mb-3">Sale 10%</h3>
+                    <a th:href="@{/product}" class="btn btn-primary">Mua Ngay</a>
+                </div>
+            </div>
+            <div class="product-offer mb-30" style="height: 200px;">
+                <img class="img-fluid" src="/main/img/image-13.jpeg" alt="">
+                <div class="offer-text">
+                    <h3 class="text-white mb-3">Sale 10%</h3>
+                    <a th:href="@{/product}" class="btn btn-primary">Mua Ngay</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Carousel End -->
+
+
+<!-- Featured Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5 pb-3">
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
+                <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">Chất Lượng</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
+                <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
+                <h5 class="font-weight-semi-bold m-0">Giao Hàng Miễn Phí</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
+                <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">Trả Hàng 7 Ngày</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
+                <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">Hỗ Trợ 24/7</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Featured End -->
+
+
+<!-- Categories Start -->
+<div class="container-fluid pt-5">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span
+            class="bg-secondary pr-3" style="padding-left: 50px">Danh Mục Sản Phẩm</span></h2>
+    <div class="row px-xl-5 pb-3">
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" style="margin-left: 50px">
+            <a class="text-decoration-none" href="/product?sortType=&categoryName=Quần">
+                <div class="cat-item d-flex align-items-center mb-4">
+                    <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                        <img class="img-fluid" src="/main/img/jeanpant.png" alt="">
+                    </div>
+                    <div class="flex-fill pl-3">
+                        <h6>Quần</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+            <a class="text-decoration-none" href="/product?sortType=&categoryName=Áo">
+                <div class="cat-item img-zoom d-flex align-items-center mb-4">
+                    <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                        <img class="img-fluid" src="/main/img/product-2.jpg" alt="">
+                    </div>
+                    <div class="flex-fill pl-3">
+                        <h6>Áo</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+            <a class="text-decoration-none" href="/product?sortType=&categoryName=Giày">
+                <div class="cat-item img-zoom d-flex align-items-center mb-4">
+                    <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                        <img class="img-fluid" src="/main/img/cat-3.jpg" alt="">
+                    </div>
+                    <div class="flex-fill pl-3">
+                        <h6>Giày</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Categories End -->
+
+
+        <!-- Products Start -->
+        <div class="container-fluid pt-5 pb-3" id="best-sellers-section">
+            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản Phẩm Nổi Bật</span>
+            </h2>
+            <div class="row px-xl-5">
+
+                <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product:${bestSellers}">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img style="max-height: 270px" class="img-fluid w-100" th:src="${product.image}" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square"
+                                   th:href="@{/order/add/__${product.id}__(sizes=29)}"><i
+                                        class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" th:href="@{/order/detail/__${product.id}__}"><i
+                                        class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate"
+                               th:href="@{/order/detail/__${product.id}__}" th:text="${product.name}"></a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5 th:text="${#numbers.formatInteger(product.price,3,'POINT')}"></h5>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Products End -->
+
+
+        <!-- Offer Start -->
+        <div class="container-fluid pt-5 pb-3">
+            <div class="row px-xl-5">
+                <div class="col-md-6">
+                    <div class="product-offer mb-30" style="height: 300px;">
+                        <img class="img-fluid" src="/main/img/image-12.jpeg" alt="">
+                        <div class="offer-text">
+                            <h3 class="text-white mb-3">Sale 10%</h3>
+                            <a th:href="@{/product}" class="btn btn-primary">Mua Ngay</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="product-offer mb-30" style="height: 300px;">
+                        <img class="img-fluid" src="/main/img/image-13.jpeg" alt="">
+                        <div class="offer-text">
+                            <h3 class="text-white mb-3">Sale 10%</h3>
+                            <a th:href="@{/product}" class="btn btn-primary">Mua Ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Offer End -->
+
+
+        <!-- Products Start -->
+        <div class="container-fluid pt-5 pb-3">
+            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản Phẩm Mới Nhất</span>
+            </h2>
+            <div class="row px-xl-5">
+
+
+                <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product:${bestSellers}">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img style="max-height: 270px" class="img-fluid w-100" th:src="${product.image}" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square"
+                                   th:href="@{/order/add/__${product.id}__(sizes=29)}"><i
+                                        class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" th:href="@{/order/detail/__${product.id}__}"><i
+                                        class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate"
+                               th:href="@{/order/detail/__${product.id}__}" th:text="${product.name}"></a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5 th:text="${#numbers.formatInteger(product.price,3,'POINT')}"></h5>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Products End -->
+
+
+        <!-- Vendor Start -->
+        <div class="container-fluid py-5">
+            <div class="row px-xl-5">
+                <div class="col">
+                    <div class="owl-carousel vendor-carousel">
+                        <div class="bg-light p-4">
+                            <img src="/main/img/vendor-1.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="/main/img/vendor-2.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="/main/img/vendor-3.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="/main/img/vendor-4.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="/main/img/vendor-5.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="/main/img/vendor-6.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="/main/img/vendor-7.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="/main/img/vendor-8.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Vendor End -->
+
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-secondary mt-5 pt-5" th:fragment="footer-start">
+            <div class="row px-xl-5 pt-5">
+                <div class="col-lg-3 col-md-12 mb-5 pr-3 pr-xl-5">
+                    <h5 class="text-secondary text-uppercase mb-4">SIMPLE MAN</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>68 Lê Duẩn, Đà Nẵng, Việt Nam
+                    </p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>simpleman@gmail.com</p>
+                    <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+84 868 68 68 68</p>
+                </div>
+                <div class="col-lg-9 col-md-12">
+                    <div class="row">
+                        <div class="col-md-3 mb-5">
+                            <h5 class="text-secondary text-uppercase mb-4">Công Ty</h5>
+                            <div class="d-flex flex-column justify-content-start">
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Giới thiệu
+                                </a>
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Tuyển dụng</a>
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Tin thời
+                                    trang</a>
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Hợp tác
+                                    nhượng
+                                    quyền</a>
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Liên
+                                    hệ</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-5">
+                            <h5 class="text-secondary text-uppercase mb-4">Chính sách khách hàng</h5>
+                            <div class="d-flex flex-column justify-content-start">
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Chính sách
+                                    khách hàng thân thiết</a>
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Chính sách
+                                    đổi
+                                    trả</a>
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Chính sách
+                                    bảo
+                                    hành</a>
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Chính sách
+                                    bảo
+                                    mật</a>
+                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Câu hỏi
+                                    thường
+                                    gặp</a>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mb-5">
+                            <h5 class="text-secondary text-uppercase mb-4">THAM GIA BẢNG TIN CỦA CHÚNG TÔI</h5>
+                            <form action="">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Email...">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary">Đăng Ký</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <h6 class="text-secondary text-uppercase mt-4 mb-3">Theo dõi chúng tôi</h6>
+                            <div class="d-flex">
+                                <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-primary btn-square mr-2" href="#"><i
+                                        class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-primary btn-square mr-2" href="#"><i
+                                        class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
+                <div class="col-md-6 px-xl-0">
+                    <p class="mb-md-0 text-center text-md-left text-secondary">
+                        &copy; Simple Man CO., LTD 68 Trần Hưng Đạo, Sơn Trà, Đà Nẵng, Việt Nam
+                    </p>
+                </div>
+                <div class="col-md-6 px-xl-0 text-center text-md-right">
+                    <img class="img-fluid" src="/main/img/payments.png" alt="">
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+
+        <!-- Back to Top -->
+        <a th:fragment="back-to-top" href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+        <div th:if="${msg}">
+            <span id="message" th:text="${msg}" style="display: none"></span>
+        </div>
+        <div th:fragment="footer">
+            <!-- JavaScript Libraries -->
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+            <script src="/main/lib/easing/easing.min.js"></script>
+            <script src="/main/lib/owlcarousel/owl.carousel.min.js"></script>
+
+            <!-- Contact Javascript File -->
+            <script src="/main/mail/jqBootstrapValidation.min.js"></script>
+            <script src="/main/mail/contact.js"></script>
+
+            <!-- Template Javascript -->
+            <script src="/main/js/main.js"></script>
+            <script>
+
+                // Get references to the icon and dropdown menu elements
+                var dropdownIcon = document.getElementById('dropdown-icon');
+                if (dropdownIcon != null) {
+                    var dropdownMenu = document.getElementById('dropdown-menu');
+
+                    // Add a click event listener to the icon to toggle the dropdown menu
+                    dropdownIcon.addEventListener('click', function () {
+                        // Toggle the visibility of the dropdown menu by adding or removing a CSS class
+                        dropdownMenu.classList.toggle('show');
+                    });
+
+                    // Add a click event listener to the document
+                    document.addEventListener('click', function (event) {
+                        var target = event.target;
+
+                        // Check if the clicked element is inside the dropdown or the icon
+                        var isClickInsideDropdown = dropdownMenu.contains(target) || dropdownIcon.contains(target);
+
+                        // If the click is outside the dropdown and the icon, close the dropdown
+                        if (!isClickInsideDropdown) {
+                            // Close the dropdown menu by removing the CSS class
+                            dropdownMenu.classList.remove('show');
+                        }
+                    });
+                }
+                var dropdownIconPlus = document.getElementById('dropdown-icon-plus');
+                if (dropdownIconPlus != null) {
+                    var dropdownMenuPlus = document.getElementById('dropdown-menu-plus');
+
+                    // Add a click event listener to the icon to toggle the dropdown menu
+                    dropdownIconPlus.addEventListener('click', function () {
+                        // Toggle the visibility of the dropdown menu by adding or removing a CSS class
+                        dropdownMenuPlus.classList.toggle('show');
+                    });
+
+                    // Add a click event listener to the document
+                    document.addEventListener('click', function (event) {
+                        var target = event.target;
+
+                        // Check if the clicked element is inside the dropdown or the icon
+                        var isClickInsideDropdown = dropdownMenuPlus.contains(target) || dropdownIconPlus.contains(target);
+
+                        // If the click is outside the dropdown and the icon, close the dropdown
+                        if (!isClickInsideDropdown) {
+                            // Close the dropdown menu by removing the CSS class
+                            dropdownMenuPlus.classList.remove('show');
+                        }
+                    });
+                }
+
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    var bestSellersButton = document.getElementById('best-sellers-button');
+                    var bestSellersSection = document.getElementById('best-sellers-section');
+
+                    bestSellersButton.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        bestSellersSection.scrollIntoView({behavior: 'smooth'});
+                    });
+                });
+
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    let message = document.getElementById("message").innerText;
+    console.log(message);
+
+    function showMessage() {
+        if (message != null) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: message,
+                showConfirmButton: false,
+                timer: 2500
+            })
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", showMessage());
+
+
+</script>
+</body>
+
+</html>
