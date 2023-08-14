@@ -191,10 +191,10 @@ public class OrderController {
             return "redirect:/login";
         }
         String email = principal.getName();
-        Customer baseCustomer = customerService.findByEmail(email);
+        Customer customer = customerService.findByEmail(email);
         String type = customerService.findCustomerTypeByEmail(email);
         model.addAttribute("type", type);
-        model.addAttribute("customer_name", baseCustomer.getName());
+        model.addAttribute("customer_name", customer.getName());
         OrderDto orderDto = new OrderDto();
         if (principal == null) {
             return "redirect:/login";

@@ -32,8 +32,7 @@
             <form th:action="@{/product}" method="get" id="search-form">
                 <input type="hidden" name="sortType" id="sort-type">
                 <!-- Category Start -->
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Lọc theo loại</span><button id="search-button" type="submit" class="btn-warning">Tìm Kiếm</button>
-                </h5>
+                <h5 class="section-title position-relative text-uppercase mb-3" style="display: inline-block"><span class="bg-secondary pr-3">Lọc theo loại</span></h5><button id="search-button" type="submit" class="btn-primary" style="display: inline-block;margin-inline-start: 53px;">Tìm Kiếm</button>
                 <div class="bg-light p-4 mb-30">
                     <div th:each="category: ${categoryList}" class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                         <input type="checkbox" class="custom-control-input" th:id="${category.id}" name="categoryName" th:value="${category.name}" th:if="${not #strings.isEmpty(category.name)}">
@@ -87,7 +86,7 @@
                 <div th:each="product: ${productPage}" class="col-lg-4 col-md-6 col-sm-6 pb-1">
                     <div class="product-item bg-light mb-4">
                         <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" style="max-height: 294.74px;width: auto"
+                            <img style="max-height: 294.74px;" class="img-fluid w-100"
                                  th:src="${product.image}" th:href="@{order/detail/__${product.id}__}" alt="">
                             <div class="product-action">
                                 <a class="btn btn-outline-dark btn-square" th:href="@{/order/add/__${product.id}__(sizes=29)}"><i
