@@ -90,7 +90,7 @@ public class CustomerController {
         Boolean check = customerService.delete(deleteId);
         String msg;
         if (check) {
-            msg ="Khách hàng "+customerService.findById(deleteId).getName()+" đã được cút khỏi danh sách";
+            msg ="Khách hàng "+customerService.findById(deleteId).getName()+" đã bị xoá";
             redirectAttributes.addFlashAttribute("msg", msg);
         } else {
             redirectAttributes.addAttribute("msg", "Không tìm thấy khách hàng ");
