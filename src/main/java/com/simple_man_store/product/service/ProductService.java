@@ -86,4 +86,9 @@ public class ProductService implements IProductService {
         return productRepository.findListProductDESC(pageable, categoryNameList, sizeNameList);
     }
 
+    @Override
+    public List<Product> bestSellers() {
+        return productRepository.bestSellers();
+    }
+
 }
