@@ -53,7 +53,7 @@ public class CustomerController {
                                  @RequestParam(defaultValue = "") String[] customerType,
                                  Principal principal, Model model
     ) {
-        Pageable pageable = PageRequest.of(page, 3, Sort.by("name").ascending().and(Sort.by("gender").descending()));
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("name").ascending().and(Sort.by("gender").descending()));
         String email = principal.getName();
         Customer customer = customerService.findByEmail(email);
         String type = customerService.findCustomerTypeByEmail(email);
@@ -145,7 +145,7 @@ public class CustomerController {
     }
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute CustomerDto customerDto, BindingResult bindingResult,
-                       Model model,Principal principal){
+                       Model model,Principal principal,RedirectAttributes redirectAttributes){
         Customer newCustomer = customerService.findByEmail(principal.getName());
         String type = customerService.findCustomerTypeByEmail(newCustomer.getEmail());
         model.addAttribute("type", type);
@@ -157,6 +157,7 @@ public class CustomerController {
         }
         BeanUtils.copyProperties(customerDto,customer);
         customerService.save(customer);
+        redirectAttributes.addFlashAttribute("msg","Cập nhật thành công");
         return "redirect:/account";
     }
     @PostMapping("/even")

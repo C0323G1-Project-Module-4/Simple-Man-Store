@@ -223,6 +223,11 @@ public class OrderController {
         if (principal == null) {
             return "redirect:/login";
         }
+        String email = principal.getName();
+        Customer customer = customerService.findByEmail(email);
+        String type = customerService.findCustomerTypeByEmail(email);
+        model.addAttribute("type", type);
+        model.addAttribute("customer_name", customer.getName());
         Account account = accountService.findByEmail(principal.getName());
         Page<Order> order = orderService.getByAcount(PageRequest.of(0,1,Sort.by("id").descending()),account);
         for (Order o:order

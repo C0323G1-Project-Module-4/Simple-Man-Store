@@ -151,7 +151,7 @@ public class AccountController {
             bindingResult.rejectValue("newPassword", null, "Mật khẩu tối thiểu 8 ký tự và một ký tự in hoa");
             return "/account/change-password";
         }
-        if (secondCheck) {
+        if (!secondCheck) {
             bindingResult.rejectValue("newPassword", null, "Mật khẩu mới không được giống mật khẩu cũ");
             return "/account/change-password";
         }
