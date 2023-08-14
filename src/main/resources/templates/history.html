@@ -62,20 +62,20 @@
                     <li class="page-item disabled" th:unless="${orderPage.hasPrevious()}"><a
                             class="page-link">Trước</span></a></li>
                     <li class="page-item " th:if="${orderPage.hasPrevious()}"><a class="page-link"
-                                                                                 th:href="@{/order/list(page=${orderPage.number-1})}">Trước</a>
+                                                                                 th:href="@{/order/history(page=${orderPage.number-1})}">Trước</a>
                     </li>
                     <li class="page-item" th:if="${orderPage.hasPrevious()}"><a class="page-link"
-                                                                                th:href="@{/order/list(page=${orderPage.number-1})}"
+                                                                                th:href="@{/order/history(page=${orderPage.number-1})}"
                                                                                 th:text="${orderPage.number}"></a></li>
                     <li class="page-item  active"><a class="page-link" href="#" th:text="${orderPage.number+1}"></a>
                     </li>
                     <li class="page-item" th:if="${orderPage.hasNext()}"><a class="page-link"
-                                                                            th:href="@{/order/list(page=${orderPage.number+1})}"
+                                                                            th:href="@{/order/history(page=${orderPage.number+1})}"
                                                                             th:text="${orderPage.number+2}"></a></li>
                     <li class="page-item disabled" th:unless="${orderPage.hasNext()}"><a
                             class="page-link">Sau</span></a></li>
                     <li class="page-item" th:if="${orderPage.hasNext()}"><a class="page-link"
-                                                                            th:href="@{/order/list(page=${orderPage.number+1})}">Sau</a>
+                                                                            th:href="@{/order/history(page=${orderPage.number+1})}">Sau</a>
                     </li>
                 </ul>
             </nav>

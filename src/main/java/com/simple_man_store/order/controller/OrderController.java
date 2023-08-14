@@ -129,7 +129,9 @@ public class OrderController {
         for (Order o: orderPage
              ) {
             o.setOrder_date(DateUtils.reverseDate(o.getOrder_date()));
-            o.setPayment_date(DateUtils.reverseDate(o.getPayment_date()));
+            if(o.getPayment_date()!=null) {
+                o.setPayment_date(DateUtils.reverseDate(o.getPayment_date()));
+            }
         }
         model.addAttribute("orderPage", orderPage);
         return "order/list";
@@ -191,10 +193,10 @@ public class OrderController {
             return "redirect:/login";
         }
         String email = principal.getName();
-        Customer customer = customerService.findByEmail(email);
+        Customer baseCustomer = customerService.findByEmail(email);
         String type = customerService.findCustomerTypeByEmail(email);
         model.addAttribute("type", type);
-        model.addAttribute("customer_name", customer.getName());
+        model.addAttribute("customer_name", baseCustomer.getName());
         OrderDto orderDto = new OrderDto();
         if (principal == null) {
             return "redirect:/login";
@@ -254,7 +256,6 @@ public class OrderController {
         if(orderDto.getStatus()==1){
             return "redirect:/order/history";
         }
-        orderDto.setStatus(1);
         String email = principal.getName();
         Customer customer = customerService.findByEmail(email);
         String type = customerService.findCustomerTypeByEmail(email);
@@ -282,8 +283,8 @@ public class OrderController {
             return "redirect:/order/checkout";
         }
         if (payment.equals("vnpay")) {
-//            order.setPayment_date(String.valueOf(LocalDate.now()));
-//            orderService.add(order);
+            order.setStatus(1);
+            orderService.add(order);
             int amount = (int) (cart.countTotalPayment() * 1);
             return "redirect:/payment/create_payment?tempAmount=" + amount;
         }
@@ -333,6 +334,13 @@ public class OrderController {
         Pageable pageable = PageRequest.of(page, 8, Sort.by("id").descending());
         Account account = accountService.findByEmail(principal.getName());
         Page<Order> orderPage = orderService.getByAcount(pageable, account);
+        for (Order o: orderPage
+        ) {
+            o.setOrder_date(DateUtils.reverseDate(o.getOrder_date()));
+            if(o.getPayment_date()!=null) {
+                o.setPayment_date(DateUtils.reverseDate(o.getPayment_date()));
+            }
+        }
         String email = principal.getName();
         Customer customer = customerService.findByEmail(email);
         String type = customerService.findCustomerTypeByEmail(email);
@@ -366,7 +374,9 @@ public class OrderController {
         }
         Order order = orderService.getById(id);
         order.setOrder_date(DateUtils.reverseDate(order.getOrder_date()));
-        order.setPayment_date(DateUtils.reverseDate(order.getPayment_date()));
+        if(order.getPayment_date()!=null) {
+            order.setPayment_date(DateUtils.reverseDate(order.getPayment_date()));
+        }
         List<OrderDetail> orderDetails = iodService.getByOrder(order);
         double total = 0;
         for (OrderDetail o : orderDetails) {
